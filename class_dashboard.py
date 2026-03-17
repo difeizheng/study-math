@@ -65,7 +65,15 @@ class ClassLearningDashboard:
         student_scores_detail = {}
 
         for _, row in df.iterrows():
-            student_id = int(row['学号'])
+            # 检查学号是否有效
+            student_id = row.get('学号')
+            if pd.isna(student_id):
+                continue
+            try:
+                student_id = int(student_id)
+            except (ValueError, TypeError):
+                continue
+
             scores = []
             for col in df.columns:
                 if col not in ['学号', '姓名']:
@@ -92,13 +100,17 @@ class ClassLearningDashboard:
         for i, s in enumerate(student_avgs, 1):
             s['排名'] = i
 
-        # 计算整体统计
+        # 计算整体统计（使用实际有效学生数）
+        actual_total = len(student_avgs)
+        if actual_total == 0:
+            return None
+
         all_avgs = [s['平均分'] for s in student_avgs]
         class_avg = round(np.mean(all_avgs), 2)
         excellent_count = sum(1 for avg in all_avgs if avg >= 90)
         pass_count = sum(1 for avg in all_avgs if avg >= 60)
-        excellent_rate = round(excellent_count / total_students * 100, 1)
-        pass_rate = round(pass_count / total_students * 100, 1)
+        excellent_rate = round(excellent_count / actual_total * 100, 1)
+        pass_rate = round(pass_count / actual_total * 100, 1)
 
         # 知识点掌握率分析
         knowledge_mastery = self._analyze_knowledge_mastery(semester, student_scores_detail)
@@ -111,7 +123,7 @@ class ClassLearningDashboard:
 
         return ClassAnalysis(
             semester=semester,
-            total_students=total_students,
+            total_students=actual_total,
             class_avg=class_avg,
             excellent_rate=excellent_rate,
             pass_rate=pass_rate,

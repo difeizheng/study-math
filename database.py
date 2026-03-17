@@ -663,6 +663,47 @@ class ExamScoreDAO:
         conn.close()
         return [dict(row) for row in rows]
 
+    @staticmethod
+    def update_score(record_id: int, score: float) -> bool:
+        """更新成绩"""
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE exam_scores SET score = ?, updated_at = CURRENT_TIMESTAMP
+            WHERE id = ?
+        """, (score, record_id))
+        conn.commit()
+        success = cursor.rowcount > 0
+        conn.close()
+        return success
+
+    @staticmethod
+    def delete_score(record_id: int) -> bool:
+        """删除成绩"""
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            DELETE FROM exam_scores WHERE id = ?
+        """, (record_id,))
+        conn.commit()
+        success = cursor.rowcount > 0
+        conn.close()
+        return success
+
+    @staticmethod
+    def delete_by_student_exam(student_id: int, semester: str, exam_name: str) -> bool:
+        """按学生 - 学期 - 考试删除成绩"""
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            DELETE FROM exam_scores
+            WHERE student_id = ? AND semester = ? AND exam_name = ?
+        """, (student_id, semester, exam_name))
+        conn.commit()
+        success = cursor.rowcount > 0
+        conn.close()
+        return success
+
 
 # 初始化数据库
 if __name__ == "__main__":

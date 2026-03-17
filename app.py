@@ -494,6 +494,78 @@ def get_entered_scores(student_id: int, semesters: list) -> List[Dict]:
     return all_scores
 
 
+def get_merged_score_rank(student_id: int, semesters: list) -> Dict:
+    """获取包含录入成绩的排名"""
+    # 1. 从 Excel 获取基础排名
+    rank_info = analyzer.get_score_rank(student_id)
+    if not rank_info:
+        return {}
+
+    # 2. 获取录入的成绩
+    entered_scores = get_entered_scores(student_id, semesters)
+
+    # 3. 计算包含录入成绩的平均分
+    student_scores = []
+    for col in analyzer.students_df.columns:
+        if col not in ['学号', '姓名']:
+            value = analyzer.students_df[analyzer.students_df['学号'] == student_id][col].values[0]
+            if pd.notna(value):
+                try:
+                    student_scores.append(float(value))
+                except (ValueError, TypeError):
+                    pass
+
+    # 添加录入的成绩
+    for es in entered_scores:
+        student_scores.append(es['score'])
+
+    if not student_scores:
+        return rank_info
+
+    student_avg = sum(student_scores) / len(student_scores)
+
+    # 4. 计算所有学生的平均分（包含录入的成绩）
+    all_avgs = []
+    for sid in analyzer.student_names.keys():
+        scores = []
+        sid_data = analyzer.students_df[analyzer.students_df['学号'] == sid]
+        if not sid_data.empty:
+            for col in analyzer.students_df.columns:
+                if col not in ['学号', '姓名']:
+                    value = sid_data[col].values[0]
+                    if pd.notna(value):
+                        try:
+                            scores.append(float(value))
+                        except (ValueError, TypeError):
+                            pass
+
+        # 添加录入的成绩
+        sid_entered = get_entered_scores(sid, semesters)
+        for es in sid_entered:
+            scores.append(es['score'])
+
+        if scores:
+            avg = sum(scores) / len(scores)
+            all_avgs.append({'学号': sid, '姓名': analyzer.student_names.get(sid, 'Unknown'), '平均分': avg})
+
+    # 按平均分降序排名
+    all_avgs.sort(key=lambda x: x['平均分'], reverse=True)
+
+    rank = 1
+    for i, s in enumerate(all_avgs):
+        if s['学号'] == student_id:
+            rank = i + 1
+            break
+
+    return {
+        'rank': rank,
+        'total': len(all_avgs),
+        'student_avg': round(student_avg, 2),
+        'top_10_percent': rank <= len(all_avgs) * 0.1,
+        'top_3': rank <= 3,
+    }
+
+
 def filter_scores_by_semester(student_id: int, semesters: list) -> dict:
     """按学期筛选成绩数据（包含 Excel 和录入的成绩）"""
     if analyzer.students_df is None:
@@ -1022,7 +1094,8 @@ elif analysis_mode == "⚠️ 成绩预警":
 
     # 排名信息
     st.subheader("🏆 班级排名")
-    rank_info = analyzer.get_score_rank(selected_student_id)
+    # 合并录入的成绩后计算排名
+    rank_info = get_merged_score_rank(selected_student_id, selected_semesters)
     if rank_info:
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -1050,7 +1123,63 @@ elif analysis_mode == "📊 班级分析":
     )
 
     if selected_semester:
-        class_stats = analyzer.get_class_analysis(selected_semester)
+        # 获取合并后的班级分析数据（包含 Excel 和录入的成绩）
+        def get_merged_class_analysis(semester: str) -> Dict:
+            """获取合并后的班级分析"""
+            # 1. 从 Excel 获取基础数据
+            base_stats = analyzer.get_class_analysis(semester)
+
+            # 2. 获取录入的成绩
+            entered_scores = ExamScoreDAO.get_scores_by_semester(semester, "%")
+            if not entered_scores:
+                return base_stats
+
+            # 按学生和考试分组
+            student_entered_scores = {}
+            for es in entered_scores:
+                sid = es['student_id']
+                if sid not in student_entered_scores:
+                    student_entered_scores[sid] = []
+                if es['score'] is not None:
+                    student_entered_scores[sid].append(es['score'])
+
+            # 3. 合并到 base_stats
+            # 计算录入成绩的统计
+            for sid, scores in student_entered_scores.items():
+                if scores:
+                    entered_avg = sum(scores) / len(scores)
+                    base_stats['scores'].append(entered_avg)
+
+                    if entered_avg >= 90:
+                        base_stats['students_above_90'] += 1
+                    if entered_avg < 60:
+                        base_stats['students_below_60'] += 1
+
+                    # 分数段统计
+                    if entered_avg >= 90:
+                        base_stats['distribution']['90-100'] += 1
+                    elif entered_avg >= 80:
+                        base_stats['distribution']['80-89'] += 1
+                    elif entered_avg >= 70:
+                        base_stats['distribution']['70-79'] += 1
+                    elif entered_avg >= 60:
+                        base_stats['distribution']['60-69'] += 1
+                    else:
+                        base_stats['distribution']['60 以下'] += 1
+
+            # 重新计算统计
+            all_avgs = base_stats['scores']
+            if all_avgs:
+                base_stats['class_avg'] = round(sum(all_avgs) / len(all_avgs), 2)
+                base_stats['highest_avg'] = round(max(all_avgs), 2)
+                base_stats['lowest_avg'] = round(min(all_avgs), 2)
+                base_stats['total_students'] = len(all_avgs)
+                base_stats['pass_rate'] = round((1 - sum(1 for a in all_avgs if a < 60) / len(all_avgs)) * 100, 1)
+                base_stats['excellent_rate'] = round(sum(1 for a in all_avgs if a >= 90) / len(all_avgs) * 100, 1)
+
+            return base_stats
+
+        class_stats = get_merged_class_analysis(selected_semester)
 
         if class_stats:
             # 统计卡片
@@ -1193,6 +1322,16 @@ elif analysis_mode == "🔬 宏观分析":
         if 'error' in compare_data:
             st.error(compare_data['error'])
         else:
+            # 使用合并后的排名更新对比数据
+            rank1 = get_merged_score_rank(selected_student_id, selected_semesters)
+            rank2 = get_merged_score_rank(selected_student_id_2, selected_semesters)
+
+            # 更新排名信息
+            if rank1:
+                compare_data['student_1']['rank'] = rank1['rank']
+            if rank2:
+                compare_data['student_2']['rank'] = rank2['rank']
+
             st.subheader("📊 SAI 对比总览")
 
             student_1 = compare_data['student_1']
@@ -2541,6 +2680,9 @@ if analysis_mode == "📊 录入成绩查询":
         index=0
     )
 
+    # 管理功能
+    manage_mode = st.checkbox("✏️ 编辑模式", value=False)
+
     # 查询成绩
     if filter_semester == "全部":
         all_scores = ExamScoreDAO.get_all_scores()
@@ -2567,13 +2709,71 @@ if analysis_mode == "📊 录入成绩查询":
                 exam_groups[exam_name].append(s)
 
             for exam_name, scores in exam_groups.items():
-                with st.expander(f"📋 {exam_name} - {len(scores)}人", expanded=False):
+                with st.expander(f"📋 {exam_name} - {len(scores)} 人", expanded=False):
                     # 显示表格
                     df = pd.DataFrame(scores)
-                    display_df = df[['student_name', 'student_id', 'score', 'exam_date']].copy()
-                    display_df.columns = ['姓名', '学号', '分数', '考试日期']
+                    display_df = df[['student_name', 'student_id', 'score', 'exam_date', 'id']].copy()
+                    display_df.columns = ['姓名', '学号', '分数', '考试日期', '记录 ID']
                     display_df = display_df.sort_values('分数', ascending=False)
                     st.dataframe(display_df, use_container_width=True, hide_index=True)
+
+                    # 编辑模式
+                    if manage_mode:
+                        st.markdown("**编辑成绩：**")
+
+                        # 批量操作
+                        st.markdown("**批量操作：**")
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            if st.button(f"🗑️ 删除此次考试 ({len(scores)}条记录)", type="secondary", key=f"del_exam_{exam_name}"):
+                                # 删除该考试的所有记录
+                                deleted = 0
+                                for s in scores:
+                                    if ExamScoreDAO.delete_score(s['id']):
+                                        deleted += 1
+                                st.success(f"已删除 {deleted} 条记录")
+                                st.rerun()
+                        with col2:
+                            # 导出成绩
+                            csv_data = display_df.to_csv(index=False).encode('utf-8-sig')
+                            st.download_button(
+                                label="📥 导出成绩 CSV",
+                                data=csv_data,
+                                file_name=f"{exam_name}_成绩.csv",
+                                mime="text/csv"
+                            )
+
+                        st.markdown("---")
+
+                        # 单个成绩编辑
+                        for s in scores:
+                            col1, col2, col3, col4 = st.columns([2, 2, 1, 1])
+                            with col1:
+                                st.write(f"{s['student_name']} (学号{s['student_id']})")
+                            with col2:
+                                new_score = st.number_input(
+                                    "分数",
+                                    min_value=0.0,
+                                    max_value=100.0,
+                                    value=float(s['score']),
+                                    step=0.5,
+                                    key=f"edit_{s['id']}"
+                                )
+                            with col3:
+                                if st.button("保存", key=f"save_{s['id']}"):
+                                    if ExamScoreDAO.update_score(s['id'], new_score):
+                                        st.success("更新成功")
+                                        st.rerun()
+                                    else:
+                                        st.error("更新失败")
+                            with col4:
+                                if st.button("🗑️ 删除", key=f"del_{s['id']}", type="secondary"):
+                                    if ExamScoreDAO.delete_score(s['id']):
+                                        st.success("已删除")
+                                        st.rerun()
+                                    else:
+                                        st.error("删除失败")
+                            st.markdown("---")
     else:
         st.info("暂无录入成绩")
 
