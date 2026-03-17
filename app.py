@@ -21,6 +21,40 @@ init_logging()
 init_database()
 logger = get_logger("app")
 
+# 从 Excel 导入学生信息到数据库
+def sync_students_from_excel():
+    """将 Excel 中的学生信息同步到数据库"""
+    from pathlib import Path
+    from excel_importer import ExcelDataImporter
+
+    data_dir = Path("data")
+    if not data_dir.exists():
+        return
+
+    importer = ExcelDataImporter()
+    synced_count = 0
+
+    for file in sorted(data_dir.glob("*.xlsx")):
+        try:
+            df = importer.load_excel(str(file))
+            semester = "1(2) 班上 学期"  # 默认学期
+
+            # 从文件名提取学期信息
+            import re
+            semester_match = re.search(r'(\d+)\((\d)\) 班 ([上下]) 学期', file.name)
+            if semester_match:
+                semester = f"{semester_match.group(1)}({semester_match.group(2)}) 班 {semester_match.group(3)} 学期"
+
+            students = importer.extract_students_from_excel(df, semester)
+            synced_count += len(students)
+        except Exception as e:
+            logger.error(f"同步 {file.name} 失败：{e}")
+
+    if synced_count > 0:
+        logger.info(f"从 Excel 同步 {synced_count} 个学生到数据库")
+
+sync_students_from_excel()
+
 # 原有模块导入
 from score_analyzer import ScoreAnalyzer
 from deep_analyzer import DeepScoreAnalyzer
