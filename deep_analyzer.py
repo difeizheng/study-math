@@ -10,6 +10,9 @@ from dataclasses import dataclass, field
 import re
 
 
+from database import ExamScoreDAO
+
+
 @dataclass
 class KnowledgePoint:
     """知识点定义"""
@@ -191,6 +194,22 @@ class DeepScoreAnalyzer:
         self.semester_data: Dict[str, pd.DataFrame] = {}
         self.student_names: Dict[int, str] = {}
         self.knowledge_points = KNOWLEDGE_SYSTEM
+        self.entered_scores_cache: Dict[int, List[Dict]] = {}  # 录入成绩缓存
+
+    def refresh_entered_scores(self):
+        """刷新录入成绩缓存"""
+        self.entered_scores_cache = {}
+        all_scores = ExamScoreDAO.get_all_scores()
+        for s in all_scores:
+            sid = s['student_id']
+            if sid not in self.entered_scores_cache:
+                self.entered_scores_cache[sid] = []
+            self.entered_scores_cache[sid].append({
+                'semester': s['semester'],
+                'exam_name': s['exam_name'],
+                'score': s['score'],
+                'exam_date': s['exam_date']
+            })
 
     def load_all_data(self) -> pd.DataFrame:
         """加载所有数据"""
@@ -222,6 +241,9 @@ class DeepScoreAnalyzer:
             # 合并所有数据 - 按学号和姓名分组，将不同学期的数据合并到同一行
             combined_df = pd.concat(all_scores, ignore_index=True)
             self.students_df = combined_df.groupby(['学号', '姓名'], as_index=False).first()
+
+        # 刷新录入成绩缓存
+        self.refresh_entered_scores()
 
         return self.students_df
 
@@ -333,41 +355,57 @@ class DeepScoreAnalyzer:
 
         return []
 
+    def _get_student_merged_scores(self, student_id: int) -> Dict[str, Tuple[str, float]]:
+        """获取学生合并后的成绩 {考试列名：(学期，分数)}"""
+        scores = {}
+
+        # 1. 从 Excel 获取成绩
+        if self.students_df is not None:
+            student_data = self.students_df[self.students_df['学号'] == student_id]
+            if not student_data.empty:
+                for col in self.students_df.columns:
+                    if col not in ['学号', '姓名']:
+                        value = student_data[col].values[0]
+                        if pd.notna(value):
+                            # 提取学期
+                            parts = col.split('_', 1)
+                            if len(parts) == 2:
+                                semester = parts[0]
+                                scores[col] = (semester, float(value))
+
+        # 2. 合并录入的成绩
+        if student_id in self.entered_scores_cache:
+            for es in self.entered_scores_cache[student_id]:
+                key = f"{es['semester']}_{es['exam_name']}"
+                if key not in scores and es['score'] is not None:
+                    scores[key] = (es['semester'], float(es['score']))
+
+        return scores
+
     def analyze_knowledge_mastery(self, student_id: int) -> Dict[str, Dict]:
-        """分析学生对各知识点的掌握程度"""
+        """分析学生对各知识点的掌握程度（使用合并后的成绩）"""
         if self.students_df is None:
             return {}
 
-        student_data = self.students_df[self.students_df['学号'] == student_id]
-        if student_data.empty:
+        # 获取合并后的成绩
+        merged_scores = self._get_student_merged_scores(student_id)
+
+        if not merged_scores:
             return {}
 
         # 统计每个知识点的得分情况
         knowledge_scores: Dict[str, List[float]] = {}
 
-        # 遍历每个学期的数据
-        for semester_name, semester_df in self.semester_data.items():
-            student_semester = semester_df[semester_df['学号'] == student_id]
-            if student_semester.empty:
-                continue
+        # 遍历所有成绩
+        for col, (semester, score) in merged_scores.items():
+            # 获取考试对应的知识点
+            knowledge_points = self.map_exam_to_knowledge(col, semester)
 
-            # 遍历该学期的所有考试
-            for col in semester_df.columns:
-                if col in ['学号', '姓名']:
-                    continue
-
-                score = student_semester[col].values[0] if len(student_semester) > 0 else None
-                if pd.isna(score):
-                    continue
-
-                # 获取考试对应的知识点
-                knowledge_points = self.map_exam_to_knowledge(col, semester_name)
-
-                # 将分数分配到对应知识点
-                for kp in knowledge_points:
-                    if kp not in knowledge_scores:
-                        knowledge_scores[kp] = []
-                    knowledge_scores[kp].append(score)
+            # 将分数分配到对应知识点
+            for kp in knowledge_points:
+                if kp not in knowledge_scores:
+                    knowledge_scores[kp] = []
+                knowledge_scores[kp].append(score)
 
         # 计算每个知识点的掌握度
         mastery = {}
@@ -523,20 +561,17 @@ class DeepScoreAnalyzer:
         return progress
 
     def _calculate_basic_stats(self, student_id: int) -> Dict:
-        """计算基础统计信息"""
+        """计算基础统计信息（使用合并后的成绩）"""
         if self.students_df is None:
             return {}
 
-        student_data = self.students_df[self.students_df['学号'] == student_id]
-        if student_data.empty:
+        # 使用合并后的成绩
+        merged_scores = self._get_student_merged_scores(student_id)
+
+        if not merged_scores:
             return {}
 
-        all_scores = []
-        for col in student_data.columns:
-            if col not in ['学号', '姓名', '_semester']:
-                value = student_data[col].values[0]
-                if pd.notna(value):
-                    all_scores.append(value)
+        all_scores = [score for _, (_, score) in merged_scores.items()]
 
         if not all_scores:
             return {}

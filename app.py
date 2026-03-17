@@ -478,217 +478,13 @@ with st.sidebar.expander("📄 PDF 报告导出"):
             log_error(e, "PDF 导出失败")
 
 
-def get_entered_scores(student_id: int, semesters: list) -> List[Dict]:
-    """获取录入的成绩数据"""
-    all_scores = []
-    for sem in semesters:
-        scores = ExamScoreDAO.get_scores_by_student(student_id, sem)
-        for s in scores:
-            all_scores.append({
-                'semester': s['semester'],
-                'exam_name': s['exam_name'],
-                'score': s['score'],
-                'exam_date': s['exam_date'],
-                'is_entered': True  # 标记为录入的成绩
-            })
-    return all_scores
-
-
-def get_merged_score_rank(student_id: int, semesters: list) -> Dict:
-    """获取包含录入成绩的排名"""
-    # 1. 从 Excel 获取基础排名
-    rank_info = analyzer.get_score_rank(student_id)
-    if not rank_info:
-        return {}
-
-    # 2. 获取录入的成绩
-    entered_scores = get_entered_scores(student_id, semesters)
-
-    # 3. 计算包含录入成绩的平均分
-    student_scores = []
-    for col in analyzer.students_df.columns:
-        if col not in ['学号', '姓名']:
-            value = analyzer.students_df[analyzer.students_df['学号'] == student_id][col].values[0]
-            if pd.notna(value):
-                try:
-                    student_scores.append(float(value))
-                except (ValueError, TypeError):
-                    pass
-
-    # 添加录入的成绩
-    for es in entered_scores:
-        student_scores.append(es['score'])
-
-    if not student_scores:
-        return rank_info
-
-    student_avg = sum(student_scores) / len(student_scores)
-
-    # 4. 计算所有学生的平均分（包含录入的成绩）
-    all_avgs = []
-    for sid in analyzer.student_names.keys():
-        scores = []
-        sid_data = analyzer.students_df[analyzer.students_df['学号'] == sid]
-        if not sid_data.empty:
-            for col in analyzer.students_df.columns:
-                if col not in ['学号', '姓名']:
-                    value = sid_data[col].values[0]
-                    if pd.notna(value):
-                        try:
-                            scores.append(float(value))
-                        except (ValueError, TypeError):
-                            pass
-
-        # 添加录入的成绩
-        sid_entered = get_entered_scores(sid, semesters)
-        for es in sid_entered:
-            scores.append(es['score'])
-
-        if scores:
-            avg = sum(scores) / len(scores)
-            all_avgs.append({'学号': sid, '姓名': analyzer.student_names.get(sid, 'Unknown'), '平均分': avg})
-
-    # 按平均分降序排名
-    all_avgs.sort(key=lambda x: x['平均分'], reverse=True)
-
-    rank = 1
-    for i, s in enumerate(all_avgs):
-        if s['学号'] == student_id:
-            rank = i + 1
-            break
-
-    return {
-        'rank': rank,
-        'total': len(all_avgs),
-        'student_avg': round(student_avg, 2),
-        'top_10_percent': rank <= len(all_avgs) * 0.1,
-        'top_3': rank <= 3,
-    }
-
-
-def filter_scores_by_semester(student_id: int, semesters: list) -> dict:
-    """按学期筛选成绩数据（包含 Excel 和录入的成绩）"""
-    if analyzer.students_df is None:
-        return {}
-
-    student_data = analyzer.students_df[analyzer.students_df['学号'] == student_id]
-
-    filtered_scores = {}
-
-    # 1. 从 Excel 数据获取成绩
-    if not student_data.empty:
-        for col in student_data.columns:
-            if col in ['学号', '姓名']:
-                continue
-
-            # 检查该列是否属于选中的学期
-            for sem in semesters:
-                if col.startswith(sem):
-                    value = student_data[col].values[0]
-                    if pd.notna(value):
-                        filtered_scores[col] = value
-                    break
-
-    # 2. 合并录入的成绩
-    entered_scores = get_entered_scores(student_id, semesters)
-    for es in entered_scores:
-        key = f"{es['semester']}_{es['exam_name']}"
-        if key not in filtered_scores:  # 录入的成绩不覆盖 Excel 中的成绩
-            filtered_scores[key] = es['score']
-
-    return filtered_scores
-
-
-def calculate_filtered_stats(filtered_scores: dict) -> dict:
-    """计算筛选后的统计数据"""
-    if not filtered_scores:
-        return {}
-
-    scores = list(filtered_scores.values())
-    scores_array = pd.Series(scores)
-
-    return {
-        '平均分': round(scores_array.mean(), 2),
-        '最高分': round(scores_array.max(), 2),
-        '最低分': round(scores_array.min(), 2),
-        '标准差': round(scores_array.std(), 2),
-        '考试次数': len(scores),
-        '优秀率': round((scores_array >= 90).sum() / len(scores) * 100, 1),
-        '及格率': round((scores_array >= 60).sum() / len(scores) * 100, 1),
-    }
-
-
-def get_filtered_trend(student_id: int, semesters: list) -> pd.DataFrame:
-    """获取筛选后的成绩趋势（包含 Excel 和录入的成绩）"""
-    if analyzer.students_df is None:
-        return pd.DataFrame()
-
-    student_data = analyzer.students_df[analyzer.students_df['学号'] == student_id]
-
-    trends = []
-
-    # 1. 从 Excel 数据获取成绩
-    if not student_data.empty:
-        for semester in semesters:
-            semester_cols = [col for col in student_data.columns if col.startswith(semester)]
-
-            for col in semester_cols:
-                value = student_data[col].values[0]
-                if pd.notna(value):
-                    exam_name = col.replace(f"{semester}_", "")
-                    trends.append({
-                        '学期': semester,
-                        '考试': exam_name,
-                        '分数': value,
-                        'source': 'excel'
-                    })
-
-    # 2. 合并录入的成绩
-    entered_scores = get_entered_scores(student_id, semesters)
-    for es in entered_scores:
-        # 检查是否已存在（避免重复）
-        key = (es['semester'], es['exam_name'])
-        existing_keys = [(t['学期'], t['考试']) for t in trends]
-        if key not in existing_keys:
-            trends.append({
-                '学期': es['semester'],
-                '考试': es['exam_name'],
-                '分数': es['score'],
-                'source': 'entered'
-            })
-
-    # 按学期和考试排序
-    if trends:
-        trends.sort(key=lambda x: (x['学期'], x['考试']))
-
-    return pd.DataFrame(trends)
-
-
-def get_filtered_score_distribution(student_id: int, semesters: list) -> dict:
-    """获取筛选后的分数分布"""
-    filtered_scores = filter_scores_by_semester(student_id, semesters)
-    if not filtered_scores:
-        return {}
-
-    scores = list(filtered_scores.values())
-
-    return {
-        '90-100': len([s for s in scores if s >= 90]),
-        '80-89': len([s for s in scores if 80 <= s < 90]),
-        '70-79': len([s for s in scores if 70 <= s < 80]),
-        '60-69': len([s for s in scores if 60 <= s < 70]),
-        '60 以下': len([s for s in scores if s < 60])
-    }
-
-
 # ==================== 模式 1: 成绩趋势分析 ====================
 if analysis_mode == "📈 成绩趋势分析":
     st.header("📈 成绩趋势分析")
     st.markdown(f"当前分析学期：**{', '.join(selected_semesters)}**")
 
-    # 统计卡片
-    filtered_scores = filter_scores_by_semester(selected_student_id, selected_semesters)
-    stats = calculate_filtered_stats(filtered_scores)
+    # 统计卡片 - 使用 analyzer 的合并成绩方法
+    stats = analyzer.calculate_statistics(selected_student_id, selected_semesters[0] if len(selected_semesters) == 1 else None)
 
     if stats:
         col1, col2, col3, col4 = st.columns(4)
@@ -704,8 +500,8 @@ if analysis_mode == "📈 成绩趋势分析":
 
     st.markdown("---")
 
-    # 成绩趋势图
-    trend_df = get_filtered_trend(selected_student_id, selected_semesters)
+    # 成绩趋势图 - 使用 analyzer 的方法
+    trend_df = analyzer.get_score_trend(selected_student_id, selected_semesters[0] if len(selected_semesters) == 1 else None)
     if not trend_df.empty:
         semesters = trend_df['学期'].unique()
 
@@ -777,9 +573,9 @@ if analysis_mode == "📈 成绩趋势分析":
 
     st.markdown("---")
 
-    # 分数分布
+    # 分数分布 - 使用 analyzer 的方法
     st.header("📊 分数分布")
-    score_dist = get_filtered_score_distribution(selected_student_id, selected_semesters)
+    score_dist = analyzer.get_score_distribution(selected_student_id)
     if score_dist:
         col1, col2 = st.columns(2)
 
@@ -1094,8 +890,8 @@ elif analysis_mode == "⚠️ 成绩预警":
 
     # 排名信息
     st.subheader("🏆 班级排名")
-    # 合并录入的成绩后计算排名
-    rank_info = get_merged_score_rank(selected_student_id, selected_semesters)
+    # 使用 analyzer 的方法计算排名（已包含录入的成绩）
+    rank_info = analyzer.get_score_rank(selected_student_id, selected_semesters[0] if len(selected_semesters) == 1 else None)
     if rank_info:
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -1123,63 +919,8 @@ elif analysis_mode == "📊 班级分析":
     )
 
     if selected_semester:
-        # 获取合并后的班级分析数据（包含 Excel 和录入的成绩）
-        def get_merged_class_analysis(semester: str) -> Dict:
-            """获取合并后的班级分析"""
-            # 1. 从 Excel 获取基础数据
-            base_stats = analyzer.get_class_analysis(semester)
-
-            # 2. 获取录入的成绩
-            entered_scores = ExamScoreDAO.get_scores_by_semester(semester, "%")
-            if not entered_scores:
-                return base_stats
-
-            # 按学生和考试分组
-            student_entered_scores = {}
-            for es in entered_scores:
-                sid = es['student_id']
-                if sid not in student_entered_scores:
-                    student_entered_scores[sid] = []
-                if es['score'] is not None:
-                    student_entered_scores[sid].append(es['score'])
-
-            # 3. 合并到 base_stats
-            # 计算录入成绩的统计
-            for sid, scores in student_entered_scores.items():
-                if scores:
-                    entered_avg = sum(scores) / len(scores)
-                    base_stats['scores'].append(entered_avg)
-
-                    if entered_avg >= 90:
-                        base_stats['students_above_90'] += 1
-                    if entered_avg < 60:
-                        base_stats['students_below_60'] += 1
-
-                    # 分数段统计
-                    if entered_avg >= 90:
-                        base_stats['distribution']['90-100'] += 1
-                    elif entered_avg >= 80:
-                        base_stats['distribution']['80-89'] += 1
-                    elif entered_avg >= 70:
-                        base_stats['distribution']['70-79'] += 1
-                    elif entered_avg >= 60:
-                        base_stats['distribution']['60-69'] += 1
-                    else:
-                        base_stats['distribution']['60 以下'] += 1
-
-            # 重新计算统计
-            all_avgs = base_stats['scores']
-            if all_avgs:
-                base_stats['class_avg'] = round(sum(all_avgs) / len(all_avgs), 2)
-                base_stats['highest_avg'] = round(max(all_avgs), 2)
-                base_stats['lowest_avg'] = round(min(all_avgs), 2)
-                base_stats['total_students'] = len(all_avgs)
-                base_stats['pass_rate'] = round((1 - sum(1 for a in all_avgs if a < 60) / len(all_avgs)) * 100, 1)
-                base_stats['excellent_rate'] = round(sum(1 for a in all_avgs if a >= 90) / len(all_avgs) * 100, 1)
-
-            return base_stats
-
-        class_stats = get_merged_class_analysis(selected_semester)
+        # 获取班级分析数据（已包含 Excel 和录入的成绩）
+        class_stats = analyzer.get_class_analysis(selected_semester)
 
         if class_stats:
             # 统计卡片
@@ -1322,9 +1063,9 @@ elif analysis_mode == "🔬 宏观分析":
         if 'error' in compare_data:
             st.error(compare_data['error'])
         else:
-            # 使用合并后的排名更新对比数据
-            rank1 = get_merged_score_rank(selected_student_id, selected_semesters)
-            rank2 = get_merged_score_rank(selected_student_id_2, selected_semesters)
+            # 使用 analyzer 的方法获取排名（已包含录入的成绩）
+            rank1 = analyzer.get_score_rank(selected_student_id, selected_semesters[0] if len(selected_semesters) == 1 else None)
+            rank2 = analyzer.get_score_rank(selected_student_id_2, selected_semesters[0] if len(selected_semesters) == 1 else None)
 
             # 更新排名信息
             if rank1:

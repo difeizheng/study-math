@@ -9,6 +9,8 @@ from typing import Dict, List, Optional, Tuple
 from datetime import datetime
 import re
 
+from database import ExamScoreDAO
+
 
 class ScoreAnalyzer:
     """成绩分析器"""
@@ -18,6 +20,22 @@ class ScoreAnalyzer:
         self.students_df: Optional[pd.DataFrame] = None
         self.semester_data: Dict[str, pd.DataFrame] = {}
         self.student_names: Dict[int, str] = {}
+        self.entered_scores_cache: Dict[int, List[Dict]] = {}  # 录入成绩缓存 {学号：[成绩]}
+
+    def refresh_entered_scores(self):
+        """刷新录入成绩缓存"""
+        self.entered_scores_cache = {}
+        all_scores = ExamScoreDAO.get_all_scores()
+        for s in all_scores:
+            sid = s['student_id']
+            if sid not in self.entered_scores_cache:
+                self.entered_scores_cache[sid] = []
+            self.entered_scores_cache[sid].append({
+                'semester': s['semester'],
+                'exam_name': s['exam_name'],
+                'score': s['score'],
+                'exam_date': s['exam_date']
+            })
 
     def load_all_data(self) -> pd.DataFrame:
         """加载所有学期的数据并合并"""
@@ -47,6 +65,9 @@ class ScoreAnalyzer:
             # 按学号和姓名分组，将每组的数据合并到一行
             # 使用 first() 保留每个分组的第一行（非空值会覆盖空值）
             self.students_df = combined_df.groupby(['学号', '姓名'], as_index=False).first()
+
+        # 刷新录入成绩缓存
+        self.refresh_entered_scores()
 
         return self.students_df
 
@@ -80,67 +101,78 @@ class ScoreAnalyzer:
         """获取所有学生列表"""
         return sorted(self.student_names.items(), key=lambda x: x[0])
 
+    def get_merged_scores(self, student_id: int, semester: str = None) -> Dict[str, float]:
+        """获取合并后的成绩（Excel + 录入）"""
+        scores = {}
+
+        # 1. 从 Excel 获取成绩
+        if self.students_df is not None:
+            student_data = self.students_df[self.students_df['学号'] == student_id]
+            if not student_data.empty:
+                for col in self.students_df.columns:
+                    if col not in ['学号', '姓名']:
+                        value = student_data[col].values[0]
+                        if pd.notna(value):
+                            scores[col] = float(value)
+
+        # 2. 合并录入的成绩
+        if student_id in self.entered_scores_cache:
+            for es in self.entered_scores_cache[student_id]:
+                if semester and es['semester'] != semester:
+                    continue
+                key = f"{es['semester']}_{es['exam_name']}"
+                if key not in scores and es['score'] is not None:
+                    scores[key] = float(es['score'])
+
+        return scores
+
     def get_student_scores(self, student_id: int) -> pd.DataFrame:
-        """获取指定学生的所有成绩"""
+        """获取指定学生的所有成绩（使用合并后的成绩）"""
         if self.students_df is None:
             return pd.DataFrame()
 
-        student_data = self.students_df[self.students_df['学号'] == student_id]
-        if student_data.empty:
-            return pd.DataFrame()
+        # 使用合并后的成绩
+        scores = self.get_merged_scores(student_id)
 
-        # 提取该学生的所有成绩
-        scores = {}
-        for col in self.students_df.columns:
-            if col not in ['学号', '姓名']:
-                value = student_data[col].values[0] if len(student_data) > 0 else None
-                scores[col] = value
+        if not scores:
+            return pd.DataFrame()
 
         return pd.DataFrame([scores])
 
-    def get_score_trend(self, student_id: int) -> pd.DataFrame:
-        """获取学生成绩趋势（按学期）"""
-        if self.students_df is None:
-            return pd.DataFrame()
-
-        student_data = self.students_df[self.students_df['学号'] == student_id]
-        if student_data.empty:
-            return pd.DataFrame()
+    def get_score_trend(self, student_id: int, semester: str = None) -> pd.DataFrame:
+        """获取学生成绩趋势（包含录入的成绩）"""
+        # 获取合并后的成绩
+        scores = self.get_merged_scores(student_id, semester)
 
         trends = []
-        for semester in self.semester_data.keys():
-            semester_cols = [col for col in student_data.columns if col.startswith(semester)]
-
-            for col in semester_cols:
-                value = student_data[col].values[0]
-                if pd.notna(value):
-                    # 提取考试名称
-                    exam_name = col.replace(f"{semester}_", "")
+        for col, value in scores.items():
+            if pd.notna(value):
+                # 提取学期和考试名称
+                parts = col.split('_', 1)
+                if len(parts) == 2:
+                    sem, exam = parts[0], parts[1]
                     trends.append({
-                        '学期': semester,
-                        '考试': exam_name,
+                        '学期': sem,
+                        '考试': exam,
                         '分数': value
                     })
 
         return pd.DataFrame(trends)
 
-    def calculate_statistics(self, student_id: int) -> Dict:
-        """计算学生统计信息"""
-        scores_df = self.get_student_scores(student_id)
-        if scores_df.empty:
-            return {}
+    def calculate_statistics(self, student_id: int, semester: str = None) -> Dict:
+        """计算学生统计信息（包含录入的成绩）"""
+        # 获取合并后的成绩
+        scores = self.get_merged_scores(student_id, semester)
 
         # 获取所有分数
         all_scores = []
-        for col in scores_df.columns:
-            if col not in ['学号', '姓名']:
-                value = scores_df[col].values[0]
-                # 检查是否为有效数字
-                if pd.notna(value) and value != ' ':
-                    try:
-                        all_scores.append(float(value))
-                    except (ValueError, TypeError):
-                        pass
+        for col, value in scores.items():
+            # 检查是否为有效数字
+            if pd.notna(value) and value != ' ':
+                try:
+                    all_scores.append(float(value))
+                except (ValueError, TypeError):
+                    pass
 
         if not all_scores:
             return {}
@@ -196,7 +228,8 @@ class ScoreAnalyzer:
         return summary
 
     def analyze_weak_areas(self, student_id: int) -> List[Dict]:
-        """分析学生薄弱环节"""
+        """分析学生薄弱环节（使用合并后的成绩）"""
+        # 使用合并后的成绩获取趋势
         trend_df = self.get_score_trend(student_id)
         if trend_df.empty:
             return []
@@ -219,17 +252,14 @@ class ScoreAnalyzer:
         return sorted(weak_areas, key=lambda x: x['平均分'])
 
     def get_score_distribution(self, student_id: int) -> Dict:
-        """获取分数分布"""
-        scores_df = self.get_student_scores(student_id)
-        if scores_df.empty:
+        """获取分数分布（使用合并后的成绩）"""
+        # 使用合并后的成绩
+        scores = self.get_merged_scores(student_id)
+
+        if not scores:
             return {}
 
-        all_scores = []
-        for col in scores_df.columns:
-            if col not in ['学号', '姓名']:
-                value = scores_df[col].values[0]
-                if pd.notna(value):
-                    all_scores.append(value)
+        all_scores = [v for k, v in scores.items() if pd.notna(v)]
 
         if not all_scores:
             return {}
@@ -243,26 +273,17 @@ class ScoreAnalyzer:
         }
 
     def get_score_alerts(self, student_id: int) -> List[Dict]:
-        """获取成绩预警信息"""
+        """获取成绩预警信息（使用合并后的成绩）"""
         alerts = []
 
-        if self.students_df is None:
+        # 使用合并后的成绩
+        scores_dict = self.get_merged_scores(student_id)
+
+        if not scores_dict:
             return alerts
 
-        student_data = self.students_df[self.students_df['学号'] == student_id]
-        if student_data.empty:
-            return alerts
-
-        # 获取所有有效成绩
-        scores = []
-        for col in self.students_df.columns:
-            if col not in ['学号', '姓名']:
-                value = student_data[col].values[0]
-                if pd.notna(value):
-                    try:
-                        scores.append(float(value))
-                    except (ValueError, TypeError):
-                        pass
+        # 获取所有有效分数
+        scores = [v for k, v in scores_dict.items() if pd.notna(v)]
 
         if len(scores) < 3:
             return alerts  # 数据不足，无法预警
@@ -321,44 +342,32 @@ class ScoreAnalyzer:
         return alerts
 
     def get_class_analysis(self, semester: str = None) -> Dict:
-        """获取班级整体分析"""
+        """获取班级整体分析（使用合并后的成绩）"""
         if self.students_df is None:
             return {}
 
-        # 如果指定了学期，只分析该学期数据
-        if semester and semester in self.semester_data:
-            df = self.semester_data[semester]
-        else:
-            df = self.students_df
-
-        # 获取所有成绩列
-        score_cols = [col for col in df.columns if col not in ['学号', '姓名']]
-
-        if not score_cols:
+        # 获取所有学生
+        all_students = self.get_student_list()
+        if not all_students:
             return {}
 
         # 计算班级整体统计
         class_stats = {
-            'total_students': len(df),
+            'total_students': len(all_students),
             'scores': [],
             'distribution': {'90-100': 0, '80-89': 0, '70-79': 0, '60-69': 0, '60 以下': 0},
             'students_above_90': 0,
             'students_below_60': 0,
         }
 
-        # 每个学生计算平均分
+        # 每个学生计算平均分（使用合并后的成绩）
         student_avgs = []
-        for _, row in df.iterrows():
-            scores = []
-            for col in score_cols:
-                val = row[col]
-                if pd.notna(val):
-                    try:
-                        scores.append(float(val))
-                    except (ValueError, TypeError):
-                        pass
-            if scores:
-                avg = sum(scores) / len(scores)
+        for student_id, name in all_students:
+            scores = self.get_merged_scores(student_id, semester)
+            score_values = [v for k, v in scores.items() if pd.notna(v)]
+
+            if score_values:
+                avg = sum(score_values) / len(score_values)
                 student_avgs.append(avg)
                 class_stats['scores'].append(avg)
 
@@ -395,47 +404,27 @@ class ScoreAnalyzer:
         return class_stats
 
     def get_score_rank(self, student_id: int, semester: str = None) -> Dict:
-        """获取学生班级排名"""
+        """获取学生班级排名（使用合并后的成绩）"""
         if self.students_df is None:
             return {}
 
-        # 计算该学生平均分
-        student_data = self.students_df[self.students_df['学号'] == student_id]
-        if student_data.empty:
+        # 计算该学生平均分（使用合并后的成绩）
+        scores = self.get_merged_scores(student_id, semester)
+        student_score_values = [v for k, v in scores.items() if pd.notna(v)]
+
+        if not student_score_values:
             return {}
 
-        student_scores = []
-        for col in self.students_df.columns:
-            if col not in ['学号', '姓名']:
-                value = student_data[col].values[0]
-                if pd.notna(value):
-                    try:
-                        student_scores.append(float(value))
-                    except (ValueError, TypeError):
-                        pass
+        student_avg = sum(student_score_values) / len(student_score_values)
 
-        if not student_scores:
-            return {}
-
-        student_avg = sum(student_scores) / len(student_scores)
-
-        # 计算所有学生平均分并排名
+        # 计算所有学生平均分并排名（使用合并后的成绩）
         all_avgs = []
-        for sid in self.student_names.keys():
-            sid_data = self.students_df[self.students_df['学号'] == sid]
-            if not sid_data.empty:
-                scores = []
-                for col in self.students_df.columns:
-                    if col not in ['学号', '姓名']:
-                        value = sid_data[col].values[0]
-                        if pd.notna(value):
-                            try:
-                                scores.append(float(value))
-                            except (ValueError, TypeError):
-                                pass
-                if scores:
-                    avg = sum(scores) / len(scores)
-                    all_avgs.append({'学号': sid, '姓名': self.student_names.get(sid, 'Unknown'), '平均分': avg})
+        for sid, name in self.get_student_list():
+            sid_scores = self.get_merged_scores(sid, semester)
+            sid_score_values = [v for k, v in sid_scores.items() if pd.notna(v)]
+            if sid_score_values:
+                avg = sum(sid_score_values) / len(sid_score_values)
+                all_avgs.append({'学号': sid, '姓名': name, '平均分': avg})
 
         # 按平均分降序排名
         all_avgs.sort(key=lambda x: x['平均分'], reverse=True)
@@ -458,33 +447,33 @@ class ScoreAnalyzer:
         """
         学生学业发展综合分析 (SAI - Student Academic Development Index)
         从定量和定性两个维度进行宏观分析
+        使用合并后的成绩（Excel + 录入）
         """
         if self.students_df is None:
             return {}
 
-        student_data = self.students_df[self.students_df['学号'] == student_id]
-        if student_data.empty:
-            return {}
+        # 获取合并后的所有成绩
+        scores_dict = self.get_merged_scores(student_id)
+
+        if not scores_dict:
+            return {'error': '该学生没有成绩数据'}
 
         # 收集所有有效成绩
         scores = []
         score_with_semester = []  # (学期，考试，分数)
 
-        for semester_name, semester_df in self.semester_data.items():
-            student_sem = semester_df[semester_df['学号'] == student_id]
-            if student_sem.empty:
-                continue
-            for col in semester_df.columns:
-                if col not in ['学号', '姓名']:
-                    val = student_sem[col].values[0] if len(student_sem) > 0 else None
-                    if pd.notna(val):
-                        try:
-                            score = float(val)
-                            scores.append(score)
-                            exam_name = col.replace(f"{semester_name}_", "")
-                            score_with_semester.append((semester_name, exam_name, score))
-                        except (ValueError, TypeError):
-                            pass
+        for col, value in scores_dict.items():
+            if pd.notna(value):
+                try:
+                    score = float(value)
+                    scores.append(score)
+                    # 提取学期和考试名称
+                    parts = col.split('_', 1)
+                    if len(parts) == 2:
+                        sem, exam = parts[0], parts[1]
+                        score_with_semester.append((sem, exam, score))
+                except (ValueError, TypeError):
+                    pass
 
         if len(scores) < 3:
             return {'error': '数据不足，至少需要 3 次考试成绩'}
