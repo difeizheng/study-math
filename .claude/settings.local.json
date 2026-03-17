@@ -24,7 +24,19 @@
       "Bash(python:*)",
       "Bash(streamlit run:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git remote:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(git config:*)",
+      "Bash(gh repo:*)",
+      "Bash(git tag:*)",
+      "Bash(taskkill /F /IM streamlit.exe)",
+      "Bash(netstat -ano)",
+      "Bash(findstr :8501)",
+      "Bash(taskkill:*)",
+      "Bash(cmd //c \"taskkill /PID 40216 /F\" 2>&1)"
     ]
   }
 }
