@@ -3,6 +3,7 @@
 集成人教版小学数学知识点深度分析
 """
 from datetime import datetime
+from pathlib import Path
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -10,8 +11,9 @@ import plotly.graph_objects as go
 
 # 导入日志系统
 from logger import init_logging, log_error, log_info, get_logger
-from database import init_database, StudentDAO
+from database import init_database, StudentDAO, ErrorRecordDAO
 from excel_importer import ExcelDataImporter
+from pdf_exporter import PDFExporter
 
 # 初始化日志和数据库
 init_logging()
@@ -153,7 +155,107 @@ with st.sidebar.expander("📂 Excel 数据导入"):
             st.error(f"导入失败：{e}")
             log_error(e, "Excel 导入失败")
 
-st.sidebar.caption("系统版本：v3.1 (数据持久化增强版)")
+st.sidebar.caption("系统版本：v3.2 (PDF 导出增强版)")
+
+
+# PDF 报告导出
+with st.sidebar.expander("📄 PDF 报告导出"):
+    export_type = st.selectbox(
+        "选择报告类型",
+        ["错题分析报告", "能力成长报告", "综合总结报告"]
+    )
+
+    if st.button("生成 PDF 报告"):
+        try:
+            exporter = PDFExporter()
+            exports_dir = Path("exports")
+            exports_dir.mkdir(parents=True, exist_ok=True)
+
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+            if export_type == "错题分析报告":
+                # 获取错题记录
+                error_records = ErrorRecordDAO.get_errors_by_student(selected_student_id)
+                if error_records:
+                    # 转换为字典格式
+                    records_dict = []
+                    for record in error_records:
+                        records_dict.append({
+                            'exam_name': record.exam_name,
+                            'exam_date': record.exam_date,
+                            'knowledge_name': record.knowledge_name,
+                            'error_type': record.error_type,
+                            'score': record.score,
+                            'error_description': record.error_description
+                        })
+
+                    output_path = exports_dir / f"错题报告_{student_name}_{timestamp}.pdf"
+                    exporter.export_error_report(student_name, selected_student_id, records_dict, str(output_path))
+                    st.success(f"错题报告已生成：{output_path}")
+
+                    # 提供下载链接
+                    with open(output_path, "rb") as f:
+                        st.download_button(
+                            label="📥 下载错题报告",
+                            data=f.read(),
+                            file_name=f"错题报告_{student_name}_{timestamp}.pdf",
+                            mime="application/pdf"
+                        )
+                else:
+                    st.warning("暂无错题记录")
+
+            elif export_type == "能力成长报告":
+                # 获取知识点掌握情况
+                from deep_analyzer import DeepScoreAnalyzer
+                mastery = deep_analyzer.analyze_single_student(selected_student_id)
+
+                ability_report = ability_portfolio.analyze_all_abilities(mastery)
+                output_path = exports_dir / f"能力报告_{student_name}_{timestamp}.pdf"
+                exporter.export_ability_report(student_name, selected_student_id, ability_report, str(output_path))
+                st.success(f"能力报告已生成：{output_path}")
+
+                with open(output_path, "rb") as f:
+                    st.download_button(
+                        label="📥 下载能力报告",
+                        data=f.read(),
+                        file_name=f"能力报告_{student_name}_{timestamp}.pdf",
+                        mime="application/pdf"
+                    )
+
+            elif export_type == "综合总结报告":
+                # 综合报告
+                error_count = len(ErrorRecordDAO.get_errors_by_student(selected_student_id))
+
+                # 能力等级
+                from deep_analyzer import DeepScoreAnalyzer
+                mastery = deep_analyzer.analyze_single_student(selected_student_id)
+                ability_report = ability_portfolio.analyze_all_abilities(mastery)
+                ability_level = ability_report.get("overall_level", "中等")
+
+                # 学习习惯得分
+                habit_analysis = habit_analyzer.analyze_student_habits(selected_student_id)
+                habit_scores = habit_analysis.habit_scores if habit_analysis else {}
+                avg_habit_score = sum(habit_scores.values()) / len(habit_scores) if habit_scores else 0
+
+                output_path = exports_dir / f"综合报告_{student_name}_{timestamp}.pdf"
+                exporter.export_summary_report(
+                    student_name, selected_student_id,
+                    error_count, ability_level,
+                    avg_habit_score, str(output_path)
+                )
+                st.success(f"综合报告已生成：{output_path}")
+
+                with open(output_path, "rb") as f:
+                    st.download_button(
+                        label="📥 下载综合报告",
+                        data=f.read(),
+                        file_name=f"综合报告_{student_name}_{timestamp}.pdf",
+                        mime="application/pdf"
+                    )
+
+        except Exception as e:
+            st.error(f"生成 PDF 失败：{e}")
+            log_error(e, "PDF 导出失败")
 
 
 def filter_scores_by_semester(student_id: int, semesters: list) -> dict:
