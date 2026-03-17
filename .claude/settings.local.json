@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"D:\\\\project_room\\\\workspace2024\\\\mytest\\\\study-math\" && python -c \"import pandas as pd; df = pd.read_excel\\('data/10032-1\\(2\\)班上学期数学考试分数-math_scores.xlsx'\\); print\\('=== 10032-1\\(2\\)班上学期 ==='\\); print\\(df.head\\(20\\)\\); print\\('\\\\n列名:', df.columns.tolist\\(\\)\\); print\\('\\\\n数据类型:\\\\n', df.dtypes\\)\")",
+      "Bash(cd \"D:\\\\project_room\\\\workspace2024\\\\mytest\\\\study-math\" && python -c \"import pandas as pd; df = pd.read_excel\\('data/10033-1\\(2\\)班下学期数学考试分数-math_scores.xlsx'\\); print\\('=== 10033-1\\(2\\)班下学期 ==='\\); print\\(df.head\\(20\\)\\); print\\('\\\\n列名:', df.columns.tolist\\(\\)\\)\")",
+      "Bash(python -c \"\nimport pandas as pd\nimport os\n\ndata_dir = 'data'\nfor file in sorted\\(os.listdir\\(data_dir\\)\\):\n    if file.endswith\\('.xlsx'\\):\n        df = pd.read_excel\\(os.path.join\\(data_dir, file\\)\\)\n        print\\(f'\\\\n{file}:'\\)\n        print\\(f'  行数：{len\\(df\\)}, 列数：{len\\(df.columns\\)}'\\)\n        print\\(f'  列名：{df.columns.tolist\\(\\)}'\\)\n        break\n\")",
+      "Bash(python score_analyzer.py)",
+      "Bash(cd \"D:\\\\project_room\\\\workspace2024\\\\mytest\\\\study-math\" && streamlit run app.py)",
+      "Bash(cd \"D:\\\\project_room\\\\workspace2024\\\\mytest\\\\study-math\" && pip install -r requirements.txt)",
+      "Bash(cd \"D:\\\\project_room\\\\workspace2024\\\\mytest\\\\study-math\" && python -c \"\nimport pandas as pd\nimport os\n\ndata_dir = 'data'\nfor file in sorted\\(os.listdir\\(data_dir\\)\\):\n    if file.endswith\\('.xlsx'\\):\n        df = pd.read_excel\\(os.path.join\\(data_dir, file\\)\\)\n        print\\(f'\\\\n=== {file} ==='\\)\n        print\\(f'行数：{len\\(df\\)}, 列数：{len\\(df.columns\\)}'\\)\n        print\\('完整列名:'\\)\n        for i, col in enumerate\\(df.columns\\):\n            print\\(f'  {i+1}. {col}'\\)\n        break\n\")",
+      "Bash(python deep_analyzer.py 2>&1 | head -100)",
+      "Bash(python deep_analyzer.py 2>&1 | head -150)",
+      "Bash(taskkill /F /IM python.exe 2>nul || net stop streamlit 2>nul || echo \"尝试停止之前的进程\")",
+      "Bash(cd \"D:\\\\project_room\\\\workspace2024\\\\mytest\\\\study-math\" && streamlit run app.py --server.port 8502)",
+      "Bash(pkill -f \"streamlit\" 2>/dev/null || echo \"已尝试停止 streamlit 进程\")",
+      "Bash(cd \"D:\\\\project_room\\\\workspace2024\\\\mytest\\\\study-math\" && streamlit run app.py --server.port 8503)",
+      "Bash(cd \"D:\\\\project_room\\\\workspace2024\\\\mytest\\\\study-math\" && python -c \"\nfrom score_analyzer import ScoreAnalyzer\nanalyzer = ScoreAnalyzer\\('data'\\)\nanalyzer.load_all_data\\(\\)\nprint\\('学期列表:', list\\(analyzer.semester_data.keys\\(\\)\\)\\)\nprint\\('\\\\nstudents_df 列名:'\\)\nprint\\(analyzer.students_df.columns.tolist\\(\\)[:15]\\)\n\")",
+      "Bash(cd \"D:\\\\project_room\\\\workspace2024\\\\mytest\\\\study-math\" && python -c \"\nfrom score_analyzer import ScoreAnalyzer\nimport pandas as pd\n\nanalyzer = ScoreAnalyzer\\('data'\\)\nanalyzer.load_all_data\\(\\)\n\nprint\\('=== 加载的学期列表 ==='\\)\nfor sem in analyzer.semester_data.keys\\(\\):\n    df = analyzer.semester_data[sem]\n    print\\(f'{sem}: {len\\(df\\)} 行数据'\\)\n\nprint\\('\\\\n=== 合并后的 students_df ==='\\)\nprint\\(f'总行数：{len\\(analyzer.students_df\\)}'\\)\nprint\\(f'列数：{len\\(analyzer.students_df.columns\\)}'\\)\n\nprint\\('\\\\n=== 前 20 列列名 ==='\\)\ncols = analyzer.students_df.columns.tolist\\(\\)\nfor i, col in enumerate\\(cols[:20]\\):\n    print\\(f'{i+1}. {col}'\\)\n\nprint\\('\\\\n=== 学生姓名列表 ==='\\)\nfor sid, name in analyzer.get_student_list\\(\\)[:10]:\n    print\\(f'{sid}: {name}'\\)\nprint\\(f'... 共 {len\\(analyzer.student_names\\)} 个学生'\\)\n\")",
+      "WebSearch",
+      "WebFetch(domain:www.xkb365.com)",
+      "WebFetch(domain:m.sohu.com)",
+      "Bash(cd \"D:\\\\project_room\\\\workspace2024\\\\mytest\\\\study-math\" && python -c \"\nfrom score_analyzer import ScoreAnalyzer\nimport pandas as pd\n\nanalyzer = ScoreAnalyzer\\('data'\\)\nanalyzer.load_all_data\\(\\)\n\nprint\\('=== 所有考试列名 ==='\\)\nscore_cols = [col for col in analyzer.students_df.columns if col not in ['学号', '姓名']]\nfor col in score_cols:\n    print\\(col\\)\n\" | sort -u)",
+      "Bash(cd \"D:\\\\project_room\\\\workspace2024\\\\mytest\\\\study-math\" && python -c \"\nimport ast\nwith open\\('app.py', 'r', encoding='utf-8'\\) as f:\n    content = f.read\\(\\)\ntry:\n    ast.parse\\(content\\)\n    print\\('Syntax OK'\\)\nexcept SyntaxError as e:\n    print\\(f'Syntax Error: {e}'\\)\n    print\\(f'Line {e.lineno}: {e.text if e.text else \\\\\"\\\\\"}'\\)\")",
+      "Bash(python:*)",
+      "Bash(streamlit run:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}
