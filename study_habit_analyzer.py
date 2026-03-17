@@ -142,6 +142,22 @@ class StudyHabitAnalyzer:
 
         return imported
 
+    def _create_default_analysis(self, student_id: int) -> HabitAnalysis:
+        """创建默认分析结果（无数据时）"""
+        return HabitAnalysis(
+            student_id=student_id,
+            analysis_date=datetime.now().strftime("%Y-%m-%d"),
+            error_distribution={},
+            habit_scores={habit: 100.0 for habit in self.habit_dimensions.keys()},
+            main_issues=[],
+            suggestions=[
+                "暂无错题记录，建议先添加学生的考试错题数据",
+                "保持良好的学习习惯，继续努力",
+                "建立错题本，及时记录和分析错题"
+            ],
+            trends={habit: [] for habit in self.habit_dimensions.keys()}
+        )
+
     def analyze_student_habits(self, student_id: int) -> HabitAnalysis:
         """
         分析学生的学习习惯
