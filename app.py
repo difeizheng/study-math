@@ -2,6 +2,7 @@
 学生成绩分析系统 - Web 界面 (增强版)
 集成人教版小学数学知识点深度分析
 """
+from typing import List, Dict
 from datetime import datetime
 from pathlib import Path
 import streamlit as st
@@ -11,7 +12,7 @@ import plotly.graph_objects as go
 
 # 导入日志系统
 from logger import init_logging, log_error, log_info, get_logger
-from database import init_database, StudentDAO, ErrorRecordDAO
+from database import init_database, StudentDAO, ErrorRecordDAO, ExamScoreDAO
 from excel_importer import ExcelDataImporter
 from pdf_exporter import PDFExporter
 from score_entry import ScoreEntryService
@@ -143,7 +144,7 @@ else:
     selected_semesters = st.sidebar.multiselect(
         "选择要分析的学期",
         options=ALL_SEMESTERS,
-        default=st.session_state.selected_semesters_state if st.session_state.selected_semesters_state else ALL_SEMESTERS[:1],
+        default=st.session_state.selected_semesters_state if st.session_state.selected_semesters_state else ALL_SEMESTERS[-1:],  # 默认最后一个学期（最新的）
         key="semester_multiselect"
     )
     # 更新状态
@@ -154,7 +155,7 @@ else:
 st.sidebar.header("分析模式")
 analysis_mode = st.sidebar.radio(
     "选择分析类型",
-    ["📈 成绩趋势分析", "🧠 知识点深度分析", "📋 诊断报告", "👥 多学生对比", "⚠️ 成绩预警", "📊 班级分析", "🔬 宏观分析", "📕 错题追踪本", "🕸️ 知识点关联图谱", "🌟 能力成长档案", "📝 学习习惯分析", "🏫 班级学情看板", "📄 智能组卷", "📝 成绩录入"],
+    ["📈 成绩趋势分析", "🧠 知识点深度分析", "📋 诊断报告", "👥 多学生对比", "⚠️ 成绩预警", "📊 班级分析", "🔬 宏观分析", "📕 错题追踪本", "🕸️ 知识点关联图谱", "🌟 能力成长档案", "📝 学习习惯分析", "🏫 班级学情看板", "📄 智能组卷", "📝 成绩录入", "📊 录入成绩查询"],
     index=0
 )
 
@@ -275,6 +276,15 @@ with st.sidebar.expander("📝 录入考试成绩"):
 # 全班成绩录入
 with st.sidebar.expander("📋 全班成绩录入"):
     st.markdown("**按学号录入全班成绩**")
+
+    # 显示当前选中的学期（默认最后一个，即最新的学期）
+    if selected_semesters:
+        current_semester = selected_semesters[-1]  # 使用最后一个选中的学期（最新的）
+        st.info(f"当前学期：**{current_semester}**")
+    else:
+        current_semester = ALL_SEMESTERS[-1] if ALL_SEMESTERS else "3(2) 班下学期"  # 默认最后一个学期
+        st.info(f"当前学期：**{current_semester}**")
+
     class_exam_name = st.text_input(
         "考试名称",
         placeholder="例如：练习 1、单元测试（一）",
@@ -341,7 +351,8 @@ with st.sidebar.expander("📋 全班成绩录入"):
                     exam_date=class_exam_date.strftime("%Y-%m-%d"),
                     student_scores=student_scores,
                     wrong_questions_map={},
-                    auto_create_student=auto_create_student
+                    auto_create_student=auto_create_student,
+                    semester=current_semester
                 )
 
                 # 显示不存在的学号
@@ -467,27 +478,51 @@ with st.sidebar.expander("📄 PDF 报告导出"):
             log_error(e, "PDF 导出失败")
 
 
+def get_entered_scores(student_id: int, semesters: list) -> List[Dict]:
+    """获取录入的成绩数据"""
+    all_scores = []
+    for sem in semesters:
+        scores = ExamScoreDAO.get_scores_by_student(student_id, sem)
+        for s in scores:
+            all_scores.append({
+                'semester': s['semester'],
+                'exam_name': s['exam_name'],
+                'score': s['score'],
+                'exam_date': s['exam_date'],
+                'is_entered': True  # 标记为录入的成绩
+            })
+    return all_scores
+
+
 def filter_scores_by_semester(student_id: int, semesters: list) -> dict:
-    """按学期筛选成绩数据"""
+    """按学期筛选成绩数据（包含 Excel 和录入的成绩）"""
     if analyzer.students_df is None:
         return {}
 
     student_data = analyzer.students_df[analyzer.students_df['学号'] == student_id]
-    if student_data.empty:
-        return {}
 
     filtered_scores = {}
-    for col in student_data.columns:
-        if col in ['学号', '姓名']:
-            continue
 
-        # 检查该列是否属于选中的学期
-        for sem in semesters:
-            if col.startswith(sem):
-                value = student_data[col].values[0]
-                if pd.notna(value):
-                    filtered_scores[col] = value
-                break
+    # 1. 从 Excel 数据获取成绩
+    if not student_data.empty:
+        for col in student_data.columns:
+            if col in ['学号', '姓名']:
+                continue
+
+            # 检查该列是否属于选中的学期
+            for sem in semesters:
+                if col.startswith(sem):
+                    value = student_data[col].values[0]
+                    if pd.notna(value):
+                        filtered_scores[col] = value
+                    break
+
+    # 2. 合并录入的成绩
+    entered_scores = get_entered_scores(student_id, semesters)
+    for es in entered_scores:
+        key = f"{es['semester']}_{es['exam_name']}"
+        if key not in filtered_scores:  # 录入的成绩不覆盖 Excel 中的成绩
+            filtered_scores[key] = es['score']
 
     return filtered_scores
 
@@ -512,27 +547,47 @@ def calculate_filtered_stats(filtered_scores: dict) -> dict:
 
 
 def get_filtered_trend(student_id: int, semesters: list) -> pd.DataFrame:
-    """获取筛选后的成绩趋势"""
+    """获取筛选后的成绩趋势（包含 Excel 和录入的成绩）"""
     if analyzer.students_df is None:
         return pd.DataFrame()
 
     student_data = analyzer.students_df[analyzer.students_df['学号'] == student_id]
-    if student_data.empty:
-        return pd.DataFrame()
 
     trends = []
-    for semester in semesters:
-        semester_cols = [col for col in student_data.columns if col.startswith(semester)]
 
-        for col in semester_cols:
-            value = student_data[col].values[0]
-            if pd.notna(value):
-                exam_name = col.replace(f"{semester}_", "")
-                trends.append({
-                    '学期': semester,
-                    '考试': exam_name,
-                    '分数': value
-                })
+    # 1. 从 Excel 数据获取成绩
+    if not student_data.empty:
+        for semester in semesters:
+            semester_cols = [col for col in student_data.columns if col.startswith(semester)]
+
+            for col in semester_cols:
+                value = student_data[col].values[0]
+                if pd.notna(value):
+                    exam_name = col.replace(f"{semester}_", "")
+                    trends.append({
+                        '学期': semester,
+                        '考试': exam_name,
+                        '分数': value,
+                        'source': 'excel'
+                    })
+
+    # 2. 合并录入的成绩
+    entered_scores = get_entered_scores(student_id, semesters)
+    for es in entered_scores:
+        # 检查是否已存在（避免重复）
+        key = (es['semester'], es['exam_name'])
+        existing_keys = [(t['学期'], t['考试']) for t in trends]
+        if key not in existing_keys:
+            trends.append({
+                '学期': es['semester'],
+                '考试': es['exam_name'],
+                '分数': es['score'],
+                'source': 'entered'
+            })
+
+    # 按学期和考试排序
+    if trends:
+        trends.sort(key=lambda x: (x['学期'], x['考试']))
 
     return pd.DataFrame(trends)
 
@@ -1072,6 +1127,15 @@ elif analysis_mode == "📊 班级分析":
                     # 计算每个学生的平均分
                     student_avgs = []
                     for _, row in semester_df.iterrows():
+                        # 检查学号是否有效
+                        student_id = row.get('学号')
+                        if pd.isna(student_id):
+                            continue
+                        try:
+                            student_id = int(student_id)
+                        except (ValueError, TypeError):
+                            continue
+
                         scores = []
                         for col in semester_df.columns:
                             if col not in ['学号', '姓名']:
@@ -1083,7 +1147,7 @@ elif analysis_mode == "📊 班级分析":
                                         pass
                         if scores:
                             student_avgs.append({
-                                '学号': int(row['学号']),
+                                '学号': student_id,
                                 '姓名': row['姓名'],
                                 '平均分': round(sum(scores) / len(scores), 2),
                                 '最高分': max(scores),
@@ -2463,3 +2527,69 @@ with col2:
     st.caption(f"📅 可选学期：{len(ALL_SEMESTERS)}个")
 with col3:
     st.caption("🧠 覆盖四大知识领域深度分析")
+
+
+# ==================== 模式 14: 录入成绩查询 ====================
+if analysis_mode == "📊 录入成绩查询":
+    st.header("📊 录入成绩查询")
+    st.markdown("查看手动录入的成绩记录")
+
+    # 学期筛选
+    filter_semester = st.selectbox(
+        "选择学期",
+        options=["全部"] + ALL_SEMESTERS,
+        index=0
+    )
+
+    # 查询成绩
+    if filter_semester == "全部":
+        all_scores = ExamScoreDAO.get_all_scores()
+    else:
+        # 按学期和考试名称查询
+        exam_names = set()
+        all_scores = ExamScoreDAO.get_all_scores()
+        all_scores = [s for s in all_scores if s.get('semester') == filter_semester]
+
+    if all_scores:
+        # 按学期和考试名称分组显示
+        semesters = set(s['semester'] for s in all_scores)
+
+        for sem in sorted(semesters):
+            st.markdown(f"### {sem}")
+            sem_scores = [s for s in all_scores if s['semester'] == sem]
+
+            # 按考试名称分组
+            exam_groups = {}
+            for s in sem_scores:
+                exam_name = s['exam_name']
+                if exam_name not in exam_groups:
+                    exam_groups[exam_name] = []
+                exam_groups[exam_name].append(s)
+
+            for exam_name, scores in exam_groups.items():
+                with st.expander(f"📋 {exam_name} - {len(scores)}人", expanded=False):
+                    # 显示表格
+                    df = pd.DataFrame(scores)
+                    display_df = df[['student_name', 'student_id', 'score', 'exam_date']].copy()
+                    display_df.columns = ['姓名', '学号', '分数', '考试日期']
+                    display_df = display_df.sort_values('分数', ascending=False)
+                    st.dataframe(display_df, use_container_width=True, hide_index=True)
+    else:
+        st.info("暂无录入成绩")
+
+    # 显示最近录入统计
+    st.markdown("---")
+    st.subheader("📈 录入统计")
+
+    if all_scores:
+        # 按学生统计
+        student_count = len(set(s['student_id'] for s in all_scores))
+        exam_count = len(set((s['semester'], s['exam_name']) for s in all_scores))
+        avg_score = sum(s['score'] for s in all_scores if s['score']) / len(all_scores)
+
+        col1, col2, col3 = st.columns(3)
+        col1.metric("录入学生数", str(student_count))
+        col2.metric("录入考试数", str(exam_count))
+        col3.metric("平均分", f"{avg_score:.1f}")
+    else:
+        st.write("暂无统计数据")

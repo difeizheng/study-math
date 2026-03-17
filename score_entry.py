@@ -5,7 +5,7 @@
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 from dataclasses import dataclass
-from database import StudentDAO, ErrorRecordDAO
+from database import StudentDAO, ErrorRecordDAO, ExamScoreDAO
 from logger import get_logger
 
 logger = get_logger("score_entry")
@@ -191,7 +191,8 @@ class ScoreEntryService:
     def entry_class_scores(self, exam_name: str, exam_date: str,
                            student_scores: Dict[int, float],
                            wrong_questions_map: Dict[int, List[Dict]],
-                           auto_create_student: bool = False) -> Dict:
+                           auto_create_student: bool = False,
+                           semester: str = None) -> Dict:
         """
         按学号批量录入全班成绩
 
@@ -201,6 +202,7 @@ class ScoreEntryService:
             student_scores: 学号 - 成绩字典 {学号：分数}
             wrong_questions_map: 学号 - 错题列表字典 {学号：[{...}]}, 可选
             auto_create_student: 是否自动创建不存在的学号
+            semester: 学期名称
 
         Returns:
             批量录入结果
@@ -260,6 +262,10 @@ class ScoreEntryService:
                 score=score,
                 wrong_questions=wrong_qs
             )
+
+            # 同时存储到考试成绩表
+            if semester:
+                ExamScoreDAO.add_score(student_id, semester, exam_name, exam_date, score)
 
             if entry_result["success"]:
                 result["success_count"] += 1

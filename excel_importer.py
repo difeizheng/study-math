@@ -47,8 +47,17 @@ class ExcelDataImporter:
         """
         students = []
 
-        # 假设 Excel 包含 '学号' 和 '姓名' 列
-        if '学号' not in df.columns or '姓名' not in df.columns:
+        # 支持多种列名："学号"、"序号"、"学生 ID"等
+        student_id_col = None
+        name_col = None
+
+        for col in df.columns:
+            if '学号' in col or '序号' in col or '学生 ID' in col:
+                student_id_col = col
+            if '姓名' in col or '名字' in col:
+                name_col = col
+
+        if not student_id_col or not name_col:
             return students
 
         # 提取年级信息
@@ -59,8 +68,8 @@ class ExcelDataImporter:
 
         for _, row in df.iterrows():
             try:
-                student_id = int(row['学号'])
-                name = str(row['姓名'])
+                student_id = int(row[student_id_col])
+                name = str(row[name_col])
 
                 # 检查是否已存在
                 existing = StudentDAO.get_student(student_id)
@@ -101,14 +110,24 @@ class ExcelDataImporter:
         students = self.extract_students_from_excel(df, semester)
         import_stats['students'] = len(students)
 
-        # 获取考试列（排除学号、姓名）
-        exam_columns = [col for col in df.columns if col not in ['学号', '姓名']]
+        # 获取考试列（排除学号/序号、姓名）
+        id_cols = ['学号', '序号', '学生 ID', '姓名', '名字']
+        exam_columns = [col for col in df.columns if col not in id_cols]
         import_stats['exams'] = len(exam_columns)
+
+        # 找到学号列名
+        student_id_col = None
+        for col in df.columns:
+            if '学号' in col or '序号' in col or '学生 ID' in col:
+                student_id_col = col
+                break
 
         # 遍历每个学生
         for _, row in df.iterrows():
             try:
-                student_id = int(row.get('学号'))
+                student_id = int(row.get(student_id_col)) if student_id_col else None
+                if student_id is None:
+                    continue
             except (ValueError, TypeError):
                 continue
 

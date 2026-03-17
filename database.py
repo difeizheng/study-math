@@ -114,6 +114,21 @@ def init_database():
         )
     """)
 
+    # 考试成绩表（用于存储手动录入的成绩）
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS exam_scores (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            student_id INTEGER NOT NULL,
+            semester TEXT NOT NULL,
+            exam_name TEXT NOT NULL,
+            exam_date TEXT NOT NULL,
+            score REAL,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (student_id) REFERENCES students(student_id)
+        )
+    """)
+
     # 创建索引
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_error_student ON error_records(student_id)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_error_knowledge ON error_records(knowledge_code)")
@@ -553,6 +568,100 @@ class AbilityRecordDAO:
             data["radar_data"] = json.loads(data["radar_data"])
             result.append(data)
         return result
+
+
+# ==================== 考试成绩数据访问对象 ====================
+
+class ExamScoreDAO:
+    """考试成绩数据访问对象"""
+
+    @staticmethod
+    def add_score(student_id: int, semester: str, exam_name: str,
+                  exam_date: str, score: float) -> int:
+        """添加考试成绩"""
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # 先检查是否已存在相同记录
+        cursor.execute("""
+            SELECT id FROM exam_scores
+            WHERE student_id = ? AND semester = ? AND exam_name = ? AND exam_date = ?
+        """, (student_id, semester, exam_name, exam_date))
+
+        existing = cursor.fetchone()
+
+        if existing:
+            # 更新已有记录
+            cursor.execute("""
+                UPDATE exam_scores SET score = ?, updated_at = CURRENT_TIMESTAMP
+                WHERE id = ?
+            """, (score, existing["id"]))
+            record_id = existing["id"]
+        else:
+            # 插入新记录
+            cursor.execute("""
+                INSERT INTO exam_scores (student_id, semester, exam_name, exam_date, score)
+                VALUES (?, ?, ?, ?, ?)
+            """, (student_id, semester, exam_name, exam_date, score))
+            record_id = cursor.lastrowid
+
+        conn.commit()
+        conn.close()
+        return record_id
+
+    @staticmethod
+    def get_scores_by_student(student_id: int, semester: str = None) -> List[Dict]:
+        """获取学生的考试成绩"""
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        if semester:
+            cursor.execute("""
+                SELECT * FROM exam_scores
+                WHERE student_id = ? AND semester = ?
+                ORDER BY exam_date DESC
+            """, (student_id, semester))
+        else:
+            cursor.execute("""
+                SELECT * FROM exam_scores
+                WHERE student_id = ?
+                ORDER BY semester, exam_date DESC
+            """, (student_id,))
+
+        rows = cursor.fetchall()
+        conn.close()
+        return [dict(row) for row in rows]
+
+    @staticmethod
+    def get_scores_by_semester(semester: str, exam_name: str) -> List[Dict]:
+        """获取某学期某考试的成绩列表"""
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT e.*, s.name as student_name
+            FROM exam_scores e
+            JOIN students s ON e.student_id = s.student_id
+            WHERE e.semester = ? AND e.exam_name = ?
+            ORDER BY e.score DESC
+        """, (semester, exam_name))
+        rows = cursor.fetchall()
+        conn.close()
+        return [dict(row) for row in rows]
+
+    @staticmethod
+    def get_all_scores() -> List[Dict]:
+        """获取所有成绩"""
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT e.*, s.name as student_name
+            FROM exam_scores e
+            JOIN students s ON e.student_id = s.student_id
+            ORDER BY e.semester, e.exam_name, e.score DESC
+        """)
+        rows = cursor.fetchall()
+        conn.close()
+        return [dict(row) for row in rows]
 
 
 # 初始化数据库
