@@ -14,6 +14,7 @@ from logger import init_logging, log_error, log_info, get_logger
 from database import init_database, StudentDAO, ErrorRecordDAO
 from excel_importer import ExcelDataImporter
 from pdf_exporter import PDFExporter
+from score_entry import ScoreEntryService
 
 # 初始化日志和数据库
 init_logging()
@@ -119,7 +120,7 @@ else:
 st.sidebar.header("分析模式")
 analysis_mode = st.sidebar.radio(
     "选择分析类型",
-    ["📈 成绩趋势分析", "🧠 知识点深度分析", "📋 诊断报告", "👥 多学生对比", "⚠️ 成绩预警", "📊 班级分析", "🔬 宏观分析", "📕 错题追踪本", "🕸️ 知识点关联图谱", "🌟 能力成长档案", "📝 学习习惯分析", "🏫 班级学情看板", "📄 智能组卷"],
+    ["📈 成绩趋势分析", "🧠 知识点深度分析", "📋 诊断报告", "👥 多学生对比", "⚠️ 成绩预警", "📊 班级分析", "🔬 宏观分析", "📕 错题追踪本", "🕸️ 知识点关联图谱", "🌟 能力成长档案", "📝 学习习惯分析", "🏫 班级学情看板", "📄 智能组卷", "📝 成绩录入"],
     index=0
 )
 
@@ -155,7 +156,86 @@ with st.sidebar.expander("📂 Excel 数据导入"):
             st.error(f"导入失败：{e}")
             log_error(e, "Excel 导入失败")
 
-st.sidebar.caption("系统版本：v3.2 (PDF 导出增强版)")
+st.sidebar.caption("系统版本：v3.6 (成绩录入增强版)")
+
+
+# 成绩录入
+with st.sidebar.expander("📝 录入考试成绩"):
+    entry_exam_name = st.selectbox(
+        "考试名称",
+        ["练习 1", "练习 2", "练习 3", "练习 4",
+         "练习 5", "练习 6", "练习 7", "练习 8",
+         "单元测试（一）", "单元测试（二）", "单元测试（三）",
+         "期中考试", "期末考试",
+         "周测（1）", "周测（2）", "周测（3）"]
+    )
+    entry_exam_date = st.date_input(
+        "考试日期",
+        value=datetime.now(),
+        min_value=datetime.now().replace(day=datetime.now().day - 7)
+    )
+    entry_score = st.number_input(
+        "考试成绩",
+        min_value=0.0,
+        max_value=100.0,
+        step=0.5
+    )
+
+    if st.button("录入成绩", type="primary"):
+        st.session_state.show_entry_form = True
+
+    if st.session_state.get('show_entry_form', False):
+        st.markdown("**添加错题**")
+        wrong_knowledge = st.selectbox(
+            "知识点",
+            ["1-5 的认识和加减法", "6-10 的认识和加减法", "20 以内进位加法", "20 以内退位减法",
+             "认识图形", "认识钟表", "人民币", "表内乘法", "表内除法", "混合运算"],
+            key="entry_kp"
+        )
+        wrong_error_type = st.selectbox(
+            "错误类型",
+            ["计算粗心", "概念不清", "知识性错误", "审题不清", "公式记错", "理解偏差", "步骤不全", "其他"],
+            key="entry_error_type"
+        )
+        wrong_desc = st.text_input("错题描述", key="entry_wrong_desc")
+
+        if st.button("添加错题"):
+            # 初始化错题列表
+            if 'wrong_questions' not in st.session_state:
+                st.session_state.wrong_questions = []
+
+            st.session_state.wrong_questions.append({
+                "knowledge_name": wrong_knowledge,
+                "error_type": wrong_error_type,
+                "description": wrong_desc
+            })
+            st.success(f"已添加错题：{wrong_knowledge} - {wrong_error_type}")
+
+        if st.session_state.wrong_questions:
+            st.markdown("**已添加错题**:")
+            for i, wq in enumerate(st.session_state.wrong_questions, 1):
+                st.write(f"{i}. {wq['knowledge_name']} - {wq['error_type']}")
+
+            if st.button("确认提交成绩和错题"):
+                service = ScoreEntryService()
+                result = service.entry_score(
+                    student_id=selected_student_id,
+                    exam_name=entry_exam_name,
+                    exam_date=entry_exam_date.strftime("%Y-%m-%d"),
+                    score=entry_score,
+                    wrong_questions=st.session_state.wrong_questions
+                )
+
+                if result["success"]:
+                    st.success(result["message"])
+                    st.session_state.wrong_questions = []
+                    st.session_state.show_entry_form = False
+                else:
+                    st.error(result["message"])
+
+        if st.button("取消"):
+            st.session_state.show_entry_form = False
+            st.session_state.wrong_questions = []
 
 
 # PDF 报告导出
