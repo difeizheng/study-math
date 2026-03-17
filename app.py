@@ -156,7 +156,7 @@ with st.sidebar.expander("📂 Excel 数据导入"):
             st.error(f"导入失败：{e}")
             log_error(e, "Excel 导入失败")
 
-st.sidebar.caption("系统版本：v3.6 (成绩录入增强版)")
+st.sidebar.caption("系统版本：v3.7 (全班成绩录入版)")
 
 
 # 成绩录入
@@ -236,6 +236,82 @@ with st.sidebar.expander("📝 录入考试成绩"):
         if st.button("取消"):
             st.session_state.show_entry_form = False
             st.session_state.wrong_questions = []
+
+
+# 全班成绩录入
+with st.sidebar.expander("📋 全班成绩录入"):
+    st.markdown("**按学号录入全班成绩**")
+    class_exam_name = st.selectbox(
+        "考试名称",
+        ["练习 1", "练习 2", "练习 3", "练习 4",
+         "练习 5", "练习 6", "练习 7", "练习 8",
+         "单元测试（一）", "单元测试（二）", "单元测试（三）",
+         "期中考试", "期末考试",
+         "周测（1）", "周测（2）", "周测（3）"],
+        key="class_exam_name"
+    )
+    class_exam_date = st.date_input(
+        "考试日期",
+        value=datetime.now(),
+        min_value=datetime.now().replace(day=datetime.now().day - 7),
+        key="class_exam_date"
+    )
+
+    st.markdown("**学号 - 成绩输入**")
+    st.caption("格式：学号，分数（每行一个学生）")
+    class_scores_text = st.text_area(
+        "成绩列表",
+        height=150,
+        placeholder="1001,95\n1002,88\n1003,92...",
+        key="class_scores_text"
+    )
+
+    if st.button("录入全班成绩", type="primary", key="class_entry_btn"):
+        if not class_scores_text.strip():
+            st.error("请输入成绩数据")
+        else:
+            # 解析成绩数据
+            student_scores = {}
+            parse_errors = []
+            for line in class_scores_text.strip().split('\n'):
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    parts = line.split(',')
+                    if len(parts) >= 2:
+                        student_id = int(parts[0].strip())
+                        score = float(parts[1].strip())
+                        student_scores[student_id] = score
+                    else:
+                        parse_errors.append(f"格式错误：{line}")
+                except ValueError as e:
+                    parse_errors.append(f"解析失败：{line} ({str(e)})")
+
+            if parse_errors:
+                st.warning(f"解析警告：\n" + "\n".join(parse_errors[:5]))
+
+            if student_scores:
+                # 批量录入
+                service = ScoreEntryService()
+                result = service.entry_class_scores(
+                    exam_name=class_exam_name,
+                    exam_date=class_exam_date.strftime("%Y-%m-%d"),
+                    student_scores=student_scores,
+                    wrong_questions_map={}
+                )
+
+                if result["success_count"] > 0:
+                    st.success(f"录入成功！成功{result['success_count']}人，失败{result['fail_count']}人")
+                    st.info(f"共录入 {result['total_errors']} 道错题")
+                else:
+                    st.error("录入失败，请检查学号是否存在")
+
+                # 显示详细信息
+                with st.expander("查看详情"):
+                    for detail in result["details"]:
+                        status = "✅" if detail["success"] else "❌"
+                        st.write(f"{status} 学号{detail['student_id']}: {detail['message']}")
 
 
 # PDF 报告导出

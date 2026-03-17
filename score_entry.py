@@ -188,6 +188,49 @@ class ScoreEntryService:
             "其他"
         ]
 
+    def entry_class_scores(self, exam_name: str, exam_date: str,
+                           student_scores: Dict[int, float],
+                           wrong_questions_map: Dict[int, List[Dict]]) -> Dict:
+        """
+        按学号批量录入全班成绩
+
+        Args:
+            exam_name: 考试名称
+            exam_date: 考试日期
+            student_scores: 学号 - 成绩字典 {学号：分数}
+            wrong_questions_map: 学号 - 错题列表字典 {学号：[{...}]}, 可选
+
+        Returns:
+            批量录入结果
+        """
+        result = {
+            "total": len(student_scores),
+            "success_count": 0,
+            "fail_count": 0,
+            "total_errors": 0,
+            "details": []
+        }
+
+        for student_id, score in student_scores.items():
+            wrong_qs = wrong_questions_map.get(student_id, [])
+            entry_result = self.entry_score(
+                student_id=student_id,
+                exam_name=exam_name,
+                exam_date=exam_date,
+                score=score,
+                wrong_questions=wrong_qs
+            )
+
+            if entry_result["success"]:
+                result["success_count"] += 1
+                result["total_errors"] += entry_result["error_count"]
+            else:
+                result["fail_count"] += 1
+
+            result["details"].append(entry_result)
+
+        return result
+
 
 def main():
     """测试"""
