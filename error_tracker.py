@@ -11,6 +11,9 @@ from datetime import datetime, timedelta
 import json
 import re
 
+# 导入数据库模块
+from database import ErrorRecordDAO, StudentDAO
+
 
 @dataclass
 class ErrorRecord:
@@ -74,213 +77,157 @@ PRACTICE_TEMPLATES = {
 class ErrorTracker:
     """错题追踪器"""
 
-    def __init__(self, data_dir: str = "data", error_db_path: str = "error_db.json"):
+    def __init__(self, data_dir: str = "data", error_db_path: str = None):
+        """
+        初始化错题追踪器
+
+        Args:
+            data_dir: 数据目录
+            error_db_path: 旧版 JSON 数据库路径（保留兼容性，实际使用 SQLite）
+        """
         self.data_dir = Path(data_dir)
-        self.error_db_path = Path(error_db_path)
-        self.errors: List[ErrorRecord] = []
+        self.error_db_path = Path(error_db_path) if error_db_path else None
+        self.errors: List[ErrorRecord] = []  # 保留用于兼容
         self.student_names: Dict[int, str] = {}
         self.knowledge_points = self._load_knowledge_points()
-        self._load_errors()
+        self._load_students()
+        self._load_errors_compat()
 
     def _load_knowledge_points(self) -> Dict:
         """加载知识点体系"""
         from deep_analyzer import KNOWLEDGE_SYSTEM
         return KNOWLEDGE_SYSTEM
 
-    def _load_errors(self):
-        """加载错题数据库"""
-        if self.error_db_path.exists():
+    def _load_students(self):
+        """从数据库加载学生信息"""
+        students = StudentDAO.get_all_students()
+        for s in students:
+            self.student_names[s["student_id"]] = s["name"]
+
+    def _load_errors_compat(self):
+        """从旧版 JSON 数据库加载错题（兼容性）"""
+        if self.error_db_path and self.error_db_path.exists():
             with open(self.error_db_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 self.errors = [ErrorRecord(**e) for e in data]
+            # 迁移到 SQLite
+            self._migrate_to_sqlite()
 
-    def _save_errors(self):
-        """保存错题数据库"""
-        data = [e.__dict__ for e in self.errors]
-        with open(self.error_db_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+    def _migrate_to_sqlite(self):
+        """迁移旧版 JSON 数据到 SQLite"""
+        for error in self.errors:
+            ErrorRecordDAO.add_error_record(
+                student_id=error.student_id,
+                exam_name=error.exam_name,
+                exam_date=error.exam_date,
+                knowledge_code=error.knowledge_code,
+                knowledge_name=error.knowledge_name,
+                error_type=error.error_type,
+                error_description=error.error_description,
+                score=error.score
+            )
+        # 迁移后重命名旧文件
+        if self.error_db_path and self.error_db_path.exists():
+            backup_path = self.error_db_path.with_suffix('.json.bak')
+            self.error_db_path.rename(backup_path)
 
     def add_error(self, student_id: int, exam_name: str, exam_date: str,
                   semester: str, knowledge_code: str, error_type: str,
-                  score: float, error_description: str = "") -> ErrorRecord:
+                  score: float, error_description: str = "") -> int:
         """添加错题记录"""
-        student_name = self.student_names.get(student_id, "Unknown")
-        kp_info = self.knowledge_points.get(knowledge_code)
-        knowledge_name = kp_info.name if kp_info else knowledge_code
+        # 更新学生姓名缓存
+        if student_id not in self.student_names:
+            student = StudentDAO.get_student(student_id)
+            if student:
+                self.student_names[student_id] = student["name"]
 
-        error = ErrorRecord(
+        record_id = ErrorRecordDAO.add_error_record(
             student_id=student_id,
-            student_name=student_name,
             exam_name=exam_name,
             exam_date=exam_date,
-            semester=semester,
             knowledge_code=knowledge_code,
-            knowledge_name=knowledge_name,
+            knowledge_name=self.knowledge_points.get(knowledge_code, type('obj', (object,), {'name': knowledge_code})).name,
             error_type=error_type,
-            score=score,
-            error_description=error_description
+            error_description=error_description,
+            score=score
         )
+        return record_id
 
-        self.errors.append(error)
-        self._save_errors()
-        return error
-
-    def get_student_errors(self, student_id: int, include_mastered: bool = False) -> List[ErrorRecord]:
+    def get_student_errors(self, student_id: int, include_mastered: bool = False) -> List[Dict]:
         """获取指定学生的错题"""
-        errors = [e for e in self.errors if e.student_id == student_id]
+        errors = ErrorRecordDAO.get_errors_by_student(student_id)
         if not include_mastered:
-            errors = [e for e in errors if not e.mastered]
-        return sorted(errors, key=lambda x: x.created_at, reverse=True)
+            errors = [e for e in errors if not e["is_mastered"]]
+        return errors
 
     def get_error_statistics(self, student_id: int) -> Dict:
         """获取错题统计"""
-        errors = self.get_student_errors(student_id, include_mastered=True)
-        if not errors:
-            return {"total": 0}
-
-        # 按错误类型统计
-        error_type_stats = {}
-        for e in errors:
-            error_type_stats[e.error_type] = error_type_stats.get(e.error_type, 0) + 1
-
-        # 按知识点统计
-        knowledge_stats = {}
-        for e in errors:
-            if e.knowledge_code not in knowledge_stats:
-                knowledge_stats[e.knowledge_code] = {
-                    "name": e.knowledge_name,
-                    "count": 0,
-                    "mastered": 0
-                }
-            knowledge_stats[e.knowledge_code]["count"] += 1
-            if e.mastered:
-                knowledge_stats[e.knowledge_code]["mastered"] += 1
-
-        # 按学期统计
-        semester_stats = {}
-        for e in errors:
-            semester_stats[e.semester] = semester_stats.get(e.semester, 0) + 1
-
-        # 计算复习进度
-        total = len(errors)
-        mastered = sum(1 for e in errors if e.mastered)
-        pending_review = sum(1 for e in errors if not e.mastered and e.review_count > 0)
-        new_errors = sum(1 for e in errors if not e.mastered and e.review_count == 0)
-
-        return {
-            "total": total,
-            "mastered": mastered,
-            "pending_review": pending_review,
-            "new_errors": new_errors,
-            "mastery_rate": round(mastered / total * 100, 1) if total > 0 else 0,
-            "error_types": error_type_stats,
-            "knowledge_points": knowledge_stats,
-            "semesters": semester_stats,
-        }
+        stats = ErrorRecordDAO.get_error_statistics(student_id)
+        return stats
 
     def get_review_plan(self, student_id: int) -> List[Dict]:
         """
         根据艾宾浩斯遗忘曲线生成复习计划
         返回需要复习的错题列表
         """
-        errors = self.get_student_errors(student_id)
-        today = datetime.now().date()
+        errors = ErrorRecordDAO.get_review_due_records(student_id)
         review_items = []
 
         for error in errors:
-            if error.mastered:
-                continue
-
-            # 计算上次复习时间
-            if error.last_review:
-                last_review_date = datetime.strptime(error.last_review, "%Y-%m-%d").date()
-                days_since_review = (today - last_review_date).days
-            else:
-                # 从未复习，从创建日期算起
-                created_date = datetime.strptime(error.created_at, "%Y-%m-%d").date()
-                days_since_review = (today - created_date).days
-
-            # 检查是否到了复习时间
-            next_interval = EBBINGHAUS_INTERVALS[error.review_count] if error.review_count < len(EBBINGHAUS_INTERVALS) else EBBINGHAUS_INTERVALS[-1]
-
-            if days_since_review >= next_interval:
-                # 计算推荐复习次数
-                priority = error.review_count + 1
-                review_items.append({
-                    "error": error,
-                    "priority": priority,  # 优先级：复习次数少的优先
-                    "days_overdue": days_since_review - next_interval,
-                    "next_interval": next_interval
-                })
+            review_items.append({
+                "error": error,
+                "priority": error["review_count"] + 1,
+                "days_overdue": 0,
+                "next_interval": EBBINGHAUS_INTERVALS[min(error["review_count"], len(EBBINGHAUS_INTERVALS)-1)]
+            })
 
         # 按优先级排序
         review_items.sort(key=lambda x: (-x["priority"], -x["days_overdue"]))
         return review_items
 
-    def mark_reviewed(self, error_id: int, mastered: bool = False):
+    def mark_reviewed(self, record_id: int, mastered: bool = False):
         """标记错题已复习"""
-        for error in self.errors:
-            if id(error) == error_id or (
-                error.student_id == error_id and
-                error.knowledge_code == error_id
-            ):
-                error.review_count += 1
-                error.last_review = datetime.now().strftime("%Y-%m-%d")
-                if mastered:
-                    error.mastered = True
-                self._save_errors()
-                return True
-        return False
+        if mastered:
+            ErrorRecordDAO.mark_as_mastered(record_id)
+        else:
+            ErrorRecordDAO.mark_as_reviewed(record_id)
+        return True
 
     def mark_error_mastered(self, student_id: int, knowledge_code: str):
         """标记某知识点的所有错题已掌握"""
-        updated = False
-        for error in self.errors:
-            if error.student_id == student_id and error.knowledge_code == knowledge_code:
-                if not error.mastered:
-                    error.mastered = True
-                    updated = True
-        if updated:
-            self._save_errors()
+        # 获取该知识点的所有错题
+        errors = ErrorRecordDAO.get_errors_by_knowledge(student_id, knowledge_code)
+        for error in errors:
+            ErrorRecordDAO.mark_as_mastered(error["id"])
 
     def get_practice_recommendations(self, student_id: int, limit: int = 10) -> List[Dict]:
         """获取举一反三练习推荐"""
-        errors = self.get_student_errors(student_id)
+        stats = ErrorRecordDAO.get_error_statistics(student_id)
         recommendations = []
 
-        # 按知识点分组，统计错误次数
-        knowledge_errors = {}
-        for error in errors:
-            if not error.mastered:
-                if error.knowledge_code not in knowledge_errors:
-                    knowledge_errors[error.knowledge_code] = {
-                        "name": error.knowledge_name,
-                        "count": 0,
-                        "error_types": []
-                    }
-                knowledge_errors[error.knowledge_code]["count"] += 1
-                knowledge_errors[error.knowledge_code]["error_types"].append(error.error_type)
-
-        # 按错误次数排序
+        # 按知识点统计的错误次数排序
         sorted_knowledge = sorted(
-            knowledge_errors.items(),
-            key=lambda x: x[1]["count"],
+            stats.get("by_knowledge", []),
+            key=lambda x: x["count"],
             reverse=True
         )[:limit]
 
-        for kp_code, data in sorted_knowledge:
+        for kp_data in sorted_knowledge:
+            kp_code = kp_data["knowledge_code"]
+            kp_name = kp_data["knowledge_name"]
+            error_count = kp_data["count"]
+
             practice_questions = PRACTICE_TEMPLATES.get(kp_code, [])
             if not practice_questions:
-                # 生成通用练习题
                 practice_questions = self._generate_generic_practice(kp_code)
 
             recommendations.append({
                 "knowledge_code": kp_code,
-                "knowledge_name": data["name"],
-                "error_count": data["count"],
-                "error_types": list(set(data["error_types"])),
+                "knowledge_name": kp_name,
+                "error_count": error_count,
+                "error_types": [],
                 "practice_questions": practice_questions,
-                "suggestion": self._get_practice_suggestion(kp_code, data["error_types"])
+                "suggestion": self._get_practice_suggestion(kp_code, [])
             })
 
         return recommendations
@@ -361,31 +308,30 @@ class ErrorTracker:
             md += f"- **{error_type}**: {count}道\n"
 
         md += "\n### 按知识点\n"
-        for kp_code, data in stats.get("knowledge_points", {}).items():
-            md += f"- **{data['name']}**: {data['count']}道（已掌握{data['mastered']}道）\n"
+        for kp_data in stats.get("by_knowledge", []):
+            md += f"- **{kp_data['knowledge_name']}**: {kp_data['count']}道\n"
 
         md += "\n---\n\n## 📝 错题详情\n\n"
 
         # 按知识点分组
         kp_groups = {}
         for error in errors:
-            if error.knowledge_code not in kp_groups:
-                kp_groups[error.knowledge_code] = []
-            kp_groups[error.knowledge_code].append(error)
+            kp_code = error["knowledge_code"]
+            if kp_code not in kp_groups:
+                kp_groups[kp_code] = []
+            kp_groups[kp_code].append(error)
 
         for kp_code, kp_errors in kp_groups.items():
-            kp_name = kp_errors[0].knowledge_name if kp_errors else kp_code
+            kp_name = kp_errors[0].get("knowledge_name", kp_code) if kp_errors else kp_code
             md += f"### 📘 {kp_name}\n\n"
 
             for i, error in enumerate(kp_errors, 1):
-                status = "✅" if error.mastered else "⏳"
-                md += f"""**{i}. {error.exam_name}** {status}
-- **考试日期**: {error.exam_date}
-- **错误类型**: {error.error_type}
-- **得分**: {error.score}分
-- **记录日期**: {error.created_at}
-- **复习次数**: {error.review_count}次
-- **错误描述**: {error.error_description or "无"}
+                status = "✅" if error.get("is_mastered", False) else "⏳"
+                md += f"""**{i}. {error.get('exam_name', '未知')}** {status}
+- **考试日期**: {error.get('exam_date', '未知')}
+- **错误类型**: {error.get('error_type', '未知')}
+- **得分**: {error.get('score', '未知')}分
+- **错误描述**: {error.get('error_description', '无')}
 
 """
 

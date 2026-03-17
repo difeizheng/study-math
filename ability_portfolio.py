@@ -9,6 +9,9 @@ from dataclasses import dataclass
 from datetime import datetime
 import json
 
+# 导入数据库模块
+from database import AbilityRecordDAO
+
 
 @dataclass
 class AbilityScore:
@@ -213,6 +216,18 @@ class AbilityPortfolio:
             Markdown 格式报告
         """
         report = self.analyze_all_abilities(knowledge_mastery)
+
+        # 保存到数据库
+        AbilityRecordDAO.save_record(
+            student_id=student_id,
+            analysis_date=datetime.now().strftime("%Y-%m-%d"),
+            ability_scores={name: data["score"] for name, data in report["abilities"].items()},
+            overall_level=report["overall_level"],
+            strongest_ability=report["strongest"]["name"] if report["strongest"] else "",
+            weakest_ability=report["weakest"]["name"] if report["weakest"] else "",
+            radar_data=report["radar_data"],
+            report_content=""  # 报告内容稍后填充
+        )
 
         md = f"""# 🌟 {student_name} 的数学能力成长档案
 

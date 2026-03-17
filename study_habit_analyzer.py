@@ -10,6 +10,9 @@ from datetime import datetime
 import json
 from pathlib import Path
 
+# 导入数据库模块
+from database import HabitAnalysisDAO, ErrorRecordDAO
+
 
 @dataclass
 class HabitAnalysis:
@@ -125,22 +128,9 @@ class StudyHabitAnalyzer:
         self.error_records.append(record)
 
     def import_from_error_tracker(self, error_tracker) -> int:
-        """从错题追踪器导入数据"""
-        imported = 0
-
-        # 这里简化处理，实际应该遍历所有学生的错题
-        for error in error_tracker.errors:
-            self.add_error_record(
-                student_id=error.student_id,
-                exam_name=error.exam_name,
-                exam_date=error.exam_date,
-                error_type=error.error_type,
-                score=error.score,
-                description=error.error_description
-            )
-            imported += 1
-
-        return imported
+        """从错题追踪器导入数据（已废弃，直接使用数据库）"""
+        # 现在直接从数据库读取，无需导入
+        return 0
 
     def _create_default_analysis(self, student_id: int) -> HabitAnalysis:
         """创建默认分析结果（无数据时）"""
@@ -168,12 +158,30 @@ class StudyHabitAnalyzer:
         Returns:
             习惯分析结果
         """
-        # 筛选该学生的记录
-        student_records = [r for r in self.error_records if r["student_id"] == student_id]
+        # 从数据库获取错题记录
+        error_records = ErrorRecordDAO.get_errors_by_student(student_id)
 
-        if not student_records:
+        if not error_records:
             # 返回默认结果
             return self._create_default_analysis(student_id)
+
+        # 转换为内部格式
+        student_records = []
+        for record in error_records:
+            student_records.append({
+                "student_id": record["student_id"],
+                "exam_name": record["exam_name"],
+                "exam_date": record["exam_date"],
+                "error_type": record["error_type"],
+                "score": record["score"],
+                "description": record.get("error_description", ""),
+                "detailed_analysis": {
+                    "question_text": record.get("question_text", ""),
+                    "student_answer": record.get("student_answer", ""),
+                    "correct_answer": record.get("correct_answer", ""),
+                    "error_analysis": record.get("error_analysis", "")
+                }
+            })
 
         # 错误类型统计
         error_dist = {}
@@ -192,6 +200,17 @@ class StudyHabitAnalyzer:
 
         # 趋势分析
         trends = self._analyze_trends(student_records)
+
+        # 保存到数据库
+        HabitAnalysisDAO.save_analysis(
+            student_id=student_id,
+            analysis_date=datetime.now().strftime("%Y-%m-%d"),
+            error_distribution=error_dist,
+            habit_scores=habit_scores,
+            main_issues=main_issues,
+            suggestions=suggestions,
+            trends=trends
+        )
 
         return HabitAnalysis(
             student_id=student_id,
@@ -403,13 +422,21 @@ class StudyHabitAnalyzer:
 
     def get_quick_tips(self, student_id: int) -> List[str]:
         """获取快速提示"""
-        analysis = self.analyze_student_habits(student_id)
+        # 尝试从数据库获取最新分析
+        latest = HabitAnalysisDAO.get_latest_analysis(student_id)
+
+        if latest:
+            analysis_habit_scores = latest.get("habit_scores", {})
+            min_habit = min(analysis_habit_scores, key=analysis_habit_scores.get) if analysis_habit_scores else None
+        else:
+            # 如果没有分析数据，实时分析
+            analysis = self.analyze_student_habits(student_id)
+            analysis_habit_scores = analysis.habit_scores
+            min_habit = min(analysis_habit_scores, key=analysis_habit_scores.get) if analysis_habit_scores else None
 
         tips = ["📌 **今日提醒**:"]
 
-        # 根据最低分习惯给出提示
-        if analysis.habit_scores:
-            min_habit = min(analysis.habit_scores, key=analysis.habit_scores.get)
+        if min_habit:
             tips.append(f"重点关注：**{min_habit}**")
             tips.append(self._get_habit_suggestion(min_habit))
 

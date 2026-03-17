@@ -7,6 +7,18 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+
+# 导入日志系统
+from logger import init_logging, log_error, log_info, get_logger
+from database import init_database, StudentDAO
+from excel_importer import ExcelDataImporter
+
+# 初始化日志和数据库
+init_logging()
+init_database()
+logger = get_logger("app")
+
+# 原有模块导入
 from score_analyzer import ScoreAnalyzer
 from deep_analyzer import DeepScoreAnalyzer
 from error_tracker import ErrorTracker, ERROR_TYPES
@@ -26,6 +38,7 @@ st.set_page_config(
 # 初始化分析器
 @st.cache_resource
 def get_analyzers():
+    logger.info("初始化分析器...")
     analyzer = ScoreAnalyzer("data")
     analyzer.load_all_data()
     deep_analyzer = DeepScoreAnalyzer("data")
@@ -47,6 +60,7 @@ def get_analyzers():
     )
     # 智能组卷生成器
     paper_generator = SmartPaperGenerator()
+    logger.info("分析器初始化完成")
     return analyzer, deep_analyzer, error_tracker, knowledge_graph, ability_portfolio, habit_analyzer, class_dashboard, paper_generator
 
 analyzer, deep_analyzer, error_tracker, knowledge_graph, ability_portfolio, habit_analyzer, class_dashboard, paper_generator = get_analyzers()
@@ -108,7 +122,38 @@ analysis_mode = st.sidebar.radio(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.caption("系统版本：v3.0 (智能组卷系统完整版)")
+
+# 数据管理
+st.sidebar.header("数据管理")
+with st.sidebar.expander("📂 Excel 数据导入"):
+    uploaded_file = st.file_uploader("上传 Excel 成绩表", type=["xlsx", "xls"])
+    if uploaded_file:
+        try:
+            # 保存上传文件
+            from pathlib import Path
+            data_dir = Path("data/uploads")
+            data_dir.mkdir(parents=True, exist_ok=True)
+            file_path = data_dir / uploaded_file.name
+
+            with open(file_path, "wb") as f:
+                f.write(uploaded_file.getbuffer())
+
+            # 导入数据
+            importer = ExcelDataImporter()
+            stats = importer.import_errors_from_excel(str(file_path), "1(2) 班上 学期")
+
+            st.success(f"导入成功！")
+            st.json({
+                "错题数": stats.get('total_errors', 0),
+                "学生数": stats.get('students', 0),
+                "考试数": stats.get('exams', 0)
+            })
+            log_info(f"Excel 导入成功：{uploaded_file.name}, 错题数：{stats.get('total_errors', 0)}")
+        except Exception as e:
+            st.error(f"导入失败：{e}")
+            log_error(e, "Excel 导入失败")
+
+st.sidebar.caption("系统版本：v3.1 (数据持久化增强版)")
 
 
 def filter_scores_by_semester(student_id: int, semesters: list) -> dict:
