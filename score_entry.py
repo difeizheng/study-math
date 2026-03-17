@@ -190,7 +190,8 @@ class ScoreEntryService:
 
     def entry_class_scores(self, exam_name: str, exam_date: str,
                            student_scores: Dict[int, float],
-                           wrong_questions_map: Dict[int, List[Dict]]) -> Dict:
+                           wrong_questions_map: Dict[int, List[Dict]],
+                           auto_create_student: bool = False) -> Dict:
         """
         按学号批量录入全班成绩
 
@@ -199,6 +200,7 @@ class ScoreEntryService:
             exam_date: 考试日期
             student_scores: 学号 - 成绩字典 {学号：分数}
             wrong_questions_map: 学号 - 错题列表字典 {学号：[{...}]}, 可选
+            auto_create_student: 是否自动创建不存在的学号
 
         Returns:
             批量录入结果
@@ -206,11 +208,13 @@ class ScoreEntryService:
         # 先验证学号是否存在
         invalid_student_ids = []
         valid_student_scores = {}
+        students_to_create = []
 
         for student_id, score in student_scores.items():
             student = StudentDAO.get_student(student_id)
             if not student:
                 invalid_student_ids.append(student_id)
+                students_to_create.append(student_id)
             else:
                 valid_student_scores[student_id] = score
 
@@ -219,6 +223,7 @@ class ScoreEntryService:
             "valid_count": len(valid_student_scores),
             "invalid_count": len(invalid_student_ids),
             "invalid_student_ids": invalid_student_ids,
+            "students_to_create": students_to_create,
             "success_count": 0,
             "fail_count": 0,
             "total_errors": 0,
@@ -226,9 +231,24 @@ class ScoreEntryService:
         }
 
         # 如果没有有效的学号，直接返回
-        if not valid_student_scores:
+        if not valid_student_scores and not auto_create_student:
             result["message"] = "所有学号均不存在，请检查输入"
             return result
+
+        # 如果选择自动创建学生，先创建学生
+        if auto_create_student and students_to_create:
+            for student_id in students_to_create:
+                # 默认创建 1 年级学生
+                StudentDAO.add_student(student_id, f"学生{student_id}", "1 年级", "上")
+            # 重新验证
+            valid_student_scores = {}
+            for student_id in student_scores:
+                student = StudentDAO.get_student(student_id)
+                if student:
+                    valid_student_scores[student_id] = student_scores[student_id]
+
+        result["valid_count"] = len(valid_student_scores)
+        result["invalid_count"] = len(student_scores) - len(valid_student_scores)
 
         # 录入有效学号的成绩
         for student_id, score in valid_student_scores.items():

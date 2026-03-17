@@ -258,8 +258,14 @@ with st.sidebar.expander("📋 全班成绩录入"):
     class_scores_text = st.text_area(
         "成绩列表",
         height=150,
-        placeholder="1001,95\n1002,88\n1003,92...",
+        placeholder="1    95\n2    92\n3    95\n4    88",
         key="class_scores_text"
+    )
+
+    auto_create_student = st.checkbox(
+        "学号不存在时自动创建学生",
+        value=False,
+        help="勾选后，如果学号不存在，系统会自动创建该学号的学生（默认 1 年级）"
     )
 
     if st.button("录入全班成绩", type="primary", key="class_entry_btn"):
@@ -300,13 +306,18 @@ with st.sidebar.expander("📋 全班成绩录入"):
                     exam_name=class_exam_name,
                     exam_date=class_exam_date.strftime("%Y-%m-%d"),
                     student_scores=student_scores,
-                    wrong_questions_map={}
+                    wrong_questions_map={},
+                    auto_create_student=auto_create_student
                 )
 
                 # 显示不存在的学号
-                if result.get("invalid_student_ids"):
+                if result.get("invalid_student_ids") and not auto_create_student:
                     st.error(f"以下学号不存在：{', '.join(map(str, result['invalid_student_ids']))}")
                     st.info(f"有效学号：{result['valid_count']}人，无效学号：{result['invalid_count']}人")
+                    st.info("如需自动创建这些学号，请勾选'学号不存在时自动创建学生'选项")
+
+                if result.get("students_to_create") and auto_create_student:
+                    st.info(f"已自动创建 {len(result['students_to_create'])} 个新学生：{', '.join(map(str, result['students_to_create']))}")
 
                 if result["success_count"] > 0:
                     st.success(f"录入成功！成功{result['success_count']}人，失败{result['fail_count']}人")
