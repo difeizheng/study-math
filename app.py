@@ -266,7 +266,7 @@ with st.sidebar.expander("📋 全班成绩录入"):
         if not class_scores_text.strip():
             st.error("请输入成绩数据")
         else:
-            # 解析成绩数据
+            # 解析成绩数据（支持空格、Tab、逗号分隔）
             student_scores = {}
             parse_errors = []
             for line in class_scores_text.strip().split('\n'):
@@ -274,10 +274,16 @@ with st.sidebar.expander("📋 全班成绩录入"):
                 if not line:
                     continue
                 try:
-                    parts = line.split(',')
-                    if len(parts) >= 2:
+                    # 支持空格、Tab、逗号分隔
+                    import re
+                    parts = re.split(r'[,，\t\s]+', line, maxsplit=1)
+                    if len(parts) >= 1:
                         student_id = int(parts[0].strip())
-                        score = float(parts[1].strip())
+                        # 成绩可能为空（缺考）
+                        if len(parts) >= 2 and parts[1].strip():
+                            score = float(parts[1].strip())
+                        else:
+                            score = 0.0  # 缺考记为 0 分
                         student_scores[student_id] = score
                     else:
                         parse_errors.append(f"格式错误：{line}")
