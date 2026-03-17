@@ -203,15 +203,35 @@ class ScoreEntryService:
         Returns:
             批量录入结果
         """
+        # 先验证学号是否存在
+        invalid_student_ids = []
+        valid_student_scores = {}
+
+        for student_id, score in student_scores.items():
+            student = StudentDAO.get_student(student_id)
+            if not student:
+                invalid_student_ids.append(student_id)
+            else:
+                valid_student_scores[student_id] = score
+
         result = {
             "total": len(student_scores),
+            "valid_count": len(valid_student_scores),
+            "invalid_count": len(invalid_student_ids),
+            "invalid_student_ids": invalid_student_ids,
             "success_count": 0,
             "fail_count": 0,
             "total_errors": 0,
             "details": []
         }
 
-        for student_id, score in student_scores.items():
+        # 如果没有有效的学号，直接返回
+        if not valid_student_scores:
+            result["message"] = "所有学号均不存在，请检查输入"
+            return result
+
+        # 录入有效学号的成绩
+        for student_id, score in valid_student_scores.items():
             wrong_qs = wrong_questions_map.get(student_id, [])
             entry_result = self.entry_score(
                 student_id=student_id,

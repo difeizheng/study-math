@@ -303,11 +303,17 @@ with st.sidebar.expander("📋 全班成绩录入"):
                     wrong_questions_map={}
                 )
 
+                # 显示不存在的学号
+                if result.get("invalid_student_ids"):
+                    st.error(f"以下学号不存在：{', '.join(map(str, result['invalid_student_ids']))}")
+                    st.info(f"有效学号：{result['valid_count']}人，无效学号：{result['invalid_count']}人")
+
                 if result["success_count"] > 0:
                     st.success(f"录入成功！成功{result['success_count']}人，失败{result['fail_count']}人")
                     st.info(f"共录入 {result['total_errors']} 道错题")
-                else:
-                    st.error("录入失败，请检查学号是否存在")
+
+                if result.get("message"):
+                    st.error(result["message"])
 
                 # 显示详细信息
                 with st.expander("查看详情"):
