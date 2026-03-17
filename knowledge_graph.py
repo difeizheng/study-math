@@ -508,6 +508,7 @@ class KnowledgeGraph:
                     "name": node.name,
                     "grade": node.grade,
                     "semester": node.semester,
+                    "category": node.category,
                     "importance": node.importance,
                     "difficulty": node.difficulty,
                     "readiness": 100 if not prereqs else round(len([p for p in prereqs if p in mastered_set]) / len(prereqs) * 100)
