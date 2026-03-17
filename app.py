@@ -241,13 +241,9 @@ with st.sidebar.expander("📝 录入考试成绩"):
 # 全班成绩录入
 with st.sidebar.expander("📋 全班成绩录入"):
     st.markdown("**按学号录入全班成绩**")
-    class_exam_name = st.selectbox(
+    class_exam_name = st.text_input(
         "考试名称",
-        ["练习 1", "练习 2", "练习 3", "练习 4",
-         "练习 5", "练习 6", "练习 7", "练习 8",
-         "单元测试（一）", "单元测试（二）", "单元测试（三）",
-         "期中考试", "期末考试",
-         "周测（1）", "周测（2）", "周测（3）"],
+        placeholder="例如：练习 1、单元测试（一）",
         key="class_exam_name"
     )
     class_exam_date = st.date_input(
