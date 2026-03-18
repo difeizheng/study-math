@@ -10,7 +10,13 @@ from dataclasses import dataclass, field
 import re
 
 
-from database import ExamScoreDAO
+from database import ExamScoreDAO, get_db_connection
+from knowledge_week_map import (
+    get_week_from_exam_name,
+    get_knowledge_by_week,
+    get_week_description,
+    WEEK_TO_KNOWLEDGE_MAP
+)
 
 
 @dataclass
@@ -122,6 +128,102 @@ KNOWLEDGE_SYSTEM = {
                            exam_mapping=["单元 6", "练习 12", "练习 13"]),
     "G3D07": KnowledgePoint("G3D07", "小数的初步认识", "三年级", "下", "数与代数",
                            exam_mapping=["单元 7", "练习 14", "练习 15", "期末"]),
+
+    # ==================== 四年级上册 ====================
+    "G4U01": KnowledgePoint("G4U01", "大数的认识", "四年级", "上", "数与代数",
+                           exam_mapping=["单元 1", "练习 1", "练习 2", "练习 3"]),
+    "G4U02": KnowledgePoint("G4U02", "公顷和平方千米", "四年级", "上", "图形与几何",
+                           exam_mapping=["单元 2", "练习 4"]),
+    "G4U03": KnowledgePoint("G4U03", "角的度量", "四年级", "上", "图形与几何",
+                           exam_mapping=["单元 3", "练习 5", "练习 6"]),
+    "G4U04": KnowledgePoint("G4U04", "三位数乘两位数", "四年级", "上", "数与代数",
+                           exam_mapping=["单元 4", "练习 7", "练习 8", "期中"]),
+    "G4U05": KnowledgePoint("G4U05", "平行四边形和梯形", "四年级", "上", "图形与几何",
+                           exam_mapping=["单元 5", "练习 9", "练习 10"]),
+    "G4U06": KnowledgePoint("G4U06", "除数是两位数的除法", "四年级", "上", "数与代数",
+                           exam_mapping=["单元 6", "练习 11", "练习 12", "练习 13"]),
+    "G4U07": KnowledgePoint("G4U07", "统计（条形统计图）", "四年级", "上", "统计与概率",
+                           exam_mapping=["单元 7", "练习 14", "期末"]),
+
+    # ==================== 四年级下册 ====================
+    "G4D01": KnowledgePoint("G4D01", "四则运算", "四年级", "下", "数与代数",
+                           exam_mapping=["单元 1", "练习 1", "练习 2"]),
+    "G4D02": KnowledgePoint("G4D02", "观察物体（二）", "四年级", "下", "图形与几何",
+                           exam_mapping=["单元 2", "练习 3"]),
+    "G4D03": KnowledgePoint("G4D03", "运算定律（加法、乘法）", "四年级", "下", "数与代数",
+                           exam_mapping=["单元 3", "练习 4", "练习 5", "期中"]),
+    "G4D04": KnowledgePoint("G4D04", "小数的意义和性质", "四年级", "下", "数与代数",
+                           exam_mapping=["单元 4", "练习 6", "练习 7", "练习 8"]),
+    "G4D05": KnowledgePoint("G4D05", "三角形", "四年级", "下", "图形与几何",
+                           exam_mapping=["单元 5", "练习 9", "练习 10"]),
+    "G4D06": KnowledgePoint("G4D06", "小数的加法和减法", "四年级", "下", "数与代数",
+                           exam_mapping=["单元 6", "练习 11", "练习 12"]),
+    "G4D07": KnowledgePoint("G4D07", "图形的运动（平移）", "四年级", "下", "图形与几何",
+                           exam_mapping=["单元 7", "练习 13"]),
+    "G4D08": KnowledgePoint("G4D08", "平均数与条形统计图", "四年级", "下", "统计与概率",
+                           exam_mapping=["单元 8", "练习 14", "练习 15", "期末"]),
+
+    # ==================== 五年级上册 ====================
+    "G5U01": KnowledgePoint("G5U01", "小数乘法", "五年级", "上", "数与代数",
+                           exam_mapping=["单元 1", "练习 1", "练习 2", "练习 3"]),
+    "G5U02": KnowledgePoint("G5U02", "位置", "五年级", "上", "图形与几何",
+                           exam_mapping=["单元 2", "练习 4"]),
+    "G5U03": KnowledgePoint("G5U03", "小数除法", "五年级", "上", "数与代数",
+                           exam_mapping=["单元 3", "练习 5", "练习 6", "期中"]),
+    "G5U04": KnowledgePoint("G5U04", "可能性", "五年级", "上", "统计与概率",
+                           exam_mapping=["单元 4", "练习 7"]),
+    "G5U05": KnowledgePoint("G5U05", "简易方程", "五年级", "上", "数与代数",
+                           exam_mapping=["单元 5", "练习 8", "练习 9", "练习 10"]),
+    "G5U06": KnowledgePoint("G5U06", "多边形的面积", "五年级", "上", "图形与几何",
+                           exam_mapping=["单元 6", "练习 11", "练习 12", "练习 13"]),
+    "G5U07": KnowledgePoint("G5U07", "因数与倍数", "五年级", "上", "数与代数",
+                           exam_mapping=["单元 7", "练习 14", "期末"]),
+
+    # ==================== 五年级下册 ====================
+    "G5D01": KnowledgePoint("G5D01", "观察物体（三）", "五年级", "下", "图形与几何",
+                           exam_mapping=["单元 1", "练习 1"]),
+    "G5D02": KnowledgePoint("G5D02", "因数与倍数（二）", "五年级", "下", "数与代数",
+                           exam_mapping=["单元 2", "练习 2", "练习 3"]),
+    "G5D03": KnowledgePoint("G5D03", "长方体和正方体", "五年级", "下", "图形与几何",
+                           exam_mapping=["单元 3", "练习 4", "练习 5", "期中"]),
+    "G5D04": KnowledgePoint("G5D04", "分数的意义和性质", "五年级", "下", "数与代数",
+                           exam_mapping=["单元 4", "练习 6", "练习 7", "练习 8"]),
+    "G5D05": KnowledgePoint("G5D05", "分数的加法和减法", "五年级", "下", "数与代数",
+                           exam_mapping=["单元 5", "练习 9", "练习 10"]),
+    "G5D06": KnowledgePoint("G5D06", "图形的运动（旋转）", "五年级", "下", "图形与几何",
+                           exam_mapping=["单元 6", "练习 11"]),
+    "G5D07": KnowledgePoint("G5D07", "折线统计图", "五年级", "下", "统计与概率",
+                           exam_mapping=["单元 7", "练习 12", "练习 13"]),
+    "G5D08": KnowledgePoint("G5D08", "数学广角 - 找次品", "五年级", "下", "综合与实践",
+                           exam_mapping=["单元 8", "练习 14", "期末"]),
+
+    # ==================== 六年级上册 ====================
+    "G6U01": KnowledgePoint("G6U01", "分数乘法", "六年级", "上", "数与代数",
+                           exam_mapping=["单元 1", "练习 1", "练习 2", "练习 3"]),
+    "G6U02": KnowledgePoint("G6U02", "位置与方向（二）", "六年级", "上", "图形与几何",
+                           exam_mapping=["单元 2", "练习 4"]),
+    "G6U03": KnowledgePoint("G6U03", "分数除法", "六年级", "上", "数与代数",
+                           exam_mapping=["单元 3", "练习 5", "练习 6", "期中"]),
+    "G6U04": KnowledgePoint("G6U04", "比", "六年级", "上", "数与代数",
+                           exam_mapping=["单元 4", "练习 7"]),
+    "G6U05": KnowledgePoint("G6U05", "圆", "六年级", "上", "图形与几何",
+                           exam_mapping=["单元 5", "练习 8", "练习 9", "练习 10"]),
+    "G6U06": KnowledgePoint("G6U06", "百分数", "六年级", "上", "数与代数",
+                           exam_mapping=["单元 6", "练习 11", "练习 12"]),
+    "G6U07": KnowledgePoint("G6U07", "扇形统计图", "六年级", "上", "统计与概率",
+                           exam_mapping=["单元 7", "练习 13", "期末"]),
+
+    # ==================== 六年级下册 ====================
+    "G6D01": KnowledgePoint("G6D01", "负数", "六年级", "下", "数与代数",
+                           exam_mapping=["单元 1", "练习 1", "练习 2"]),
+    "G6D02": KnowledgePoint("G6D02", "百分数（二）", "六年级", "下", "数与代数",
+                           exam_mapping=["单元 2", "练习 3"]),
+    "G6D03": KnowledgePoint("G6D03", "圆柱与圆锥", "六年级", "下", "图形与几何",
+                           exam_mapping=["单元 3", "练习 4", "练习 5", "期中"]),
+    "G6D04": KnowledgePoint("G6D04", "比例", "六年级", "下", "数与代数",
+                           exam_mapping=["单元 4", "练习 6", "练习 7", "练习 8"]),
+    "G6D05": KnowledgePoint("G6D05", "数学广角 - 鸽巢问题", "六年级", "下", "综合与实践",
+                           exam_mapping=["单元 5", "练习 9", "期末"]),
 }
 
 # 练习号与知识点的映射关系（用于更精确的匹配）
@@ -167,6 +269,47 @@ PRACTICE_MAPPING = {
         9: ["G3D04"], 10: ["G3D05"], 11: ["G3D05"], 12: ["G3D06"],
         13: ["G3D06"], 14: ["G3D07"],
     },
+    # 四年级上册
+    "10038": {  # 四上
+        1: ["G4U01"], 2: ["G4U01"], 3: ["G4U01"], 4: ["G4U02"],
+        5: ["G4U03"], 6: ["G4U03"], 7: ["G4U04"], 8: ["G4U04"],
+        9: ["G4U05"], 10: ["G4U05"], 11: ["G4U06"], 12: ["G4U06"],
+        13: ["G4U06"], 14: ["G4U07"],
+    },
+    # 四年级下册
+    "10039": {  # 四下
+        1: ["G4D01"], 2: ["G4D02"], 3: ["G4D03"], 4: ["G4D03"],
+        5: ["G4D04"], 6: ["G4D04"], 7: ["G4D05"], 8: ["G4D06"],
+        9: ["G4D06"], 10: ["G4D07"], 11: ["G4D08"], 12: ["G4D08"],
+        13: ["G4D08"], 14: ["G4D08"],
+    },
+    # 五年级上册
+    "10040": {  # 五上
+        1: ["G5U01"], 2: ["G5U01"], 3: ["G5U02"], 4: ["G5U03"],
+        5: ["G5U03"], 6: ["G5U04"], 7: ["G5U05"], 8: ["G5U05"],
+        9: ["G5U05"], 10: ["G5U06"], 11: ["G5U06"], 12: ["G5U06"],
+        13: ["G5U07"], 14: ["G5U07"],
+    },
+    # 五年级下册
+    "10041": {  # 五下
+        1: ["G5D01"], 2: ["G5D02"], 3: ["G5D02"], 4: ["G5D03"],
+        5: ["G5D03"], 6: ["G5D04"], 7: ["G5D04"], 8: ["G5D05"],
+        9: ["G5D05"], 10: ["G5D06"], 11: ["G5D07"], 12: ["G5D07"],
+        13: ["G5D08"], 14: ["G5D08"],
+    },
+    # 六年级上册
+    "10042": {  # 六上
+        1: ["G6U01"], 2: ["G6U01"], 3: ["G6U02"], 4: ["G6U03"],
+        5: ["G6U03"], 6: ["G6U04"], 7: ["G6U05"], 8: ["G6U05"],
+        9: ["G6U05"], 10: ["G6U06"], 11: ["G6U06"], 12: ["G6U07"],
+        13: ["G6U07"],
+    },
+    # 六年级下册
+    "10043": {  # 六下
+        1: ["G6D01"], 2: ["G6D01"], 3: ["G6D02"], 4: ["G6D03"],
+        5: ["G6D03"], 6: ["G6D04"], 7: ["G6D04"], 8: ["G6D04"],
+        9: ["G6D05"],
+    },
 }
 
 # 知识点类别说明
@@ -182,6 +325,9 @@ GRADE_STATS = {
     "一年级": {"上": 8, "下": 5},
     "二年级": {"上": 7, "下": 7},
     "三年级": {"上": 8, "下": 7},
+    "四年级": {"上": 7, "下": 8},
+    "五年级": {"上": 7, "下": 8},
+    "六年级": {"上": 7, "下": 5},
 }
 
 
@@ -195,6 +341,16 @@ class DeepScoreAnalyzer:
         self.student_names: Dict[int, str] = {}
         self.knowledge_points = KNOWLEDGE_SYSTEM
         self.entered_scores_cache: Dict[int, List[Dict]] = {}  # 录入成绩缓存
+
+    def _normalize_semester_name(self, semester: str) -> str:
+        """标准化学期名称，去除 -math_scores 等后缀"""
+        import re
+        # 使用更灵活的正则表达式：匹配如 "10037-3(2) 班下学期" 或 "10037-3(2) 班上学期"
+        # 分开捕获数字部分和班级部分，去除中间的空格以实现模糊匹配
+        match = re.search(r'(\d+-\d+\(\d+\))\s*(班.{3})', semester)
+        if match:
+            return match.group(1) + match.group(2)  # 不包含空格
+        return semester
 
     def refresh_entered_scores(self):
         """刷新录入成绩缓存"""
@@ -210,6 +366,60 @@ class DeepScoreAnalyzer:
                 'score': s['score'],
                 'exam_date': s['exam_date']
             })
+
+    def get_scores(self, student_id: Optional[int] = None) -> List[Dict]:
+        """
+        获取成绩数据（从数据库）
+
+        Args:
+            student_id: 学生 ID（可选）
+
+        Returns:
+            成绩记录列表，包含 exam_name, score, week, error_knowledge 等
+        """
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        if student_id:
+            cursor.execute("""
+                SELECT e.student_id, s.name, e.exam_name, e.score, e.exam_date
+                FROM exam_scores e
+                JOIN students s ON e.student_id = s.student_id
+                WHERE e.student_id = ?
+            """, (student_id,))
+        else:
+            cursor.execute("""
+                SELECT e.student_id, s.name, e.exam_name, e.score, e.exam_date
+                FROM exam_scores e
+                JOIN students s ON e.student_id = s.student_id
+            """)
+
+        rows = cursor.fetchall()
+        conn.close()
+
+        scores = []
+        for row in rows:
+            exam_week = get_week_from_exam_name(row[2])  # row[2] = exam_name
+
+            # 从 error_records 表获取错题知识点
+            cursor2 = get_db_connection().cursor()
+            cursor2.execute("""
+                SELECT knowledge_code FROM error_records
+                WHERE student_id = ? AND exam_name = ?
+            """, (row[0], row[2]))
+            error_rows = cursor2.fetchall()
+            error_kp = [r[0] for r in error_rows] if error_rows else []
+
+            scores.append({
+                'student_id': row[0],
+                'student_name': row[1],
+                'exam_name': row[2],
+                'score': row[3],
+                'week': exam_week,
+                'error_knowledge': error_kp
+            })
+
+        return scores
 
     def load_all_data(self) -> pd.DataFrame:
         """加载所有数据"""
@@ -249,7 +459,8 @@ class DeepScoreAnalyzer:
 
     def _parse_semester_name(self, filename: str) -> str:
         """解析学期名称"""
-        match = re.search(r'\d+-(\d+\(\d+\) 班 [上下] 学期)', filename)
+        # 使用 .+ 代替 [上下] 以正确匹配中文字符
+        match = re.search(r'(\d+-\d+\(\d+\) 班.+学期)', filename)
         if match:
             return match.group(1)
         return filename.replace("-math_scores.xlsx", "")
@@ -693,6 +904,286 @@ class DeepScoreAnalyzer:
             return "发挥较稳定"
         else:
             return "波动较大，需注意"
+
+    # ==================== 时序追踪和轨迹诊断 ====================
+
+    def get_weekly_tracking(self, student_id: int, grade_code: str, start_week: int = 1, end_week: int = 18) -> List[Dict]:
+        """
+        获取学生周次追踪数据（时序追踪视图）
+
+        Args:
+            student_id: 学生 ID
+            grade_code: 年级代码 (如"G1U")
+            start_week: 起始周
+            end_week: 结束周
+
+        Returns:
+            周次追踪数据列表，包含每周成绩、知识点、掌握程度等
+        """
+        all_scores = self.get_scores(student_id=student_id)
+
+        tracking_data = []
+
+        for week in range(start_week, end_week + 1):
+            # 获取该周次的考试
+            week_exams = [s for s in all_scores if s.week == week]
+
+            # 获取该周次的知识点
+            knowledge_codes = get_knowledge_by_week(grade_code, week)
+            week_desc = get_week_description(grade_code, week)
+
+            week_record = {
+                "week": week,
+                "description": week_desc,
+                "exam_count": len(week_exams),
+                "exams": [],
+                "avg_score": None,
+                "knowledge_codes": knowledge_codes,
+                "knowledge_names": [
+                    self.knowledge_points.get(kp).name
+                    for kp in knowledge_codes
+                    if kp in self.knowledge_points
+                ],
+                "error_knowledge": [],
+                "trend_flag": "normal"  # normal, up, down, warning
+            }
+
+            if week_exams:
+                scores = [s.score for s in week_exams]
+                week_record["avg_score"] = round(sum(scores) / len(scores), 2)
+                week_record["exams"] = [
+                    {
+                        "exam_name": s.exam_name,
+                        "score": s.score,
+                        "error_knowledge": s.error_knowledge
+                    }
+                    for s in week_exams
+                ]
+
+                # 收集错题知识点
+                all_errors = []
+                for s in week_exams:
+                    all_errors.extend(s.error_knowledge)
+                week_record["error_knowledge"] = list(set(all_errors))
+
+            tracking_data.append(week_record)
+
+        # 计算趋势标记
+        for i, record in enumerate(tracking_data):
+            if i == 0:
+                continue
+
+            prev_score = tracking_data[i-1].get("avg_score")
+            curr_score = record.get("avg_score")
+
+            if prev_score is not None and curr_score is not None:
+                diff = curr_score - prev_score
+                if diff > 5:
+                    record["trend_flag"] = "up"
+                elif diff < -5:
+                    record["trend_flag"] = "down"
+                elif diff < 0:
+                    record["trend_flag"] = "warning"
+
+        return tracking_data
+
+    def get_knowledge_mastery_curve(self, student_id: int, grade_code: str) -> Dict[str, List[Dict]]:
+        """
+        获取知识点掌握曲线数据
+
+        Args:
+            student_id: 学生 ID
+            grade_code: 年级代码
+
+        Returns:
+            {知识点编码：[{"week": 周次，"score": 分数，"exam_name": 考试名称}]} 字典
+        """
+        all_scores = self.get_scores(student_id=student_id)
+
+        knowledge_curve = {}
+
+        for score_record in all_scores:
+            if score_record.week <= 0:
+                continue
+
+            # 获取该周次对应的知识点
+            kp_codes = get_knowledge_by_week(grade_code, score_record.week)
+
+            for kp_code in kp_codes:
+                if kp_code not in knowledge_curve:
+                    knowledge_curve[kp_code] = []
+
+                knowledge_curve[kp_code].append({
+                    "week": score_record.week,
+                    "score": score_record.score,
+                    "exam_name": score_record.exam_name
+                })
+
+        # 按周次排序
+        for kp_code in knowledge_curve:
+            knowledge_curve[kp_code].sort(key=lambda x: x["week"])
+
+        return knowledge_curve
+
+    def diagnose_learning_trajectory(self, student_id: int, grade_code: str) -> Dict:
+        """
+        诊断学生学习轨迹
+
+        Args:
+            student_id: 学生 ID
+            grade_code: 年级代码
+
+        Returns:
+            轨迹诊断报告，包含趋势分析、问题诊断、改进建议
+        """
+        tracking_data = self.get_weekly_tracking(student_id, grade_code)
+
+        # 过滤有考试的周次
+        valid_weeks = [w for w in tracking_data if w.get("avg_score") is not None]
+
+        if len(valid_weeks) < 2:
+            return {
+                "status": "insufficient_data",
+                "message": "数据不足，至少需要 2 次考试才能进行轨迹诊断"
+            }
+
+        # 计算趋势
+        scores = [w["avg_score"] for w in valid_weeks]
+        weeks = [w["week"] for w in valid_weeks]
+
+        # 线性回归分析趋势
+        n = len(scores)
+        sum_x = sum(weeks)
+        sum_y = sum(scores)
+        sum_xy = sum(w * s for w, s in zip(weeks, scores))
+        sum_x2 = sum(w ** 2 for w in weeks)
+
+        # 斜率（趋势）
+        slope = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x ** 2) if (n * sum_x2 - sum_x ** 2) != 0 else 0
+
+        # 计算波动性
+        avg_score = sum(scores) / n
+        variance = sum((s - avg_score) ** 2 for s in scores) / n
+        std_dev = variance ** 0.5
+
+        # 判断趋势类型
+        if slope > 2:
+            trend_type = "rising"  # 上升型
+            trend_desc = "成绩呈上升趋势，学习效果好"
+        elif slope < -2:
+            trend_type = "declining"  # 下降型
+            trend_desc = "成绩呈下降趋势，需关注学习状态"
+        else:
+            trend_type = "stable"  # 稳定型
+            trend_desc = "成绩相对稳定"
+
+        # 判断波动性
+        if std_dev < 5:
+            stability = "very_stable"  # 非常稳定
+            stability_desc = "发挥非常稳定"
+        elif std_dev < 10:
+            stability = "stable"  # 较稳定
+            stability_desc = "发挥较稳定"
+        elif std_dev < 15:
+            stability = "fluctuating"  # 波动型
+            stability_desc = "成绩波动较大，需关注"
+        else:
+            stability = "unstable"  # 不稳定
+            stability_desc = "成绩波动很大，需重点关注"
+
+        # 诊断问题
+        issues = []
+        recommendations = []
+
+        # 分析错题知识点
+        all_errors = []
+        for w in tracking_data:
+            all_errors.extend(w.get("error_knowledge", []))
+
+        error_freq = {}
+        for err in all_errors:
+            error_freq[err] = error_freq.get(err, 0) + 1
+
+        # 高频错题知识点
+        high_freq_errors = [(kp, freq) for kp, freq in sorted(error_freq.items(), key=lambda x: x[1], reverse=True) if freq >= 2]
+
+        if high_freq_errors:
+            issues.append({
+                "type": "recurring_weakness",
+                "desc": f"发现 {len(high_freq_errors)} 个反复出错的知识点",
+                "details": high_freq_errors[:5]
+            })
+            recommendations.append("针对高频错题知识点进行专项训练，建立错题本定期复习")
+
+        # 连续下降
+        decline_streak = 0
+        max_decline = 0
+        for i in range(1, len(scores)):
+            if scores[i] < scores[i-1]:
+                decline_streak += 1
+                max_decline = max(max_decline, decline_streak)
+            else:
+                decline_streak = 0
+
+        if max_decline >= 3:
+            issues.append({
+                "type": "continuous_decline",
+                "desc": f"曾出现连续{max_decline}次成绩下降"
+            })
+            recommendations.append("分析连续下降期间学习内容难度变化，调整学习方法")
+
+        # 低分警报
+        low_scores = [w for w in valid_weeks if w["avg_score"] < 70]
+        if low_scores:
+            issues.append({
+                "type": "low_scores",
+                "desc": f"有 {len(low_scores)} 次考试低于 70 分",
+                "weeks": [w["week"] for w in low_scores]
+            })
+            recommendations.append("针对低分考试的知识点进行复习巩固")
+
+        # 综合诊断
+        diagnosis_type = "normal"
+        if trend_type == "declining" and stability in ["fluctuating", "unstable"]:
+            diagnosis_type = "needs_attention"  # 需要关注
+        elif trend_type == "declining" or stability == "unstable":
+            diagnosis_type = "warning"  # 警告
+        elif trend_type == "rising" and stability in ["stable", "very_stable"]:
+            diagnosis_type = "excellent"  # 优秀
+
+        # 生成综合建议
+        if trend_type == "rising":
+            recommendations.append("保持当前学习状态，适当拓展提升")
+        elif trend_type == "stable":
+            recommendations.append("分析薄弱知识点，寻求突破点")
+
+        if stability == "unstable":
+            recommendations.append("加强基础练习，提高稳定性")
+
+        return {
+            "status": "success",
+            "trajectory_analysis": {
+                "trend_type": trend_type,
+                "trend_desc": trend_desc,
+                "slope": round(slope, 3),
+                "stability": stability,
+                "stability_desc": stability_desc,
+                "std_dev": round(std_dev, 2),
+                "avg_score": round(avg_score, 2),
+                "max_score": max(scores),
+                "min_score": min(scores),
+                "exam_count": n
+            },
+            "issues": issues,
+            "recommendations": recommendations,
+            "diagnosis_type": diagnosis_type,
+            "tracking_summary": {
+                "total_weeks": len(tracking_data),
+                "valid_weeks": len(valid_weeks),
+                "first_exam_week": valid_weeks[0]["week"] if valid_weeks else None,
+                "last_exam_week": valid_weeks[-1]["week"] if valid_weeks else None
+            }
+        }
 
 
 def main():

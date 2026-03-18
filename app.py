@@ -17,6 +17,10 @@ from database import init_database, StudentDAO, ErrorRecordDAO, ExamScoreDAO, ge
 from excel_importer import ExcelDataImporter
 from pdf_exporter import PDFExporter
 from score_entry import ScoreEntryService
+from data_manager import DataManager, get_data_manager
+
+# 初始化数据管理器
+data_manager = get_data_manager()
 
 # 初始化日志和数据库
 init_logging()
@@ -55,7 +59,37 @@ def sync_students_from_excel():
     if synced_count > 0:
         logger.info(f"从 Excel 同步 {synced_count} 个学生到数据库")
 
+
+# 从 Excel 导入成绩数据到数据库
+def import_scores_from_excel():
+    """将 Excel 中的成绩数据导入到数据库"""
+    from pathlib import Path
+    from excel_importer import ExcelDataImporter
+
+    data_dir = Path("data")
+    if not data_dir.exists():
+        return
+
+    db = get_data_manager()
+    imported_count = 0
+
+    for file in sorted(data_dir.glob("*.xlsx")):
+        try:
+            importer = ExcelDataImporter()
+            df = importer.load_excel(str(file))
+
+            result = db.import_excel_scores(df, file.name)
+            if result.success:
+                imported_count += result.data
+        except Exception as e:
+            logger.error(f"导入 {file.name} 成绩失败：{e}")
+
+    if imported_count > 0:
+        logger.info(f"从 Excel 导入 {imported_count} 条成绩到数据库")
+
+
 sync_students_from_excel()
+import_scores_from_excel()
 
 # 原有模块导入
 from score_analyzer import ScoreAnalyzer
@@ -124,13 +158,28 @@ st.markdown("---")
 
 # 侧边栏
 st.sidebar.header("选择学生")
-students = analyzer.get_student_list()
-student_dict = {f"{sid} - {name}": sid for sid, name in students}
-selected_student_name = st.sidebar.selectbox(
-    "选择要分析的学生",
-    options=list(student_dict.keys())
-)
-selected_student_id = student_dict[selected_student_name]
+
+# 从数据库获取学生列表（真实数据源）
+db_students = StudentDAO.get_student_list()
+if db_students:
+    # 数据库有学生，使用数据库数据
+    student_dict = {f"{sid} - {name}": sid for sid, name in db_students}
+else:
+    # 数据库为空，使用 Excel 数据
+    students = analyzer.get_student_list()
+    student_dict = {f"{sid} - {name}": sid for sid, name in students}
+
+# 检查是否有可选的学生
+if not student_dict:
+    st.sidebar.warning("⚠️ 暂无学生数据，请先从 Excel 同步或录入学生信息")
+    selected_student_id = None
+    selected_student_name = None
+else:
+    selected_student_name = st.sidebar.selectbox(
+        "选择要分析的学生",
+        options=list(student_dict.keys())
+    )
+    selected_student_id = student_dict[selected_student_name]
 
 # 获取学生信息
 student_name = analyzer.student_names.get(selected_student_id, "Unknown")
@@ -171,7 +220,7 @@ analysis_mode = st.sidebar.radio(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.caption("系统版本：v4.0 (架构重构版)")
+st.sidebar.caption("系统版本：v5.0 (数据管理重构版)")
 
 
 # ==================== 数据管理模块 ====================
@@ -179,7 +228,7 @@ if analysis_mode == "⚙️ 数据管理":
     # 数据管理子菜单
     data_mgmt_mode = st.sidebar.radio(
         "数据管理功能",
-        ["📂 Excel 数据导入", "📁 导入文件管理", "📊 导入数据管理", "⚙️ 系统数据设置"],
+        ["📂 Excel 数据导入", "📁 导入文件管理", "📊 数据总览", "📝 成绩录入", "⚙️ 系统数据设置"],
         index=0
     )
 
@@ -288,62 +337,173 @@ if analysis_mode == "⚙️ 数据管理":
         else:
             st.info("暂无 Excel 文件")
 
-    # ========== 子菜单 3: 导入数据管理 ==========
-    elif data_mgmt_mode == "📊 导入数据管理":
-        st.header("📊 导入数据管理")
-        st.markdown("浏览和管理从 Excel 导入的成绩数据")
+    # ========== 子菜单 3: 数据总览 ==========
+    elif data_mgmt_mode == "📊 数据总览":
+        st.header("📊 数据总览")
+        st.markdown("查看所有成绩数据（Excel 导入 + 成绩录入）")
 
-        from score_analyzer import ScoreAnalyzer
-
+        # 使用 DataManager 获取统一数据
         try:
-            analyzer_temp = ScoreAnalyzer()
-            analyzer_temp.load_all_data()
-
             # 统计信息
-            col1, col2 = st.columns(2)
-            with col1:
-                st.metric("学期数量", len(analyzer_temp.semester_data))
-            with col2:
-                total_records = sum(len(df) for df in analyzer_temp.semester_data.values())
-                st.metric("总记录数", total_records)
+            all_scores = data_manager.get_scores()
+            students = data_manager.get_students()
+            exam_list = data_manager.get_exam_list()
 
-            # 选择学期查看
-            selected_sem = st.selectbox(
-                "选择要查看的学期",
-                options=list(analyzer_temp.semester_data.keys()),
-                key="excel_sem_select"
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("学生总数", len(students))
+            with col2:
+                st.metric("考试次数", len(exam_list))
+            with col3:
+                st.metric("成绩记录数", len(all_scores))
+
+            st.divider()
+
+            # 考试列表（带周次信息）
+            st.subheader("📋 考试列表")
+
+            # 获取所有学期列表用于过滤
+            from database import ExamScoreDAO
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT DISTINCT semester FROM exam_scores ORDER BY semester")
+            all_semesters = [row[0] for row in cursor.fetchall()]
+            conn.close()
+
+            # 学期过滤
+            semester_filter = st.selectbox(
+                "选择学期",
+                options=["全部"] + all_semesters,
+                key="exam_semester_filter"
             )
 
-            if selected_sem:
-                df = analyzer_temp.semester_data[selected_sem]
+            if exam_list:
+                # 如果有学期选择，获取该学期的考试列表
+                if semester_filter != "全部":
+                    conn = get_db_connection()
+                    cursor = conn.cursor()
+                    cursor.execute("""
+                        SELECT DISTINCT exam_name
+                        FROM exam_scores
+                        WHERE semester = ?
+                        ORDER BY exam_name
+                    """, (semester_filter,))
+                    filtered_exams = set(row[0] for row in cursor.fetchall())
+                    conn.close()
 
-                # 过滤空列：只保留至少有一个学生有成绩的考试列
-                score_cols = [col for col in df.columns if col not in ['学号', '姓名']]
-                valid_cols = ['学号', '姓名']
+                    # 过滤考试列表
+                    filtered_exam_list = [e for e in exam_list if e.name in filtered_exams]
+                else:
+                    filtered_exam_list = exam_list
 
-                for col in score_cols:
-                    # 检查该列是否有至少一个非空值
-                    if df[col].notna().any():
-                        valid_cols.append(col)
+                exam_data = []
+                for exam in filtered_exam_list:
+                    exam_data.append({
+                        "考试名称": exam.name,
+                        "周次": f"第{exam.week}周" if exam.week > 0 else "-",
+                        "日期": exam.date or "-",
+                        "学期": semester_filter if semester_filter != "全部" else "-"
+                    })
+                st.dataframe(pd.DataFrame(exam_data), use_container_width=True, height=200)
 
-                df_filtered = df[valid_cols]
+                if semester_filter != "全部":
+                    st.caption(f"已显示学期：**{semester_filter}** 的考试 ({len(filtered_exam_list)}个)")
+            else:
+                st.info("暂无考试数据")
 
-                st.write(f"**记录数**: {len(df_filtered)} 人")
+            st.divider()
 
-                # 显示有效考试列表
-                valid_exams = [col for col in valid_cols if col not in ['学号', '姓名']]
-                empty_exams = [col for col in score_cols if col not in valid_exams]
+            # 成绩明细
+            st.subheader("📝 成绩明细")
 
-                if valid_exams:
-                    st.success(f"**有成绩的考试**: {', '.join(valid_exams)}")
-                if empty_exams:
-                    st.info(f"**空考次（已隐藏）**: {len(empty_exams)} 个 - {', '.join(empty_exams[:5])}{'...' if len(empty_exams) > 5 else ''}")
+            # 成绩明细过滤条件
+            col_filter1, col_filter2 = st.columns(2)
+            with col_filter1:
+                # 学生过滤
+                student_options = ["全部学生"] + [f"{s['student_id']} - {s['name']}" for s in students]
+                student_filter = st.selectbox(
+                    "选择学生",
+                    options=student_options,
+                    key="score_student_filter"
+                )
+            with col_filter2:
+                # 考试名称过滤
+                exam_name_filter = st.text_input(
+                    "考试名称",
+                    placeholder="如：练习 1、期末模 1",
+                    key="score_exam_filter"
+                )
 
-                # 数据表格（只显示有数据的列）
-                st.dataframe(df_filtered, use_container_width=True, height=400)
+            if all_scores:
+                # 应用过滤条件
+                filtered_scores = all_scores
+
+                # 学期过滤
+                if semester_filter != "全部":
+                    # 先获取该学期的所有考试名称
+                    conn = get_db_connection()
+                    cursor = conn.cursor()
+                    cursor.execute("""
+                        SELECT DISTINCT exam_name
+                        FROM exam_scores
+                        WHERE semester = ?
+                    """, (semester_filter,))
+                    semester_exams = set(row[0] for row in cursor.fetchall())
+                    conn.close()
+                    filtered_scores = [s for s in filtered_scores if s.exam_name in semester_exams]
+
+                # 学生过滤
+                if student_filter != "全部学生":
+                    selected_sid = int(student_filter.split(" - ")[0])
+                    filtered_scores = [s for s in filtered_scores if s.student_id == selected_sid]
+
+                # 考试名称过滤
+                if exam_name_filter.strip():
+                    filtered_scores = [s for s in filtered_scores
+                                       if exam_name_filter.strip() in s.exam_name]
+
+                # 获取成绩对应的学期信息
+                conn = get_db_connection()
+                cursor = conn.cursor()
+
+                score_data = []
+                for s in filtered_scores[:200]:  # 限制显示 200 条
+                    # 查询该成绩所属学期
+                    cursor.execute("""
+                        SELECT DISTINCT semester FROM exam_scores
+                        WHERE exam_name = ? AND student_id = ?
+                    """, (s.exam_name, s.student_id))
+                    row = cursor.fetchone()
+                    semester_val = row[0] if row else "-"
+
+                    score_data.append({
+                        "学期": semester_val,
+                        "学号": s.student_id,
+                        "姓名": s.student_name,
+                        "考试名称": s.exam_name,
+                        "周次": f"第{s.week}周" if s.week > 0 else "-",
+                        "成绩": s.score,
+                    })
+                conn.close()
+
+                st.dataframe(pd.DataFrame(score_data), use_container_width=True, height=400)
+
+                # 显示过滤统计
+                filter_info = []
+                if semester_filter != "全部":
+                    filter_info.append(f"学期：{semester_filter}")
+                if student_filter != "全部学生":
+                    filter_info.append(f"学生：{student_filter}")
+                if exam_name_filter.strip():
+                    filter_info.append(f"考试：{exam_name_filter}")
+
+                if filter_info:
+                    st.caption(f"过滤条件：{', '.join(filter_info)} | 显示 {len(score_data)} 条记录")
+            else:
+                st.info("暂无成绩数据")
         except Exception as e:
             st.error(f"加载失败：{e}")
-            log_error(e, "加载 Excel 数据失败")
+            logger.error(f"数据总览加载失败：{e}")
 
     # ========== 子菜单 4: 系统数据设置 ==========
     elif data_mgmt_mode == "⚙️ 系统数据设置":
@@ -368,17 +528,24 @@ if analysis_mode == "⚙️ 数据管理":
         # 数据清理
         st.subheader("数据清理")
 
-        col_btn1, col_btn2 = st.columns(2)
+        st.caption("⚠️ 注意：清理操作仅删除数据库中的录入成绩，Excel 文件中的数据不会被删除。清理后请刷新页面（F5）以查看效果。")
+
+        col_btn1, col_btn2, col_btn3 = st.columns(3)
         with col_btn1:
             if st.button("🗑️ 清理所有录入成绩", type="secondary", use_container_width=True):
                 try:
                     conn = get_db_connection()
                     cursor = conn.cursor()
                     cursor.execute("DELETE FROM exam_scores")
+                    cursor.execute("DELETE FROM error_records")
                     conn.commit()
                     conn.close()
-                    st.success("已清理所有录入成绩！请刷新页面重新加载数据。")
+                    st.success("已清理所有录入成绩！请刷新页面（F5）重新加载数据。")
                     log_info("用户清理了所有录入成绩")
+
+                    # 使用 session_state 标记需要重新加载
+                    st.session_state['data_changed'] = True
+
                 except Exception as e:
                     st.error(f"清理失败：{e}")
                     log_error(e, "清理录入成绩失败")
@@ -389,48 +556,288 @@ if analysis_mode == "⚙️ 数据管理":
                     conn = get_db_connection()
                     cursor = conn.cursor()
                     cursor.execute("DELETE FROM exam_scores")
-                    cursor.execute("DELETE FROM students")
                     cursor.execute("DELETE FROM error_records")
+                    cursor.execute("DELETE FROM students")
                     conn.commit()
                     conn.close()
-                    st.success("已清理所有数据！请刷新页面重新开始。")
+                    st.success("已清理所有数据！请刷新页面（F5）重新开始。")
                     log_info("用户清理了所有数据")
+
+                    # 使用 session_state 标记需要重新加载
+                    st.session_state['data_changed'] = True
+
                 except Exception as e:
                     st.error(f"清理失败：{e}")
                     log_error(e, "清理所有数据失败")
+
+        with col_btn3:
+            # 移动 Excel 文件到备份目录
+            if st.button("📁 移除 Excel 数据", type="secondary", use_container_width=True):
+                try:
+                    import shutil
+                    backup_dir = Path("data_backup")
+                    backup_dir.mkdir(exist_ok=True)
+
+                    moved_count = 0
+                    for excel_file in Path("data").glob("*.xlsx"):
+                        shutil.move(str(excel_file), str(backup_dir / excel_file.name))
+                        moved_count += 1
+
+                    st.success(f"已将 {moved_count} 个 Excel 文件移动到 data_backup 目录！刷新页面后生效。")
+                    log_info(f"用户移除了 {moved_count} 个 Excel 文件到备份目录")
+                    st.session_state['data_changed'] = True
+
+                except Exception as e:
+                    st.error(f"操作失败：{e}")
+                    log_error(e, "移除 Excel 数据失败")
+
+        # 刷新数据按钮
+        if st.button("🔄 重新加载数据", type="primary", use_container_width=True):
+            try:
+                # 重新初始化分析器
+                analyzer.load_all_data()
+                deep_analyzer.load_all_data()
+                refresh_analyzers()
+
+                st.success("数据已重新加载！")
+                log_info("用户重新加载了数据")
+                st.rerun()
+
+            except Exception as e:
+                st.error(f"加载失败：{e}")
+                log_error(e, "重新加载数据失败")
 
         st.divider()
 
         # 数据同步
         st.subheader("数据同步")
 
-        if st.button("📥 从 Excel 同步学生信息", type="primary", use_container_width=True):
-            try:
-                temp_analyzer = ScoreAnalyzer()
-                temp_analyzer.load_all_data()
+        # 显示当前数据源状态
+        excel_files = list(Path("data").glob("*.xlsx"))
+        st.info(f"📂 Data 目录中有 {len(excel_files)} 个 Excel 文件")
 
-                # 同步学生到数据库
-                count = 0
-                for sid, name in temp_analyzer.student_names.items():
-                    if not StudentDAO.get_student(sid):
-                        # 从学期名称推断年级和学期
-                        grade = "1"
-                        semester = "上"
-                        for sem_key in temp_analyzer.semester_data.keys():
-                            match = re.search(r'(\d) 年级 ([上下]) 学期', sem_key)
-                            if match:
-                                grade = match.group(1)
-                                semester = match.group(2)
-                            break
+        col_sync1, col_sync2 = st.columns(2)
 
-                        StudentDAO.add_student(sid, name, f"{grade}年级", semester)
-                        count += 1
+        with col_sync1:
+            if st.button("📥 从 Excel 同步学生信息", type="primary", use_container_width=True):
+                try:
+                    temp_analyzer = ScoreAnalyzer()
+                    temp_analyzer.load_all_data()
 
-                st.success(f"已同步 {count} 个学生到数据库！请刷新页面查看。")
-                log_info(f"从 Excel 同步学生信息：{count}人")
-            except Exception as e:
-                st.error(f"同步失败：{e}")
-                log_error(e, "从 Excel 同步学生失败")
+                    # 同步学生到数据库
+                    count = 0
+                    for sid, name in temp_analyzer.student_names.items():
+                        if not StudentDAO.get_student(sid):
+                            # 从学期名称推断年级和学期
+                            grade = "1"
+                            semester = "上"
+                            for sem_key in temp_analyzer.semester_data.keys():
+                                match = re.search(r'(\d) 年级 ([上下]) 学期', sem_key)
+                                if match:
+                                    grade = match.group(1)
+                                    semester = match.group(2)
+                                break
+
+                            StudentDAO.add_student(sid, name, f"{grade}年级", semester)
+                            count += 1
+
+                    st.success(f"已同步 {count} 个学生到数据库！请刷新页面查看。")
+                    log_info(f"从 Excel 同步学生信息：{count}人")
+                except Exception as e:
+                    st.error(f"同步失败：{e}")
+                    log_error(e, "从 Excel 同步学生失败")
+
+        with col_sync2:
+            if st.button("📊 导入 Excel 成绩到数据库", type="primary", use_container_width=True):
+                try:
+                    from excel_importer import ExcelDataImporter
+
+                    data_dir = Path("data")
+                    total_imported = 0
+                    imported_files = []
+
+                    for file in sorted(data_dir.glob("*.xlsx")):
+                        try:
+                            importer = ExcelDataImporter()
+                            df = importer.load_excel(str(file))
+
+                            # 使用 DataManager 导入成绩
+                            result = data_manager.import_excel_scores(df, file.name)
+
+                            if result.success:
+                                total_imported += result.data
+                                imported_files.append(f"{file.name}: {result.data}条")
+                        except Exception as e:
+                            logger.error(f"导入 {file.name} 失败：{e}")
+
+                    if total_imported > 0:
+                        st.success(f"成功导入 {total_imported} 条成绩记录到数据库！")
+                        with st.expander("查看详情"):
+                            st.write("\n".join(imported_files))
+                        log_info(f"批量导入 Excel 成绩：{total_imported}条")
+                    else:
+                        st.info("没有导入新数据（可能已存在）")
+                except Exception as e:
+                    st.error(f"导入失败：{e}")
+                    log_error(e, "批量导入 Excel 成绩失败")
+
+    # ========== 子菜单 5: 成绩录入 ==========
+    elif data_mgmt_mode == "📝 成绩录入":
+        st.header("📝 成绩录入")
+        st.markdown("录入学生考试成绩和错题信息")
+
+        # 选择录入方式
+        entry_type = st.radio(
+            "录入方式",
+            ["📝 单个学生录入", "📋 全班批量录入"],
+            horizontal=True
+        )
+
+        if entry_type == "📝 单个学生录入":
+            # 单个学生成绩录入
+            service = ScoreEntryService()
+
+            col1, col2 = st.columns(2)
+            with col1:
+                entry_sid = st.number_input("学号", min_value=1, value=1)
+            with col2:
+                entry_sname = st.text_input("学生姓名", value="")
+
+            entry_exam_name = st.text_input(
+                "考试名称",
+                placeholder="如：周练 1、期末模 2",
+                value="周练 1"
+            )
+            entry_exam_date = st.date_input(
+                "考试日期",
+                value=datetime.now()
+            )
+            entry_score = st.number_input(
+                "考试成绩",
+                min_value=0.0,
+                max_value=100.0,
+                step=0.5,
+                value=90.0
+            )
+
+            # 错题录入
+            st.subheader("错题信息（可选）")
+            add_error = st.checkbox("添加错题")
+
+            error_knowledge = []
+            if add_error:
+                kp_options = list(deep_analyzer.knowledge_points.keys())
+                selected_kp = st.multiselect(
+                    "错题知识点",
+                    options=kp_options,
+                    format_func=lambda x: f"{x} - {deep_analyzer.knowledge_points[x].name}"
+                )
+                error_knowledge = selected_kp
+
+            if st.button("提交录入", type="primary"):
+                if not entry_sname:
+                    st.warning("请输入学生姓名")
+                else:
+                    result = data_manager.add_exam_score(
+                        student_id=entry_sid,
+                        student_name=entry_sname,
+                        exam_name=entry_exam_name,
+                        score=entry_score,
+                        error_knowledge=error_knowledge
+                    )
+
+                    if result.success:
+                        st.success(result.message)
+                        st.rerun()
+                    else:
+                        st.error(result.message)
+
+        elif entry_type == "📋 全班批量录入":
+            st.markdown("**按学号 + 成绩格式批量录入**")
+
+            batch_exam_name = st.text_input(
+                "考试名称",
+                placeholder="如：周练 1、期末模 2",
+                value="周练 1",
+                key="batch_exam"
+            )
+            batch_exam_date = st.date_input(
+                "考试日期",
+                value=datetime.now(),
+                key="batch_date"
+            )
+
+            st.markdown("**成绩列表（格式：学号 分数，每行一个）**")
+            st.caption("支持空格、Tab、逗号分隔")
+
+            batch_scores = st.text_area(
+                "成绩列表",
+                placeholder="1 95\n2 88\n3 92",
+                height=200,
+                key="batch_scores"
+            )
+
+            auto_create = st.checkbox("学号不存在时自动创建学生", value=True)
+
+            if st.button("批量提交", type="primary"):
+                if not batch_exam_name:
+                    st.warning("请输入考试名称")
+                elif not batch_scores.strip():
+                    st.warning("请输入成绩列表")
+                else:
+                    # 解析成绩列表
+                    lines = batch_scores.strip().split('\n')
+                    success_count = 0
+                    error_lines = []
+
+                    for i, line in enumerate(lines, 1):
+                        line = line.strip()
+                        if not line:
+                            continue
+
+                        # 解析：学号 分数
+                        parts = re.split(r'[\s,，\t]+', line, maxsplit=1)
+                        if len(parts) < 2:
+                            error_lines.append(f"第{i}行：格式错误")
+                            continue
+
+                        try:
+                            sid = int(parts[0].strip())
+                            score = float(parts[1].strip())
+
+                            # 获取学生姓名（如果存在）
+                            sname = ""
+                            existing = StudentDAO.get_student(sid)
+                            if existing:
+                                sname = existing['name']
+                            elif auto_create:
+                                sname = f"学生{sid}"
+                            else:
+                                error_lines.append(f"第{i}行：学号{sid}不存在")
+                                continue
+
+                            result = data_manager.add_exam_score(
+                                student_id=sid,
+                                student_name=sname,
+                                exam_name=batch_exam_name,
+                                score=score,
+                                error_knowledge=None
+                            )
+
+                            if result.success:
+                                success_count += 1
+                            else:
+                                error_lines.append(f"第{i}行：{result.message}")
+
+                        except Exception as e:
+                            error_lines.append(f"第{i}行：解析错误 - {e}")
+
+                    if success_count > 0:
+                        st.success(f"成功录入 {success_count} 条成绩")
+                    if error_lines:
+                        st.warning("\n".join(error_lines[:10]))
+                        if len(error_lines) > 10:
+                            st.warning(f"还有 {len(error_lines) - 10} 条错误未显示")
 
 
 # ==================== 成绩数据查询与维护 ====================
@@ -570,189 +977,7 @@ if analysis_mode == "📊 录入成绩查询":
     else:
         st.info("暂无录入成绩数据")
 
-# 成绩录入
-with st.sidebar.expander("📝 录入考试成绩"):
-    entry_exam_name = st.selectbox(
-        "考试名称",
-        ["练习 1", "练习 2", "练习 3", "练习 4",
-         "练习 5", "练习 6", "练习 7", "练习 8",
-         "单元测试（一）", "单元测试（二）", "单元测试（三）",
-         "期中考试", "期末考试",
-         "周测（1）", "周测（2）", "周测（3）"]
-    )
-    entry_exam_date = st.date_input(
-        "考试日期",
-        value=datetime.now(),
-        min_value=datetime.now().replace(day=datetime.now().day - 7)
-    )
-    entry_score = st.number_input(
-        "考试成绩",
-        min_value=0.0,
-        max_value=100.0,
-        step=0.5
-    )
-
-    if st.button("录入成绩", type="primary"):
-        st.session_state.show_entry_form = True
-
-    if st.session_state.get('show_entry_form', False):
-        st.markdown("**添加错题**")
-        wrong_knowledge = st.selectbox(
-            "知识点",
-            ["1-5 的认识和加减法", "6-10 的认识和加减法", "20 以内进位加法", "20 以内退位减法",
-             "认识图形", "认识钟表", "人民币", "表内乘法", "表内除法", "混合运算"],
-            key="entry_kp"
-        )
-        wrong_error_type = st.selectbox(
-            "错误类型",
-            ["计算粗心", "概念不清", "知识性错误", "审题不清", "公式记错", "理解偏差", "步骤不全", "其他"],
-            key="entry_error_type"
-        )
-        wrong_desc = st.text_input("错题描述", key="entry_wrong_desc")
-
-        if st.button("添加错题"):
-            # 初始化错题列表
-            if 'wrong_questions' not in st.session_state:
-                st.session_state.wrong_questions = []
-
-            st.session_state.wrong_questions.append({
-                "knowledge_name": wrong_knowledge,
-                "error_type": wrong_error_type,
-                "description": wrong_desc
-            })
-            st.success(f"已添加错题：{wrong_knowledge} - {wrong_error_type}")
-
-        if st.session_state.wrong_questions:
-            st.markdown("**已添加错题**:")
-            for i, wq in enumerate(st.session_state.wrong_questions, 1):
-                st.write(f"{i}. {wq['knowledge_name']} - {wq['error_type']}")
-
-            if st.button("确认提交成绩和错题"):
-                service = ScoreEntryService()
-                result = service.entry_score(
-                    student_id=selected_student_id,
-                    exam_name=entry_exam_name,
-                    exam_date=entry_exam_date.strftime("%Y-%m-%d"),
-                    score=entry_score,
-                    wrong_questions=st.session_state.wrong_questions
-                )
-
-                if result["success"]:
-                    st.success(result["message"])
-                    st.session_state.wrong_questions = []
-                    st.session_state.show_entry_form = False
-                else:
-                    st.error(result["message"])
-
-        if st.button("取消"):
-            st.session_state.show_entry_form = False
-            st.session_state.wrong_questions = []
-
-
-# 全班成绩录入
-with st.sidebar.expander("📋 全班成绩录入"):
-    st.markdown("**按学号录入全班成绩**")
-
-    # 显示当前选中的学期（默认最后一个，即最新的学期）
-    if selected_semesters:
-        current_semester = selected_semesters[-1]  # 使用最后一个选中的学期（最新的）
-        st.info(f"当前学期：**{current_semester}**")
-    else:
-        current_semester = ALL_SEMESTERS[-1] if ALL_SEMESTERS else "3(2) 班下学期"  # 默认最后一个学期
-        st.info(f"当前学期：**{current_semester}**")
-
-    class_exam_name = st.text_input(
-        "考试名称",
-        placeholder="例如：练习 1、单元测试（一）",
-        key="class_exam_name"
-    )
-    class_exam_date = st.date_input(
-        "考试日期",
-        value=datetime.now(),
-        min_value=datetime.now().replace(day=datetime.now().day - 7),
-        key="class_exam_date"
-    )
-
-    st.markdown("**学号 - 成绩输入**")
-    st.caption("格式：学号，分数（每行一个学生）")
-    class_scores_text = st.text_area(
-        "成绩列表",
-        height=150,
-        placeholder="1    95\n2    92\n3    95\n4    88",
-        key="class_scores_text"
-    )
-
-    auto_create_student = st.checkbox(
-        "学号不存在时自动创建学生",
-        value=False,
-        help="勾选后，如果学号不存在，系统会自动创建该学号的学生（默认 1 年级）"
-    )
-
-    if st.button("录入全班成绩", type="primary", key="class_entry_btn"):
-        if not class_scores_text.strip():
-            st.error("请输入成绩数据")
-        else:
-            # 解析成绩数据（支持空格、Tab、逗号分隔）
-            student_scores = {}
-            parse_errors = []
-            for line in class_scores_text.strip().split('\n'):
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    # 支持空格、Tab、逗号分隔
-                    import re
-                    parts = re.split(r'[,，\t\s]+', line, maxsplit=1)
-                    if len(parts) >= 1:
-                        student_id = int(parts[0].strip())
-                        # 成绩可能为空（缺考）
-                        if len(parts) >= 2 and parts[1].strip():
-                            score = float(parts[1].strip())
-                        else:
-                            score = 0.0  # 缺考记为 0 分
-                        student_scores[student_id] = score
-                    else:
-                        parse_errors.append(f"格式错误：{line}")
-                except ValueError as e:
-                    parse_errors.append(f"解析失败：{line} ({str(e)})")
-
-            if parse_errors:
-                st.warning(f"解析警告：\n" + "\n".join(parse_errors[:5]))
-
-            if student_scores:
-                # 批量录入
-                service = ScoreEntryService()
-                result = service.entry_class_scores(
-                    exam_name=class_exam_name,
-                    exam_date=class_exam_date.strftime("%Y-%m-%d"),
-                    student_scores=student_scores,
-                    wrong_questions_map={},
-                    auto_create_student=auto_create_student,
-                    semester=current_semester
-                )
-
-                # 显示不存在的学号
-                if result.get("invalid_student_ids") and not auto_create_student:
-                    st.error(f"以下学号不存在：{', '.join(map(str, result['invalid_student_ids']))}")
-                    st.info(f"有效学号：{result['valid_count']}人，无效学号：{result['invalid_count']}人")
-                    st.info("如需自动创建这些学号，请勾选'学号不存在时自动创建学生'选项")
-
-                if result.get("students_to_create") and auto_create_student:
-                    st.info(f"已自动创建 {len(result['students_to_create'])} 个新学生：{', '.join(map(str, result['students_to_create']))}")
-
-                if result["success_count"] > 0:
-                    st.success(f"录入成功！成功{result['success_count']}人，失败{result['fail_count']}人")
-                    st.info(f"共录入 {result['total_errors']} 道错题")
-
-                if result.get("message"):
-                    st.error(result["message"])
-
-                # 显示详细信息
-                with st.expander("查看详情"):
-                    for detail in result["details"]:
-                        status = "✅" if detail["success"] else "❌"
-                        st.write(f"{status} 学号{detail['student_id']}: {detail['message']}")
-
+# ==================== 分析模式主逻辑 ====================
 
 # PDF 报告导出
 with st.sidebar.expander("📄 PDF 报告导出"):
@@ -955,11 +1180,18 @@ if analysis_mode == "📈 成绩趋势分析":
     if score_dist:
         col1, col2 = st.columns(2)
 
+        # 转换为 DataFrame 以避免 plotly 参数冲突
+        import pandas as pd
+        df_dist = pd.DataFrame({
+            '分数段': list(score_dist.keys()),
+            '次数': list(score_dist.values())
+        })
+
         with col1:
             colors = ['#2ecc71', '#3498db', '#f1c40f', '#e67e22', '#e74c3c']
             fig = px.pie(
-                values=list(score_dist.values()),
-                names=list(score_dist.keys()),
+                values=df_dist['次数'],
+                names=df_dist['分数段'],
                 title=f"分数段分布 (共{sum(score_dist.values())}次考试)",
                 color_discrete_sequence=colors
             )
@@ -967,11 +1199,12 @@ if analysis_mode == "📈 成绩趋势分析":
 
         with col2:
             fig = px.bar(
-                x=list(score_dist.keys()),
-                y=list(score_dist.values()),
+                df_dist,
+                x='分数段',
+                y='次数',
                 labels={'x': '分数段', 'y': '次数'},
                 title="各分数段考试次数",
-                color=list(score_dist.values()),
+                color='次数',
                 color_continuous_scale='YlGnBu'
             )
             fig.update_layout(height=400, showlegend=False)
@@ -1095,6 +1328,236 @@ elif analysis_mode == "🧠 知识点深度分析":
     else:
         st.success("🎉 所有知识点掌握良好，暂无明显薄弱环节！")
 
+    # ==================== 时序追踪和轨迹诊断 ====================
+    st.markdown("---")
+    st.subheader("📈 时序追踪与轨迹诊断")
+    st.markdown("基于周次的成绩追踪和学习轨迹诊断")
+
+    # 年级选择
+    grade_options = {
+        "一年级上册": "G1U",
+        "一年级下册": "G1D",
+        "二年级上册": "G2U",
+        "二年级下册": "G2D",
+        "三年级上册": "G3U",
+        "三年级下册": "G3D",
+        "四年级上册": "G4U",
+        "四年级下册": "G4D",
+        "五年级上册": "G5U",
+        "五年级下册": "G5D",
+        "六年级上册": "G6U",
+        "六年级下册": "G6D"
+    }
+    selected_grade = st.selectbox("选择年级学期", options=list(grade_options.keys()), index=0)
+    grade_code = grade_options[selected_grade]
+
+    tab1, tab2, tab3 = st.tabs(["📊 周次追踪", "📉 知识点曲线", "🔍 轨迹诊断"])
+
+    with tab1:
+        st.markdown("### 周次成绩追踪")
+        st.markdown("按周次查看学生的考试成绩、对应知识点和错题情况")
+
+        tracking_data = deep_analyzer.get_weekly_tracking(selected_student_id, grade_code)
+
+        if tracking_data:
+            # 过滤有考试的周次
+            valid_tracking = [t for t in tracking_data if t.get("exam_count", 0) > 0]
+
+            if valid_tracking:
+                # 趋势图
+                trend_data = [(t["week"], t["avg_score"], t["trend_flag"]) for t in valid_tracking]
+                weeks = [t[0] for t in trend_data]
+                scores = [t[1] for t in trend_data]
+                trends = [t[2] for t in trend_data]
+
+                # 创建趋势图
+                fig = go.Figure()
+
+                fig.add_trace(go.Scatter(
+                    x=weeks,
+                    y=scores,
+                    mode='lines+markers',
+                    name='成绩趋势',
+                    line=dict(color='blue', width=3),
+                    marker=dict(size=10, color='red')
+                ))
+
+                fig.update_layout(
+                    title="周次成绩趋势图",
+                    xaxis_title="周次",
+                    yaxis_title="分数",
+                    yaxis_range=[0, 100],
+                    height=400
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                # 详细数据
+                st.markdown("### 各周次详情")
+                for record in valid_tracking:
+                    with st.expander(f"第{record['week']}周 - {record['description']} (平均分：{record['avg_score']})"):
+                        # 考试详情
+                        if record.get("exams"):
+                            st.markdown("**考试列表**:")
+                            for exam in record["exams"]:
+                                score_color = "🟢" if exam["score"] >= 85 else "🟡" if exam["score"] >= 70 else "🔴"
+                                st.write(f"{score_color} {exam['exam_name']}: {exam['score']}分")
+
+                        # 知识点
+                        if record.get("knowledge_names"):
+                            st.markdown("**学习知识点**:")
+                            for kp_name in record["knowledge_names"]:
+                                st.write(f"- {kp_name}")
+
+                        # 错题知识点
+                        if record.get("error_knowledge"):
+                            st.warning(f"**错题知识点**: {', '.join(record['error_knowledge'])}")
+
+                        # 趋势标记
+                        trend_emoji = {"up": "📈", "down": "📉", "warning": "⚠️", "normal": "➡️"}.get(record["trend_flag"], "")
+                        st.caption(f"趋势：{trend_emoji}")
+            else:
+                st.info(f"该年级学期暂无考试记录，请选择其他年级学期")
+        else:
+            st.info("暂无追踪数据")
+
+    with tab2:
+        st.markdown("### 知识点掌握曲线")
+        st.markdown("追踪每个知识点在不同考试中的掌握情况")
+
+        curve_data = deep_analyzer.get_knowledge_mastery_curve(selected_student_id, grade_code)
+
+        if curve_data:
+            # 选择要查看的知识点
+            kp_options = {
+                f"{deep_analyzer.knowledge_points.get(kp, {}).name}": kp
+                for kp in curve_data.keys()
+                if kp in deep_analyzer.knowledge_points
+            }
+
+            if kp_options:
+                selected_kp_name = st.selectbox("选择知识点", options=list(kp_options.keys()))
+                selected_kp_code = kp_options[selected_kp_name]
+
+                kp_curve = curve_data[selected_kp_code]
+
+                if kp_curve:
+                    # 绘制曲线
+                    fig = go.Figure()
+
+                    fig.add_trace(go.Scatter(
+                        x=[p["week"] for p in kp_curve],
+                        y=[p["score"] for p in kp_curve],
+                        mode='lines+markers',
+                        name=selected_kp_name,
+                        line=dict(color='green', width=3),
+                        marker=dict(size=12)
+                    ))
+
+                    fig.update_layout(
+                        title=f"{selected_kp_name} - 掌握曲线",
+                        xaxis_title="周次",
+                        yaxis_title="分数",
+                        yaxis_range=[0, 100],
+                        height=400
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+
+                    # 数据表
+                    curve_df = pd.DataFrame(kp_curve)
+                    st.dataframe(curve_df, use_container_width=True, hide_index=True)
+                else:
+                    st.info("该知识点暂无数据")
+            else:
+                st.info("暂无知识点数据")
+        else:
+            st.info("暂无知识点曲线数据")
+
+    with tab3:
+        st.markdown("### 学习轨迹诊断")
+        st.markdown("基于时序数据分析学习趋势，诊断学习问题")
+
+        if st.button("开始轨迹诊断", type="primary"):
+            diagnosis = deep_analyzer.diagnose_learning_trajectory(selected_student_id, grade_code)
+
+            if diagnosis.get("status") == "insufficient_data":
+                st.warning(diagnosis.get("message", "数据不足"))
+            else:
+                trajectory = diagnosis.get("trajectory_analysis", {})
+
+                # 综合诊断结果
+                diagnosis_type = diagnosis.get("diagnosis_type", "normal")
+                diagnosis_emoji = {
+                    "excellent": "🌟",
+                    "needs_attention": "⚠️",
+                    "warning": "❗",
+                    "normal": "✅"
+                }.get(diagnosis_type, "📊")
+
+                st.markdown(f"### {diagnosis_emoji} 诊断结果：{diagnosis_type}")
+
+                # 趋势分析
+                col1, col2, col3, col4 = st.columns(4)
+                with col1:
+                    st.metric("平均分", trajectory.get("avg_score", 0))
+                with col2:
+                    st.metric("最高分", trajectory.get("max_score", 0))
+                with col3:
+                    st.metric("最低分", trajectory.get("min_score", 0))
+                with col4:
+                    st.metric("考试次数", trajectory.get("exam_count", 0))
+
+                st.markdown("#### 趋势分析")
+                trend_col, stability_col = st.columns(2)
+
+                with trend_col:
+                    trend_emoji = {
+                        "rising": "📈",
+                        "declining": "📉",
+                        "stable": "➡️"
+                    }.get(trajectory.get("trend_type", ""), "📊")
+                    st.markdown(f"**趋势类型**: {trend_emoji} {trajectory.get('trend_desc', '')}")
+                    st.caption(f"斜率：{trajectory.get('slope', 0)}")
+
+                with stability_col:
+                    stability_emoji = {
+                        "very_stable": "🟢",
+                        "stable": "🟡",
+                        "fluctuating": "🟠",
+                        "unstable": "🔴"
+                    }.get(trajectory.get("stability", ""), "📊")
+                    st.markdown(f"**稳定性**: {stability_emoji} {trajectory.get('stability_desc', '')}")
+                    st.caption(f"标准差：{trajectory.get('std_dev', 0)}")
+
+                # 问题诊断
+                issues = diagnosis.get("issues", [])
+                if issues:
+                    st.markdown("#### ⚠️ 发现的问题")
+                    for issue in issues:
+                        with st.expander(f"❌ {issue['desc']}"):
+                            if "details" in issue:
+                                for detail in issue["details"]:
+                                    kp_info = deep_analyzer.knowledge_points.get(detail[0], {})
+                                    kp_name = getattr(kp_info, 'name', detail[0]) if hasattr(kp_info, 'name') else detail[0]
+                                    st.write(f"- {kp_name}: 出错 {detail[1]} 次")
+                            if "weeks" in issue:
+                                st.write(f"发生在第 {', '.join(map(str, issue['weeks']))} 周")
+
+                # 建议
+                recommendations = diagnosis.get("recommendations", [])
+                if recommendations:
+                    st.markdown("#### 💡 学习建议")
+                    for i, rec in enumerate(recommendations, 1):
+                        st.markdown(f"{i}. {rec}")
+
+                # 追踪摘要
+                tracking_summary = diagnosis.get("tracking_summary", {})
+                if tracking_summary:
+                    with st.expander("📋 追踪摘要"):
+                        st.write(f"- 总周次数：{tracking_summary.get('total_weeks', 0)}")
+                        st.write(f"- 有考试的周次：{tracking_summary.get('valid_weeks', 0)}")
+                        st.write(f"- 首次考试：第{tracking_summary.get('first_exam_week', 'N/A')}周")
+                        st.write(f"- 最近考试：第{tracking_summary.get('last_exam_week', 'N/A')}周")
+
 # ==================== 模式 3: 诊断报告 ====================
 elif analysis_mode == "📋 诊断报告":
     st.header("📋 学习诊断报告")
@@ -1127,15 +1590,24 @@ elif analysis_mode == "👥 多学生对比":
     st.header("👥 多学生对比分析")
     st.info(f"📌 当前分析学期：**{', '.join(selected_semesters)}**")
 
-    compare_students = st.multiselect(
-        "选择要对比的学生（2-5 名）",
-        options=list(student_dict.keys()),
-        default=[selected_student_name],
-        max_selections=5
-    )
+    # 检查是否有可选的学生
+    if not student_dict:
+        st.warning("⚠️ 暂无学生数据，无法进行对比分析")
+    else:
+        # 设置默认值，确保默认值在选项中
+        default_students = []
+        if selected_student_name and selected_student_name in student_dict:
+            default_students = [selected_student_name]
 
-    if len(compare_students) >= 2:
-        compare_ids = [student_dict[name] for name in compare_students]
+        compare_students = st.multiselect(
+            "选择要对比的学生（2-5 名）",
+            options=list(student_dict.keys()),
+            default=default_students,
+            max_selections=5
+        )
+
+        if len(compare_students) >= 2:
+            compare_ids = [student_dict[name] for name in compare_students]
 
         # 基础统计对比
         st.subheader("📊 基础统计对比")
@@ -1323,31 +1795,39 @@ elif analysis_mode == "📊 班级分析":
             dist_labels = [item[0] for item in dist_data]
             dist_values = [item[1] for item in dist_data]
 
-            col1, col2 = st.columns(2)
+            if dist_values:
+                # 转换为 DataFrame 以避免 plotly 参数冲突
+                df_dist = pd.DataFrame({
+                    '分数段': dist_labels,
+                    '人数': dist_values
+                })
 
-            with col1:
-                # 柱状图
-                fig_bar = px.bar(
-                    x=dist_labels,
-                    y=dist_values,
-                    labels={'x': '分数段', 'y': '人数'},
-                    title='各分数段人数分布',
-                    color=dist_values,
-                    color_continuous_scale='YlGnBu'
-                )
-                fig_bar.update_layout(height=400, showlegend=False)
-                st.plotly_chart(fig_bar, use_container_width=True)
+                col1, col2 = st.columns(2)
 
-            with col2:
-                # 饼图
-                colors = ['#e74c3c', '#e67e22', '#f1c40f', '#3498db', '#2ecc71']
-                fig_pie = px.pie(
-                    values=dist_values,
-                    names=dist_labels,
-                    title='分数段占比',
-                    color_discrete_sequence=colors
-                )
-                st.plotly_chart(fig_pie, use_container_width=True)
+                with col1:
+                    # 柱状图
+                    fig_bar = px.bar(
+                        df_dist,
+                        x='分数段',
+                        y='人数',
+                        labels={'x': '分数段', 'y': '人数'},
+                        title='各分数段人数分布',
+                        color='人数',
+                        color_continuous_scale='YlGnBu'
+                    )
+                    fig_bar.update_layout(height=400, showlegend=False)
+                    st.plotly_chart(fig_bar, use_container_width=True)
+
+                with col2:
+                    # 饼图
+                    colors = ['#e74c3c', '#e67e22', '#f1c40f', '#3498db', '#2ecc71']
+                    fig_pie = px.pie(
+                        values=df_dist['人数'],
+                        names=df_dist['分数段'],
+                        title='分数段占比',
+                        color_discrete_sequence=colors
+                    )
+                    st.plotly_chart(fig_pie, use_container_width=True)
 
             st.markdown("---")
 
@@ -2360,10 +2840,15 @@ elif analysis_mode == "🌟 能力成长档案":
 
         if compare_mode:
             # 选择对比学生
+            # 设置默认值，确保默认值在选项中
+            default_students = []
+            if selected_student_name and selected_student_name in student_dict:
+                default_students = [selected_student_name]
+
             compare_students = st.multiselect(
                 "选择要对比的学生（2 名）",
                 options=list(student_dict.keys()),
-                default=[selected_student_name],
+                default=default_students,
                 max_selections=2
             )
 
@@ -2557,31 +3042,39 @@ elif analysis_mode == "🏫 班级学情看板":
             st.subheader("📊 分数段分布")
             dist = class_dashboard.get_score_distribution(selected_semester)
 
-            col1, col2 = st.columns(2)
+            if dist:
+                # 转换为 DataFrame 以避免 plotly 参数冲突
+                df_dist = pd.DataFrame({
+                    '分数段': list(dist.keys()),
+                    '人数': list(dist.values())
+                })
 
-            with col1:
-                # 柱状图
-                fig_bar = px.bar(
-                    x=list(dist.keys()),
-                    y=list(dist.values()),
-                    labels={"x": "分数段", "y": "人数"},
-                    title="各分数段人数分布",
-                    color=list(dist.values()),
-                    color_continuous_scale="YlGnBu"
-                )
-                fig_bar.update_layout(height=400, showlegend=False)
-                st.plotly_chart(fig_bar, use_container_width=True)
+                col1, col2 = st.columns(2)
 
-            with col2:
-                # 饼图
-                colors = ["#e74c3c", "#e67e22", "#f1c40f", "#3498db", "#2ecc71"]
-                fig_pie = px.pie(
-                    values=list(dist.values()),
-                    names=list(dist.keys()),
-                    title="分数段占比",
-                    color_discrete_sequence=colors
-                )
-                st.plotly_chart(fig_pie, use_container_width=True)
+                with col1:
+                    # 柱状图
+                    fig_bar = px.bar(
+                        df_dist,
+                        x='分数段',
+                        y='人数',
+                        labels={"x": "分数段", "y": "人数"},
+                        title="各分数段人数分布",
+                        color='人数',
+                        color_continuous_scale="YlGnBu"
+                    )
+                    fig_bar.update_layout(height=400, showlegend=False)
+                    st.plotly_chart(fig_bar, use_container_width=True)
+
+                with col2:
+                    # 饼图
+                    colors = ["#e74c3c", "#e67e22", "#f1c40f", "#3498db", "#2ecc71"]
+                    fig_pie = px.pie(
+                        values=df_dist['人数'],
+                        names=df_dist['分数段'],
+                        title="分数段占比",
+                        color_discrete_sequence=colors
+                    )
+                    st.plotly_chart(fig_pie, use_container_width=True)
 
             st.markdown("---")
 

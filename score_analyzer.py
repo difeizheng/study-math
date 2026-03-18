@@ -22,6 +22,16 @@ class ScoreAnalyzer:
         self.student_names: Dict[int, str] = {}
         self.entered_scores_cache: Dict[int, List[Dict]] = {}  # 录入成绩缓存 {学号：[成绩]}
 
+    def _normalize_semester_name(self, semester: str) -> str:
+        """标准化学期名称，去除 -math_scores 等后缀"""
+        import re
+        # 使用更灵活的正则表达式：匹配如 "10037-3(2) 班下学期" 或 "10037-3(2) 班上学期"
+        # 分开捕获数字部分和班级部分，去除中间的空格以实现模糊匹配
+        match = re.search(r'(\d+-\d+\(\d+\))\s*(班.{3})', semester)
+        if match:
+            return match.group(1) + match.group(2)  # 不包含空格
+        return semester
+
     def refresh_entered_scores(self):
         """刷新录入成绩缓存"""
         self.entered_scores_cache = {}
@@ -74,7 +84,8 @@ class ScoreAnalyzer:
     def _parse_semester_name(self, filename: str) -> str:
         """从文件名解析学期名称"""
         # 匹配模式：10032-1(2) 班上学期数学考试分数-math_scores.xlsx
-        match = re.search(r'\d+-(\d+\(\d+\) 班 [上下] 学期)', filename)
+        # 使用 .+ 代替 [上下] 以正确匹配中文字符
+        match = re.search(r'(\d+-\d+\(\d+\) 班.+学期)', filename)
         if match:
             return match.group(1)
         return filename.replace("-math_scores.xlsx", "")
@@ -111,6 +122,12 @@ class ScoreAnalyzer:
             if not student_data.empty:
                 for col in self.students_df.columns:
                     if col not in ['学号', '姓名']:
+                        # 如果指定了学期，只返回该学期的成绩
+                        if semester:
+                            normalized_semester = self._normalize_semester_name(semester)
+                            col_semester = self._normalize_semester_name(col.split('_', 1)[0] if '_' in col else col)
+                            if col_semester != normalized_semester:
+                                continue
                         value = student_data[col].values[0]
                         if pd.notna(value):
                             scores[col] = float(value)
@@ -118,8 +135,12 @@ class ScoreAnalyzer:
         # 2. 合并录入的成绩
         if student_id in self.entered_scores_cache:
             for es in self.entered_scores_cache[student_id]:
-                if semester and es['semester'] != semester:
-                    continue
+                if semester:
+                    # 使用标准化后的学期名称进行模糊匹配
+                    normalized_semester = self._normalize_semester_name(semester)
+                    es_normalized = self._normalize_semester_name(es['semester'])
+                    if es_normalized != normalized_semester:
+                        continue
                 key = f"{es['semester']}_{es['exam_name']}"
                 if key not in scores and es['score'] is not None:
                     scores[key] = float(es['score'])
@@ -150,7 +171,9 @@ class ScoreAnalyzer:
                 # 提取学期和考试名称
                 parts = col.split('_', 1)
                 if len(parts) == 2:
-                    sem, exam = parts[0], parts[1]
+                    raw_sem, exam = parts[0], parts[1]
+                    # 使用标准化后的学期名称，确保与前端传入的 semester 参数一致
+                    sem = self._normalize_semester_name(raw_sem)
                     trends.append({
                         '学期': sem,
                         '考试': exam,
@@ -450,7 +473,7 @@ class ScoreAnalyzer:
         使用合并后的成绩（Excel + 录入）
         """
         if self.students_df is None:
-            return {}
+            return {'error': '未加载 Excel 数据，请先导入学生成绩'}
 
         # 获取合并后的所有成绩
         scores_dict = self.get_merged_scores(student_id)

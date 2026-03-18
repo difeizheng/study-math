@@ -8,6 +8,7 @@ from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
 from datetime import datetime
 import json
+from database import ExamScoreDAO
 
 
 @dataclass
@@ -41,9 +42,21 @@ class ClassLearningDashboard:
         self.student_names = student_names
         self.knowledge_points = knowledge_points
 
+    def _normalize_semester_name(self, semester: str) -> str:
+        """标准化学期名称，去除 -math_scores 等后缀"""
+        # 去除 -math_scores、_math_scores 等后缀
+        import re
+        # 提取核心学期名称，如 10037-3(2) 班下学期
+        # 使用更灵活的正则表达式以匹配不同格式的学期名称
+        # 分开捕获数字部分和班级部分，去除中间的空格以实现模糊匹配
+        match = re.search(r'(\d+-\d+\(\d+\))\s*(班.{3})', semester)
+        if match:
+            return match.group(1) + match.group(2)  # 不包含空格
+        return semester
+
     def analyze_class_overall(self, semester: str) -> Optional[ClassAnalysis]:
         """
-        分析班级整体情况
+        分析班级整体情况（包含 Excel 成绩 + 录入成绩）
 
         Args:
             semester: 学期名称
@@ -51,16 +64,38 @@ class ClassLearningDashboard:
         Returns:
             班级分析结果
         """
-        if semester not in self.semester_data:
+        # 标准化学期名称，用于匹配
+        normalized_semester = self._normalize_semester_name(semester)
+
+        # 查找匹配的 Excel 学期数据（支持模糊匹配）
+        df = None
+        for key in self.semester_data.keys():
+            if self._normalize_semester_name(key) == normalized_semester:
+                df = self.semester_data[key]
+                break
+
+        if df is None:
             return None
 
-        df = self.semester_data[semester]
+        # 获取录入的成绩（从数据库）
+        entered_scores = ExamScoreDAO.get_all_scores()
+        # 按学号和考试名称组织录入的成绩
+        entered_scores_by_student = {}
+        for s in entered_scores:
+            # 检查是否属于当前学期（使用标准化后的学期名称匹配）
+            if self._normalize_semester_name(s['semester']) != normalized_semester:
+                continue
+            sid = s['student_id']
+            if sid not in entered_scores_by_student:
+                entered_scores_by_student[sid] = {}
+            entered_scores_by_student[sid][s['exam_name']] = s['score']
+
         total_students = len(df)
 
         if total_students == 0:
             return None
 
-        # 计算每个学生的平均分
+        # 计算每个学生的平均分（Excel + 录入成绩）
         student_avgs = []
         student_scores_detail = {}
 
@@ -75,6 +110,7 @@ class ClassLearningDashboard:
                 continue
 
             scores = []
+            # 从 Excel 获取成绩
             for col in df.columns:
                 if col not in ['学号', '姓名']:
                     val = row[col]
@@ -83,6 +119,13 @@ class ClassLearningDashboard:
                             scores.append(float(val))
                         except (ValueError, TypeError):
                             pass
+
+            # 从录入成绩获取
+            if student_id in entered_scores_by_student:
+                for exam_name, score in entered_scores_by_student[student_id].items():
+                    if score is not None:
+                        scores.append(float(score))
+
             if scores:
                 avg = sum(scores) / len(scores)
                 student_avgs.append({
@@ -265,15 +308,28 @@ class ClassLearningDashboard:
         return needs_attention
 
     def get_score_distribution(self, semester: str) -> Dict:
-        """获取分数段分布"""
+        """获取分数段分布（包含录入成绩）"""
         if semester not in self.semester_data:
             return {}
 
         df = self.semester_data[semester]
+
+        # 获取录入的成绩
+        entered_scores = ExamScoreDAO.get_all_scores()
+        entered_scores_by_student = {}
+        for s in entered_scores:
+            if s['semester'] != semester:
+                continue
+            sid = s['student_id']
+            if sid not in entered_scores_by_student:
+                entered_scores_by_student[sid] = []
+            entered_scores_by_student[sid].append(s['score'])
+
         distribution = {'90-100': 0, '80-89': 0, '70-79': 0, '60-69': 0, '60 以下': 0}
 
         for _, row in df.iterrows():
             scores = []
+            # 从 Excel 获取成绩
             for col in df.columns:
                 if col not in ['学号', '姓名']:
                     val = row[col]
@@ -282,6 +338,19 @@ class ClassLearningDashboard:
                             scores.append(float(val))
                         except (ValueError, TypeError):
                             pass
+
+            # 从录入成绩获取
+            student_id = row.get('学号')
+            if pd.notna(student_id):
+                try:
+                    student_id = int(student_id)
+                    if student_id in entered_scores_by_student:
+                        for score in entered_scores_by_student[student_id]:
+                            if score is not None:
+                                scores.append(float(score))
+                except (ValueError, TypeError):
+                    pass
+
             if scores:
                 avg = sum(scores) / len(scores)
                 if avg >= 90:

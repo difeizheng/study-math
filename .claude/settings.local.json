@@ -36,7 +36,29 @@
       "Bash(netstat -ano)",
       "Bash(findstr :8501)",
       "Bash(taskkill:*)",
-      "Bash(cmd //c \"taskkill /PID 40216 /F\" 2>&1)"
+      "Bash(cmd //c \"taskkill /PID 40216 /F\" 2>&1)",
+      "Bash(kill:*)",
+      "Bash(chcp 65001)",
+      "Bash(iconv -f utf-8 -t gbk)",
+      "Bash(python3:*)",
+      "Bash(sqlite3:*)",
+      "Bash(pkill:*)",
+      "Bash(wmic process:*)",
+      "Bash(powershell -Command \"Stop-Process -Id 38764 -Force\")",
+      "Bash(tskill streamlit:*)",
+      "Bash(ls -la __pycache__/score_analyzer.*.pyc)",
+      "Read(//d /workspace2024/mytest/**)",
+      "Bash(rm -rf __pycache__)",
+      "Bash(findstr LISTENING)",
+      "Bash(powershell -Command \"Stop-Process -Id 4788 -Force\")",
+      "Bash(powershell -Command \"Stop-Process -Id 31704 -Force\" 2>&1)",
+      "Bash(powershell -Command \"Stop-Process -Id 37568 -Force\" 2>&1)",
+      "Bash(powershell -Command \"Stop-Process -Id 41392 -Force\" 2>&1)",
+      "Bash(powershell -Command \"Stop-Process -Id 36384 -Force\" 2>&1)",
+      "Bash(curl -s http://localhost:8501)",
+      "Bash(dir data:*)",
+      "Bash(Stop-Process -Id 20700 -Force)",
+      "Bash(powershell \"Stop-Process -Id 20700 -Force\")"
     ]
   }
 }

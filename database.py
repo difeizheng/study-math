@@ -5,7 +5,7 @@
 import sqlite3
 import json
 from pathlib import Path
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Tuple
 from dataclasses import dataclass, asdict
 from datetime import datetime
 import hashlib
@@ -182,6 +182,16 @@ class StudentDAO:
         rows = cursor.fetchall()
         conn.close()
         return [dict(row) for row in rows]
+
+    @staticmethod
+    def get_student_list() -> List[Tuple[int, str]]:
+        """获取学生列表（学号，姓名）"""
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT student_id, name FROM students ORDER BY student_id")
+        rows = cursor.fetchall()
+        conn.close()
+        return [(row[0], row[1]) for row in rows]
 
     @staticmethod
     def update_student(student_id: int, name: str = None, grade: str = None,

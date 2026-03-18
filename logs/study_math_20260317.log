@@ -1,0 +1,1262 @@
+2026-03-17 14:38:00 - study_math - INFO - ==================================================
+2026-03-17 14:38:00 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 14:38:00 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 14:38:00 - study_math - INFO - ==================================================
+2026-03-17 14:38:00 - app - INFO - 初始化分析器...
+2026-03-17 14:38:01 - app - INFO - 分析器初始化完成
+2026-03-17 14:46:38 - pdf_exporter - INFO - 注册中文字体：C:\Windows\Fonts\simhei.ttf
+2026-03-17 14:46:38 - pdf_exporter - INFO - 错题报告 PDF 已生成：D:\project_room\workspace2024\mytest\study-math\exports\error_report.pdf
+2026-03-17 14:46:38 - pdf_exporter - INFO - 能力报告 PDF 已生成：D:\project_room\workspace2024\mytest\study-math\exports\ability_report.pdf
+2026-03-17 14:46:38 - pdf_exporter - INFO - 综合报告 PDF 已生成：D:\project_room\workspace2024\mytest\study-math\exports\summary_report.pdf
+2026-03-17 15:08:53 - study_math - ERROR - 函数 error_func 执行失败（耗时0.000秒）: 测试错误
+2026-03-17 15:08:53 - study_math - ERROR - 测试上下文 - 错误：ValueError: 测试错误
+NoneType: None
+2026-03-17 15:08:53 - study_math - INFO - 测试信息
+2026-03-17 15:08:53 - study_math - WARNING - 测试警告
+2026-03-17 15:08:53 - pdf_exporter - INFO - 注册中文字体：C:\Windows\Fonts\simhei.ttf
+2026-03-17 15:08:53 - pdf_exporter - INFO - 能力报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmp6eb_se8d\test_ability_report.pdf
+2026-03-17 15:08:53 - pdf_exporter - INFO - 错题报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmp6eb_se8d\test_error_report.pdf
+2026-03-17 15:08:53 - pdf_exporter - INFO - 综合报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmp6eb_se8d\test_summary_report.pdf
+2026-03-17 15:09:53 - study_math - ERROR - 函数 error_func 执行失败（耗时0.000秒）: 测试错误
+2026-03-17 15:09:53 - study_math - ERROR - 测试上下文 - 错误：ValueError: 测试错误
+NoneType: None
+2026-03-17 15:09:53 - study_math - INFO - 测试信息
+2026-03-17 15:09:53 - study_math - WARNING - 测试警告
+2026-03-17 15:09:53 - pdf_exporter - INFO - 注册中文字体：C:\Windows\Fonts\simhei.ttf
+2026-03-17 15:09:53 - pdf_exporter - INFO - 能力报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpj4fd_z7v\test_ability_report.pdf
+2026-03-17 15:09:53 - pdf_exporter - INFO - 错题报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpj4fd_z7v\test_error_report.pdf
+2026-03-17 15:09:53 - pdf_exporter - INFO - 综合报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpj4fd_z7v\test_summary_report.pdf
+2026-03-17 15:11:07 - study_math - ERROR - 函数 error_func 执行失败（耗时0.000秒）: 测试错误
+2026-03-17 15:11:07 - study_math - ERROR - 测试上下文 - 错误：ValueError: 测试错误
+NoneType: None
+2026-03-17 15:11:07 - study_math - INFO - 测试信息
+2026-03-17 15:11:07 - study_math - WARNING - 测试警告
+2026-03-17 15:11:07 - pdf_exporter - INFO - 注册中文字体：C:\Windows\Fonts\simhei.ttf
+2026-03-17 15:11:07 - pdf_exporter - INFO - 能力报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmp2y_n60zn\test_ability_report.pdf
+2026-03-17 15:11:07 - pdf_exporter - INFO - 错题报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmp2y_n60zn\test_error_report.pdf
+2026-03-17 15:11:07 - pdf_exporter - INFO - 综合报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmp2y_n60zn\test_summary_report.pdf
+2026-03-17 15:13:14 - study_math - ERROR - 函数 error_func 执行失败（耗时0.000秒）: 测试错误
+2026-03-17 15:13:14 - study_math - ERROR - 测试上下文 - 错误：ValueError: 测试错误
+NoneType: None
+2026-03-17 15:13:14 - study_math - INFO - 测试信息
+2026-03-17 15:13:14 - study_math - WARNING - 测试警告
+2026-03-17 15:13:14 - pdf_exporter - INFO - 注册中文字体：C:\Windows\Fonts\simhei.ttf
+2026-03-17 15:13:14 - pdf_exporter - INFO - 能力报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmp83eiqmuy\test_ability_report.pdf
+2026-03-17 15:13:14 - pdf_exporter - INFO - 错题报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmp83eiqmuy\test_error_report.pdf
+2026-03-17 15:13:14 - pdf_exporter - INFO - 综合报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmp83eiqmuy\test_summary_report.pdf
+2026-03-17 15:15:40 - study_math - ERROR - 函数 error_func 执行失败（耗时0.000秒）: 测试错误
+2026-03-17 15:15:40 - study_math - ERROR - 测试上下文 - 错误：ValueError: 测试错误
+NoneType: None
+2026-03-17 15:15:40 - study_math - INFO - 测试信息
+2026-03-17 15:15:40 - study_math - WARNING - 测试警告
+2026-03-17 15:15:40 - pdf_exporter - INFO - 注册中文字体：C:\Windows\Fonts\simhei.ttf
+2026-03-17 15:15:40 - pdf_exporter - INFO - 能力报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpo8ix85sq\test_ability_report.pdf
+2026-03-17 15:15:40 - pdf_exporter - INFO - 错题报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpo8ix85sq\test_error_report.pdf
+2026-03-17 15:15:40 - pdf_exporter - INFO - 综合报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpo8ix85sq\test_summary_report.pdf
+2026-03-17 15:18:00 - study_math - ERROR - 函数 error_func 执行失败（耗时0.000秒）: 测试错误
+2026-03-17 15:18:00 - study_math - ERROR - 测试上下文 - 错误：ValueError: 测试错误
+NoneType: None
+2026-03-17 15:18:00 - study_math - INFO - 测试信息
+2026-03-17 15:18:00 - study_math - WARNING - 测试警告
+2026-03-17 15:18:00 - pdf_exporter - INFO - 注册中文字体：C:\Windows\Fonts\simhei.ttf
+2026-03-17 15:18:00 - pdf_exporter - INFO - 能力报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpmparjgaw\test_ability_report.pdf
+2026-03-17 15:18:00 - pdf_exporter - INFO - 错题报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpmparjgaw\test_error_report.pdf
+2026-03-17 15:18:00 - pdf_exporter - INFO - 综合报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpmparjgaw\test_summary_report.pdf
+2026-03-17 15:44:58 - study_math - INFO - ==================================================
+2026-03-17 15:44:58 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:44:58 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:44:58 - study_math - INFO - ==================================================
+2026-03-17 15:44:58 - app - INFO - 初始化分析器...
+2026-03-17 15:44:58 - app - INFO - 分析器初始化完成
+2026-03-17 15:45:04 - study_math - INFO - ==================================================
+2026-03-17 15:45:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:45:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:45:04 - study_math - INFO - ==================================================
+2026-03-17 15:45:05 - study_math - INFO - ==================================================
+2026-03-17 15:45:05 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:45:05 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:45:05 - study_math - INFO - ==================================================
+2026-03-17 15:45:06 - study_math - INFO - ==================================================
+2026-03-17 15:45:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:45:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:45:06 - study_math - INFO - ==================================================
+2026-03-17 15:45:07 - study_math - INFO - ==================================================
+2026-03-17 15:45:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:45:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:45:07 - study_math - INFO - ==================================================
+2026-03-17 15:45:07 - study_math - INFO - ==================================================
+2026-03-17 15:45:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:45:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:45:07 - study_math - INFO - ==================================================
+2026-03-17 15:45:08 - study_math - INFO - ==================================================
+2026-03-17 15:45:08 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:45:08 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:45:08 - study_math - INFO - ==================================================
+2026-03-17 15:45:09 - study_math - INFO - ==================================================
+2026-03-17 15:45:09 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:45:09 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:45:09 - study_math - INFO - ==================================================
+2026-03-17 15:45:13 - study_math - INFO - ==================================================
+2026-03-17 15:45:13 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:45:13 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:45:13 - study_math - INFO - ==================================================
+2026-03-17 15:45:16 - study_math - INFO - ==================================================
+2026-03-17 15:45:16 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:45:16 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:45:16 - study_math - INFO - ==================================================
+2026-03-17 15:45:18 - study_math - INFO - ==================================================
+2026-03-17 15:45:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:45:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:45:18 - study_math - INFO - ==================================================
+2026-03-17 15:45:21 - study_math - INFO - ==================================================
+2026-03-17 15:45:21 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:45:21 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:45:21 - study_math - INFO - ==================================================
+2026-03-17 15:45:35 - study_math - INFO - ==================================================
+2026-03-17 15:45:35 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:45:35 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:45:35 - study_math - INFO - ==================================================
+2026-03-17 15:45:36 - study_math - INFO - ==================================================
+2026-03-17 15:45:36 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:45:36 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:45:36 - study_math - INFO - ==================================================
+2026-03-17 15:46:54 - study_math - INFO - ==================================================
+2026-03-17 15:46:54 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:46:54 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:46:54 - study_math - INFO - ==================================================
+2026-03-17 15:46:55 - app - INFO - 初始化分析器...
+2026-03-17 15:46:55 - app - INFO - 分析器初始化完成
+2026-03-17 15:49:56 - study_math - INFO - ==================================================
+2026-03-17 15:49:56 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:49:56 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:49:56 - study_math - INFO - ==================================================
+2026-03-17 15:49:57 - study_math - INFO - ==================================================
+2026-03-17 15:49:57 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:49:57 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:49:57 - study_math - INFO - ==================================================
+2026-03-17 15:49:57 - study_math - INFO - ==================================================
+2026-03-17 15:49:57 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:49:57 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:49:57 - study_math - INFO - ==================================================
+2026-03-17 15:50:02 - study_math - INFO - ==================================================
+2026-03-17 15:50:02 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:50:02 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:50:02 - study_math - INFO - ==================================================
+2026-03-17 15:50:05 - study_math - INFO - ==================================================
+2026-03-17 15:50:05 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:50:05 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:50:05 - study_math - INFO - ==================================================
+2026-03-17 15:50:06 - study_math - INFO - ==================================================
+2026-03-17 15:50:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:50:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:50:06 - study_math - INFO - ==================================================
+2026-03-17 15:50:06 - study_math - INFO - ==================================================
+2026-03-17 15:50:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:50:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:50:06 - study_math - INFO - ==================================================
+2026-03-17 15:50:10 - study_math - INFO - ==================================================
+2026-03-17 15:50:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:50:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:50:10 - study_math - INFO - ==================================================
+2026-03-17 15:50:10 - study_math - INFO - ==================================================
+2026-03-17 15:50:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:50:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:50:10 - study_math - INFO - ==================================================
+2026-03-17 15:50:11 - study_math - INFO - ==================================================
+2026-03-17 15:50:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:50:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:50:11 - study_math - INFO - ==================================================
+2026-03-17 15:51:33 - study_math - INFO - ==================================================
+2026-03-17 15:51:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 15:51:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 15:51:33 - study_math - INFO - ==================================================
+2026-03-17 16:12:37 - study_math - INFO - ==================================================
+2026-03-17 16:12:37 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:12:37 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:12:37 - study_math - INFO - ==================================================
+2026-03-17 16:12:47 - study_math - INFO - ==================================================
+2026-03-17 16:12:47 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:12:47 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:12:47 - study_math - INFO - ==================================================
+2026-03-17 16:13:24 - study_math - INFO - ==================================================
+2026-03-17 16:13:24 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:13:24 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:13:24 - study_math - INFO - ==================================================
+2026-03-17 16:13:30 - study_math - INFO - ==================================================
+2026-03-17 16:13:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:13:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:13:30 - study_math - INFO - ==================================================
+2026-03-17 16:13:33 - study_math - INFO - ==================================================
+2026-03-17 16:13:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:13:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:13:33 - study_math - INFO - ==================================================
+2026-03-17 16:13:41 - study_math - INFO - ==================================================
+2026-03-17 16:13:41 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:13:41 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:13:41 - study_math - INFO - ==================================================
+2026-03-17 16:13:43 - study_math - INFO - ==================================================
+2026-03-17 16:13:43 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:13:43 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:13:43 - study_math - INFO - ==================================================
+2026-03-17 16:19:39 - study_math - INFO - ==================================================
+2026-03-17 16:19:39 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:19:39 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:19:39 - study_math - INFO - ==================================================
+2026-03-17 16:21:54 - study_math - INFO - ==================================================
+2026-03-17 16:21:54 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:21:54 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:21:54 - study_math - INFO - ==================================================
+2026-03-17 16:22:44 - study_math - INFO - ==================================================
+2026-03-17 16:22:44 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:22:44 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:22:44 - study_math - INFO - ==================================================
+2026-03-17 16:23:30 - study_math - INFO - ==================================================
+2026-03-17 16:23:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:23:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:23:30 - study_math - INFO - ==================================================
+2026-03-17 16:23:30 - study_math - INFO - ==================================================
+2026-03-17 16:23:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:23:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:23:30 - study_math - INFO - ==================================================
+2026-03-17 16:23:55 - study_math - INFO - ==================================================
+2026-03-17 16:23:55 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:23:55 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:23:55 - study_math - INFO - ==================================================
+2026-03-17 16:24:34 - study_math - INFO - ==================================================
+2026-03-17 16:24:34 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:24:34 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:24:34 - study_math - INFO - ==================================================
+2026-03-17 16:24:34 - study_math - INFO - ==================================================
+2026-03-17 16:24:34 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:24:34 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:24:34 - study_math - INFO - ==================================================
+2026-03-17 16:41:41 - study_math - INFO - ==================================================
+2026-03-17 16:41:41 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:41:41 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:41:41 - study_math - INFO - ==================================================
+2026-03-17 16:47:33 - study_math - INFO - ==================================================
+2026-03-17 16:47:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:47:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:47:33 - study_math - INFO - ==================================================
+2026-03-17 16:49:42 - study_math - INFO - ==================================================
+2026-03-17 16:49:42 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:49:42 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:49:42 - study_math - INFO - ==================================================
+2026-03-17 16:49:51 - study_math - INFO - ==================================================
+2026-03-17 16:49:51 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:49:51 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:49:51 - study_math - INFO - ==================================================
+2026-03-17 16:49:51 - study_math - INFO - ==================================================
+2026-03-17 16:49:51 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:49:51 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:49:51 - study_math - INFO - ==================================================
+2026-03-17 16:59:06 - study_math - INFO - ==================================================
+2026-03-17 16:59:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:59:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:59:06 - study_math - INFO - ==================================================
+2026-03-17 16:59:27 - study_math - INFO - ==================================================
+2026-03-17 16:59:27 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:59:27 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:59:27 - study_math - INFO - ==================================================
+2026-03-17 16:59:29 - study_math - INFO - ==================================================
+2026-03-17 16:59:29 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:59:29 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:59:29 - study_math - INFO - ==================================================
+2026-03-17 16:59:29 - study_math - INFO - ==================================================
+2026-03-17 16:59:29 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 16:59:29 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 16:59:29 - study_math - INFO - ==================================================
+2026-03-17 17:10:32 - study_math - INFO - ==================================================
+2026-03-17 17:10:32 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 17:10:32 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 17:10:32 - study_math - INFO - ==================================================
+2026-03-17 17:10:33 - study_math - INFO - ==================================================
+2026-03-17 17:10:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 17:10:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 17:10:33 - study_math - INFO - ==================================================
+2026-03-17 17:10:37 - study_math - INFO - ==================================================
+2026-03-17 17:10:37 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 17:10:37 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 17:10:37 - study_math - INFO - ==================================================
+2026-03-17 17:10:38 - study_math - INFO - ==================================================
+2026-03-17 17:10:38 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 17:10:38 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 17:10:38 - study_math - INFO - ==================================================
+2026-03-17 17:10:40 - study_math - INFO - ==================================================
+2026-03-17 17:10:40 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 17:10:40 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 17:10:40 - study_math - INFO - ==================================================
+2026-03-17 17:10:42 - study_math - INFO - ==================================================
+2026-03-17 17:10:42 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 17:10:42 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 17:10:42 - study_math - INFO - ==================================================
+2026-03-17 17:10:47 - study_math - INFO - ==================================================
+2026-03-17 17:10:47 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 17:10:47 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 17:10:47 - study_math - INFO - ==================================================
+2026-03-17 17:20:58 - study_math - INFO - ==================================================
+2026-03-17 17:20:58 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 17:20:58 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 17:20:58 - study_math - INFO - ==================================================
+2026-03-17 17:21:07 - study_math - INFO - ==================================================
+2026-03-17 17:21:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 17:21:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 17:21:07 - study_math - INFO - ==================================================
+2026-03-17 17:21:11 - study_math - INFO - ==================================================
+2026-03-17 17:21:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 17:21:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 17:21:11 - study_math - INFO - ==================================================
+2026-03-17 17:21:11 - study_math - INFO - ==================================================
+2026-03-17 17:21:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 17:21:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 17:21:11 - study_math - INFO - ==================================================
+2026-03-17 17:41:19 - study_math - INFO - ==================================================
+2026-03-17 17:41:19 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 17:41:19 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 17:41:19 - study_math - INFO - ==================================================
+2026-03-17 17:41:30 - study_math - INFO - ==================================================
+2026-03-17 17:41:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 17:41:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 17:41:30 - study_math - INFO - ==================================================
+2026-03-17 17:41:40 - study_math - INFO - ==================================================
+2026-03-17 17:41:40 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 17:41:40 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 17:41:40 - study_math - INFO - ==================================================
+2026-03-17 17:41:41 - study_math - INFO - ==================================================
+2026-03-17 17:41:41 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 17:41:41 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 17:41:41 - study_math - INFO - ==================================================
+2026-03-17 22:03:01 - study_math - INFO - ==================================================
+2026-03-17 22:03:01 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:03:01 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:03:01 - study_math - INFO - ==================================================
+2026-03-17 22:03:01 - app - INFO - 初始化分析器...
+2026-03-17 22:03:02 - app - INFO - 分析器初始化完成
+2026-03-17 22:04:47 - study_math - INFO - ==================================================
+2026-03-17 22:04:47 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:04:47 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:04:47 - study_math - INFO - ==================================================
+2026-03-17 22:04:51 - study_math - INFO - ==================================================
+2026-03-17 22:04:51 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:04:51 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:04:51 - study_math - INFO - ==================================================
+2026-03-17 22:05:55 - study_math - INFO - ==================================================
+2026-03-17 22:05:55 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:05:55 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:05:55 - study_math - INFO - ==================================================
+2026-03-17 22:06:00 - study_math - INFO - ==================================================
+2026-03-17 22:06:00 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:06:00 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:06:00 - study_math - INFO - ==================================================
+2026-03-17 22:06:01 - study_math - INFO - ==================================================
+2026-03-17 22:06:01 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:06:01 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:06:01 - study_math - INFO - ==================================================
+2026-03-17 22:06:03 - study_math - INFO - ==================================================
+2026-03-17 22:06:03 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:06:03 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:06:03 - study_math - INFO - ==================================================
+2026-03-17 22:06:06 - study_math - INFO - ==================================================
+2026-03-17 22:06:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:06:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:06:06 - study_math - INFO - ==================================================
+2026-03-17 22:06:08 - study_math - INFO - ==================================================
+2026-03-17 22:06:08 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:06:08 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:06:08 - study_math - INFO - ==================================================
+2026-03-17 22:06:12 - study_math - INFO - ==================================================
+2026-03-17 22:06:12 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:06:12 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:06:12 - study_math - INFO - ==================================================
+2026-03-17 22:06:35 - study_math - INFO - ==================================================
+2026-03-17 22:06:35 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:06:35 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:06:35 - study_math - INFO - ==================================================
+2026-03-17 22:08:21 - study_math - INFO - ==================================================
+2026-03-17 22:08:21 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:08:21 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:08:21 - study_math - INFO - ==================================================
+2026-03-17 22:08:26 - study_math - INFO - ==================================================
+2026-03-17 22:08:26 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:08:26 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:08:26 - study_math - INFO - ==================================================
+2026-03-17 22:08:31 - study_math - INFO - ==================================================
+2026-03-17 22:08:31 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:08:31 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:08:31 - study_math - INFO - ==================================================
+2026-03-17 22:08:35 - study_math - INFO - ==================================================
+2026-03-17 22:08:35 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:08:35 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:08:35 - study_math - INFO - ==================================================
+2026-03-17 22:08:42 - study_math - INFO - ==================================================
+2026-03-17 22:08:42 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:08:42 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:08:42 - study_math - INFO - ==================================================
+2026-03-17 22:08:44 - study_math - INFO - ==================================================
+2026-03-17 22:08:44 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:08:44 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:08:44 - study_math - INFO - ==================================================
+2026-03-17 22:08:47 - study_math - INFO - ==================================================
+2026-03-17 22:08:47 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:08:47 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:08:47 - study_math - INFO - ==================================================
+2026-03-17 22:08:49 - study_math - INFO - ==================================================
+2026-03-17 22:08:49 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:08:49 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:08:49 - study_math - INFO - ==================================================
+2026-03-17 22:08:54 - study_math - INFO - ==================================================
+2026-03-17 22:08:54 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:08:54 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:08:54 - study_math - INFO - ==================================================
+2026-03-17 22:09:01 - study_math - INFO - ==================================================
+2026-03-17 22:09:01 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:09:01 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:09:01 - study_math - INFO - ==================================================
+2026-03-17 22:09:40 - study_math - INFO - ==================================================
+2026-03-17 22:09:40 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:09:40 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:09:40 - study_math - INFO - ==================================================
+2026-03-17 22:09:58 - study_math - INFO - ==================================================
+2026-03-17 22:09:58 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:09:58 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:09:58 - study_math - INFO - ==================================================
+2026-03-17 22:10:16 - study_math - INFO - ==================================================
+2026-03-17 22:10:16 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:10:16 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:10:16 - study_math - INFO - ==================================================
+2026-03-17 22:10:28 - study_math - INFO - ==================================================
+2026-03-17 22:10:28 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:10:28 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:10:28 - study_math - INFO - ==================================================
+2026-03-17 22:10:31 - study_math - INFO - ==================================================
+2026-03-17 22:10:31 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:10:31 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:10:31 - study_math - INFO - ==================================================
+2026-03-17 22:10:51 - study_math - INFO - ==================================================
+2026-03-17 22:10:51 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:10:51 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:10:51 - study_math - INFO - ==================================================
+2026-03-17 22:10:54 - study_math - INFO - ==================================================
+2026-03-17 22:10:54 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:10:54 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:10:54 - study_math - INFO - ==================================================
+2026-03-17 22:11:00 - study_math - INFO - ==================================================
+2026-03-17 22:11:00 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:11:00 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:11:00 - study_math - INFO - ==================================================
+2026-03-17 22:11:40 - study_math - INFO - ==================================================
+2026-03-17 22:11:40 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:11:40 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:11:40 - study_math - INFO - ==================================================
+2026-03-17 22:12:11 - study_math - INFO - ==================================================
+2026-03-17 22:12:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:12:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:12:11 - study_math - INFO - ==================================================
+2026-03-17 22:12:14 - study_math - INFO - ==================================================
+2026-03-17 22:12:14 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:12:14 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:12:14 - study_math - INFO - ==================================================
+2026-03-17 22:12:21 - study_math - INFO - ==================================================
+2026-03-17 22:12:21 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:12:21 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:12:21 - study_math - INFO - ==================================================
+2026-03-17 22:12:38 - study_math - INFO - ==================================================
+2026-03-17 22:12:38 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:12:38 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:12:38 - study_math - INFO - ==================================================
+2026-03-17 22:13:01 - study_math - INFO - ==================================================
+2026-03-17 22:13:01 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:13:01 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:13:01 - study_math - INFO - ==================================================
+2026-03-17 22:13:04 - study_math - INFO - ==================================================
+2026-03-17 22:13:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:13:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:13:04 - study_math - INFO - ==================================================
+2026-03-17 22:13:11 - study_math - INFO - ==================================================
+2026-03-17 22:13:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:13:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:13:11 - study_math - INFO - ==================================================
+2026-03-17 22:13:16 - study_math - INFO - ==================================================
+2026-03-17 22:13:16 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:13:16 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:13:16 - study_math - INFO - ==================================================
+2026-03-17 22:13:19 - study_math - INFO - ==================================================
+2026-03-17 22:13:19 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:13:19 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:13:19 - study_math - INFO - ==================================================
+2026-03-17 22:13:25 - study_math - INFO - ==================================================
+2026-03-17 22:13:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:13:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:13:25 - study_math - INFO - ==================================================
+2026-03-17 22:13:26 - study_math - INFO - ==================================================
+2026-03-17 22:13:26 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:13:26 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:13:26 - study_math - INFO - ==================================================
+2026-03-17 22:13:29 - study_math - INFO - ==================================================
+2026-03-17 22:13:29 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:13:29 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:13:29 - study_math - INFO - ==================================================
+2026-03-17 22:13:30 - study_math - INFO - ==================================================
+2026-03-17 22:13:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:13:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:13:30 - study_math - INFO - ==================================================
+2026-03-17 22:13:33 - study_math - INFO - ==================================================
+2026-03-17 22:13:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:13:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:13:33 - study_math - INFO - ==================================================
+2026-03-17 22:14:04 - study_math - INFO - ==================================================
+2026-03-17 22:14:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:14:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:14:04 - study_math - INFO - ==================================================
+2026-03-17 22:14:04 - study_math - INFO - ==================================================
+2026-03-17 22:14:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:14:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:14:04 - study_math - INFO - ==================================================
+2026-03-17 22:31:50 - study_math - INFO - ==================================================
+2026-03-17 22:31:50 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:31:50 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:31:50 - study_math - INFO - ==================================================
+2026-03-17 22:31:52 - app - INFO - 初始化分析器...
+2026-03-17 22:31:53 - app - INFO - 分析器初始化完成
+2026-03-17 22:31:56 - study_math - INFO - ==================================================
+2026-03-17 22:31:56 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:31:56 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:31:56 - study_math - INFO - ==================================================
+2026-03-17 22:31:59 - study_math - INFO - ==================================================
+2026-03-17 22:31:59 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:31:59 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:31:59 - study_math - INFO - ==================================================
+2026-03-17 22:32:01 - study_math - INFO - ==================================================
+2026-03-17 22:32:01 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:32:01 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:32:01 - study_math - INFO - ==================================================
+2026-03-17 22:32:19 - study_math - INFO - ==================================================
+2026-03-17 22:32:19 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:32:19 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:32:19 - study_math - INFO - ==================================================
+2026-03-17 22:32:25 - study_math - INFO - ==================================================
+2026-03-17 22:32:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:32:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:32:25 - study_math - INFO - ==================================================
+2026-03-17 22:32:54 - study_math - INFO - ==================================================
+2026-03-17 22:32:54 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:32:54 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:32:54 - study_math - INFO - ==================================================
+2026-03-17 22:33:08 - study_math - INFO - ==================================================
+2026-03-17 22:33:08 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:33:08 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:33:08 - study_math - INFO - ==================================================
+2026-03-17 22:33:08 - study_math - INFO - ==================================================
+2026-03-17 22:33:08 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:33:08 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:33:08 - study_math - INFO - ==================================================
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生1, 考试周练2, 分数95.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生2, 考试周练2, 分数92.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生3, 考试周练2, 分数95.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生4, 考试周练2, 分数88.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生5, 考试周练2, 分数85.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生6, 考试周练2, 分数97.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生7, 考试周练2, 分数84.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生8, 考试周练2, 分数90.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生9, 考试周练2, 分数94.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生10, 考试周练2, 分数92.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生11, 考试周练2, 分数94.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生12, 考试周练2, 分数93.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生13, 考试周练2, 分数88.5, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生14, 考试周练2, 分数100.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生15, 考试周练2, 分数100.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生16, 考试周练2, 分数90.5, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生17, 考试周练2, 分数94.5, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生18, 考试周练2, 分数94.5, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生19, 考试周练2, 分数94.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生20, 考试周练2, 分数89.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生21, 考试周练2, 分数88.5, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生22, 考试周练2, 分数85.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生23, 考试周练2, 分数92.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生24, 考试周练2, 分数87.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生25, 考试周练2, 分数97.5, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生26, 考试周练2, 分数85.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生27, 考试周练2, 分数96.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生28, 考试周练2, 分数94.5, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生29, 考试周练2, 分数90.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生30, 考试周练2, 分数85.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生31, 考试周练2, 分数58.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生32, 考试周练2, 分数98.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生33, 考试周练2, 分数0.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生34, 考试周练2, 分数89.5, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生35, 考试周练2, 分数96.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生36, 考试周练2, 分数91.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生37, 考试周练2, 分数70.5, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生38, 考试周练2, 分数87.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生39, 考试周练2, 分数94.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生40, 考试周练2, 分数92.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生41, 考试周练2, 分数85.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生42, 考试周练2, 分数43.0, 错题0道
+2026-03-17 22:33:09 - score_entry - INFO - 成绩录入：学生43, 考试周练2, 分数100.0, 错题0道
+2026-03-17 22:34:55 - study_math - INFO - ==================================================
+2026-03-17 22:34:55 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:34:55 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:34:55 - study_math - INFO - ==================================================
+2026-03-17 22:35:07 - study_math - INFO - ==================================================
+2026-03-17 22:35:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:35:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:35:07 - study_math - INFO - ==================================================
+2026-03-17 22:35:18 - study_math - INFO - ==================================================
+2026-03-17 22:35:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:35:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:35:18 - study_math - INFO - ==================================================
+2026-03-17 22:35:58 - study_math - INFO - ==================================================
+2026-03-17 22:35:58 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:35:58 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:35:58 - study_math - INFO - ==================================================
+2026-03-17 22:36:05 - study_math - INFO - ==================================================
+2026-03-17 22:36:05 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:36:05 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:36:05 - study_math - INFO - ==================================================
+2026-03-17 22:36:13 - study_math - INFO - ==================================================
+2026-03-17 22:36:13 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:36:13 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:36:13 - study_math - INFO - ==================================================
+2026-03-17 22:36:25 - study_math - INFO - ==================================================
+2026-03-17 22:36:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:36:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:36:25 - study_math - INFO - ==================================================
+2026-03-17 22:36:34 - study_math - INFO - ==================================================
+2026-03-17 22:36:34 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:36:34 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:36:34 - study_math - INFO - ==================================================
+2026-03-17 22:36:49 - study_math - INFO - ==================================================
+2026-03-17 22:36:49 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:36:49 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:36:49 - study_math - INFO - ==================================================
+2026-03-17 22:37:06 - study_math - INFO - ==================================================
+2026-03-17 22:37:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:37:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:37:06 - study_math - INFO - ==================================================
+2026-03-17 22:37:11 - study_math - INFO - ==================================================
+2026-03-17 22:37:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:37:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:37:11 - study_math - INFO - ==================================================
+2026-03-17 22:37:18 - study_math - INFO - ==================================================
+2026-03-17 22:37:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:37:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:37:18 - study_math - INFO - ==================================================
+2026-03-17 22:37:20 - study_math - INFO - ==================================================
+2026-03-17 22:37:20 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:37:20 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:37:20 - study_math - INFO - ==================================================
+2026-03-17 22:37:49 - study_math - INFO - ==================================================
+2026-03-17 22:37:49 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:37:49 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:37:49 - study_math - INFO - ==================================================
+2026-03-17 22:37:51 - study_math - INFO - ==================================================
+2026-03-17 22:37:51 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:37:51 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:37:51 - study_math - INFO - ==================================================
+2026-03-17 22:37:55 - study_math - INFO - ==================================================
+2026-03-17 22:37:55 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:37:55 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:37:55 - study_math - INFO - ==================================================
+2026-03-17 22:37:56 - study_math - INFO - ==================================================
+2026-03-17 22:37:56 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:37:56 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:37:56 - study_math - INFO - ==================================================
+2026-03-17 22:38:46 - study_math - INFO - ==================================================
+2026-03-17 22:38:46 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:38:46 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:38:46 - study_math - INFO - ==================================================
+2026-03-17 22:49:18 - study_math - INFO - ==================================================
+2026-03-17 22:49:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:49:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:49:18 - study_math - INFO - ==================================================
+2026-03-17 22:49:19 - app - INFO - 初始化分析器...
+2026-03-17 22:49:20 - app - INFO - 分析器初始化完成
+2026-03-17 22:54:09 - study_math - INFO - ==================================================
+2026-03-17 22:54:09 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:54:09 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:54:09 - study_math - INFO - ==================================================
+2026-03-17 22:54:10 - app - INFO - 初始化分析器...
+2026-03-17 22:54:11 - app - INFO - 分析器初始化完成
+2026-03-17 22:54:58 - study_math - INFO - ==================================================
+2026-03-17 22:54:58 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:54:58 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:54:58 - study_math - INFO - ==================================================
+2026-03-17 22:55:33 - study_math - INFO - ==================================================
+2026-03-17 22:55:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:55:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:55:33 - study_math - INFO - ==================================================
+2026-03-17 22:56:07 - study_math - INFO - ==================================================
+2026-03-17 22:56:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:56:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:56:07 - study_math - INFO - ==================================================
+2026-03-17 22:56:07 - study_math - INFO - ==================================================
+2026-03-17 22:56:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 22:56:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 22:56:07 - study_math - INFO - ==================================================
+2026-03-17 22:56:08 - score_entry - INFO - 成绩录入：学生1, 考试周练2, 分数95.0, 错题0道
+2026-03-17 22:56:08 - score_entry - INFO - 成绩录入：学生2, 考试周练2, 分数92.0, 错题0道
+2026-03-17 22:56:08 - score_entry - INFO - 成绩录入：学生3, 考试周练2, 分数95.0, 错题0道
+2026-03-17 22:56:08 - score_entry - INFO - 成绩录入：学生4, 考试周练2, 分数88.0, 错题0道
+2026-03-17 22:56:08 - score_entry - INFO - 成绩录入：学生5, 考试周练2, 分数85.0, 错题0道
+2026-03-17 22:56:08 - score_entry - INFO - 成绩录入：学生6, 考试周练2, 分数97.0, 错题0道
+2026-03-17 22:56:08 - score_entry - INFO - 成绩录入：学生7, 考试周练2, 分数84.0, 错题0道
+2026-03-17 22:56:08 - score_entry - INFO - 成绩录入：学生8, 考试周练2, 分数90.0, 错题0道
+2026-03-17 22:56:08 - score_entry - INFO - 成绩录入：学生9, 考试周练2, 分数94.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生10, 考试周练2, 分数92.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生11, 考试周练2, 分数94.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生12, 考试周练2, 分数93.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生13, 考试周练2, 分数88.5, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生14, 考试周练2, 分数100.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生15, 考试周练2, 分数100.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生16, 考试周练2, 分数90.5, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生17, 考试周练2, 分数94.5, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生18, 考试周练2, 分数94.5, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生19, 考试周练2, 分数94.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生20, 考试周练2, 分数89.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生21, 考试周练2, 分数88.5, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生22, 考试周练2, 分数85.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生23, 考试周练2, 分数92.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生24, 考试周练2, 分数87.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生25, 考试周练2, 分数97.5, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生26, 考试周练2, 分数85.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生27, 考试周练2, 分数96.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生28, 考试周练2, 分数94.5, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生29, 考试周练2, 分数90.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生30, 考试周练2, 分数85.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生31, 考试周练2, 分数58.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生32, 考试周练2, 分数98.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生33, 考试周练2, 分数0.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生34, 考试周练2, 分数89.5, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生35, 考试周练2, 分数96.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生36, 考试周练2, 分数91.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生37, 考试周练2, 分数70.5, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生38, 考试周练2, 分数87.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生39, 考试周练2, 分数94.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生40, 考试周练2, 分数92.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生41, 考试周练2, 分数85.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生42, 考试周练2, 分数43.0, 错题0道
+2026-03-17 22:56:09 - score_entry - INFO - 成绩录入：学生43, 考试周练2, 分数100.0, 错题0道
+2026-03-17 23:00:00 - study_math - INFO - ==================================================
+2026-03-17 23:00:00 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:00:00 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:00:00 - study_math - INFO - ==================================================
+2026-03-17 23:03:39 - study_math - INFO - ==================================================
+2026-03-17 23:03:39 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:03:39 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:03:39 - study_math - INFO - ==================================================
+2026-03-17 23:03:49 - study_math - INFO - ==================================================
+2026-03-17 23:03:49 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:03:49 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:03:49 - study_math - INFO - ==================================================
+2026-03-17 23:04:11 - study_math - INFO - ==================================================
+2026-03-17 23:04:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:04:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:04:11 - study_math - INFO - ==================================================
+2026-03-17 23:04:14 - study_math - INFO - ==================================================
+2026-03-17 23:04:14 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:04:14 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:04:14 - study_math - INFO - ==================================================
+2026-03-17 23:04:19 - study_math - INFO - ==================================================
+2026-03-17 23:04:19 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:04:19 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:04:19 - study_math - INFO - ==================================================
+2026-03-17 23:04:23 - study_math - INFO - ==================================================
+2026-03-17 23:04:23 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:04:23 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:04:23 - study_math - INFO - ==================================================
+2026-03-17 23:04:25 - study_math - INFO - ==================================================
+2026-03-17 23:04:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:04:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:04:25 - study_math - INFO - ==================================================
+2026-03-17 23:04:37 - study_math - INFO - ==================================================
+2026-03-17 23:04:37 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:04:37 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:04:37 - study_math - INFO - ==================================================
+2026-03-17 23:04:47 - study_math - INFO - ==================================================
+2026-03-17 23:04:47 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:04:47 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:04:47 - study_math - INFO - ==================================================
+2026-03-17 23:04:49 - study_math - INFO - ==================================================
+2026-03-17 23:04:49 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:04:49 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:04:49 - study_math - INFO - ==================================================
+2026-03-17 23:06:35 - study_math - INFO - ==================================================
+2026-03-17 23:06:35 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:06:35 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:06:35 - study_math - INFO - ==================================================
+2026-03-17 23:06:44 - study_math - INFO - ==================================================
+2026-03-17 23:06:44 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:06:44 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:06:44 - study_math - INFO - ==================================================
+2026-03-17 23:06:45 - study_math - INFO - ==================================================
+2026-03-17 23:06:45 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:06:45 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:06:45 - study_math - INFO - ==================================================
+2026-03-17 23:06:48 - study_math - INFO - ==================================================
+2026-03-17 23:06:48 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:06:48 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:06:48 - study_math - INFO - ==================================================
+2026-03-17 23:06:48 - study_math - INFO - ==================================================
+2026-03-17 23:06:48 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:06:48 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:06:48 - study_math - INFO - ==================================================
+2026-03-17 23:16:16 - study_math - INFO - ==================================================
+2026-03-17 23:16:16 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:16:16 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:16:16 - study_math - INFO - ==================================================
+2026-03-17 23:16:17 - app - INFO - 初始化分析器...
+2026-03-17 23:16:18 - app - INFO - 分析器初始化完成
+2026-03-17 23:16:25 - study_math - INFO - ==================================================
+2026-03-17 23:16:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:16:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:16:25 - study_math - INFO - ==================================================
+2026-03-17 23:16:26 - study_math - INFO - ==================================================
+2026-03-17 23:16:26 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:16:26 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:16:26 - study_math - INFO - ==================================================
+2026-03-17 23:16:26 - study_math - INFO - ==================================================
+2026-03-17 23:16:26 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:16:26 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:16:26 - study_math - INFO - ==================================================
+2026-03-17 23:16:28 - study_math - INFO - ==================================================
+2026-03-17 23:16:28 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:16:28 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:16:28 - study_math - INFO - ==================================================
+2026-03-17 23:16:31 - study_math - INFO - ==================================================
+2026-03-17 23:16:31 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:16:31 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:16:31 - study_math - INFO - ==================================================
+2026-03-17 23:20:41 - study_math - INFO - ==================================================
+2026-03-17 23:20:41 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:20:41 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:20:41 - study_math - INFO - ==================================================
+2026-03-17 23:20:42 - app - INFO - 初始化分析器...
+2026-03-17 23:20:43 - app - INFO - 分析器初始化完成
+2026-03-17 23:20:59 - study_math - INFO - ==================================================
+2026-03-17 23:20:59 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:20:59 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:20:59 - study_math - INFO - ==================================================
+2026-03-17 23:21:07 - study_math - INFO - ==================================================
+2026-03-17 23:21:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:21:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:21:07 - study_math - INFO - ==================================================
+2026-03-17 23:21:10 - study_math - INFO - ==================================================
+2026-03-17 23:21:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:21:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:21:10 - study_math - INFO - ==================================================
+2026-03-17 23:21:13 - study_math - INFO - ==================================================
+2026-03-17 23:21:13 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:21:13 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:21:13 - study_math - INFO - ==================================================
+2026-03-17 23:21:15 - study_math - INFO - ==================================================
+2026-03-17 23:21:15 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:21:15 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:21:15 - study_math - INFO - ==================================================
+2026-03-17 23:21:22 - study_math - INFO - ==================================================
+2026-03-17 23:21:22 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:21:22 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:21:22 - study_math - INFO - ==================================================
+2026-03-17 23:21:37 - study_math - INFO - ==================================================
+2026-03-17 23:21:37 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:21:37 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:21:37 - study_math - INFO - ==================================================
+2026-03-17 23:21:46 - study_math - INFO - ==================================================
+2026-03-17 23:21:46 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:21:46 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:21:46 - study_math - INFO - ==================================================
+2026-03-17 23:21:53 - study_math - INFO - ==================================================
+2026-03-17 23:21:53 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:21:53 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:21:53 - study_math - INFO - ==================================================
+2026-03-17 23:21:58 - study_math - INFO - ==================================================
+2026-03-17 23:21:58 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:21:58 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:21:58 - study_math - INFO - ==================================================
+2026-03-17 23:22:00 - study_math - INFO - ==================================================
+2026-03-17 23:22:00 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:22:00 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:22:00 - study_math - INFO - ==================================================
+2026-03-17 23:22:10 - study_math - INFO - ==================================================
+2026-03-17 23:22:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:22:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:22:10 - study_math - INFO - ==================================================
+2026-03-17 23:22:13 - study_math - INFO - ==================================================
+2026-03-17 23:22:13 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:22:13 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:22:13 - study_math - INFO - ==================================================
+2026-03-17 23:22:19 - study_math - INFO - ==================================================
+2026-03-17 23:22:19 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:22:19 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:22:19 - study_math - INFO - ==================================================
+2026-03-17 23:22:23 - study_math - INFO - ==================================================
+2026-03-17 23:22:23 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:22:23 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:22:23 - study_math - INFO - ==================================================
+2026-03-17 23:22:35 - study_math - INFO - ==================================================
+2026-03-17 23:22:35 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:22:35 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:22:35 - study_math - INFO - ==================================================
+2026-03-17 23:22:45 - study_math - INFO - ==================================================
+2026-03-17 23:22:45 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:22:45 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:22:45 - study_math - INFO - ==================================================
+2026-03-17 23:22:47 - study_math - INFO - ==================================================
+2026-03-17 23:22:47 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:22:47 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:22:47 - study_math - INFO - ==================================================
+2026-03-17 23:22:48 - study_math - INFO - ==================================================
+2026-03-17 23:22:48 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:22:48 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:22:48 - study_math - INFO - ==================================================
+2026-03-17 23:24:00 - study_math - INFO - ==================================================
+2026-03-17 23:24:01 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:24:01 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:24:01 - study_math - INFO - ==================================================
+2026-03-17 23:24:13 - study_math - INFO - ==================================================
+2026-03-17 23:24:13 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:24:13 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:24:13 - study_math - INFO - ==================================================
+2026-03-17 23:24:15 - study_math - INFO - ==================================================
+2026-03-17 23:24:15 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:24:15 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:24:15 - study_math - INFO - ==================================================
+2026-03-17 23:24:16 - study_math - INFO - ==================================================
+2026-03-17 23:24:16 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:24:16 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:24:16 - study_math - INFO - ==================================================
+2026-03-17 23:24:17 - study_math - INFO - ==================================================
+2026-03-17 23:24:17 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:24:17 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:24:17 - study_math - INFO - ==================================================
+2026-03-17 23:24:25 - study_math - INFO - ==================================================
+2026-03-17 23:24:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:24:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:24:25 - study_math - INFO - ==================================================
+2026-03-17 23:24:33 - study_math - INFO - ==================================================
+2026-03-17 23:24:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:24:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:24:33 - study_math - INFO - ==================================================
+2026-03-17 23:25:01 - study_math - INFO - ==================================================
+2026-03-17 23:25:01 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:25:01 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:25:01 - study_math - INFO - ==================================================
+2026-03-17 23:25:08 - study_math - INFO - ==================================================
+2026-03-17 23:25:08 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:25:08 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:25:08 - study_math - INFO - ==================================================
+2026-03-17 23:25:20 - study_math - INFO - ==================================================
+2026-03-17 23:25:20 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:25:20 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:25:20 - study_math - INFO - ==================================================
+2026-03-17 23:25:40 - study_math - INFO - ==================================================
+2026-03-17 23:25:40 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:25:40 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:25:40 - study_math - INFO - ==================================================
+2026-03-17 23:25:45 - study_math - INFO - ==================================================
+2026-03-17 23:25:45 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:25:45 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:25:45 - study_math - INFO - ==================================================
+2026-03-17 23:25:50 - study_math - INFO - ==================================================
+2026-03-17 23:25:50 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:25:50 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:25:50 - study_math - INFO - ==================================================
+2026-03-17 23:25:54 - study_math - INFO - ==================================================
+2026-03-17 23:25:54 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:25:54 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:25:54 - study_math - INFO - ==================================================
+2026-03-17 23:25:56 - study_math - INFO - ==================================================
+2026-03-17 23:25:56 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:25:56 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:25:56 - study_math - INFO - ==================================================
+2026-03-17 23:26:03 - study_math - INFO - ==================================================
+2026-03-17 23:26:03 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:26:03 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:26:03 - study_math - INFO - ==================================================
+2026-03-17 23:26:04 - study_math - INFO - ==================================================
+2026-03-17 23:26:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:26:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:26:04 - study_math - INFO - ==================================================
+2026-03-17 23:26:06 - study_math - INFO - ==================================================
+2026-03-17 23:26:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:26:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:26:06 - study_math - INFO - ==================================================
+2026-03-17 23:26:15 - study_math - INFO - ==================================================
+2026-03-17 23:26:15 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:26:15 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:26:15 - study_math - INFO - ==================================================
+2026-03-17 23:26:27 - study_math - INFO - ==================================================
+2026-03-17 23:26:27 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:26:27 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:26:27 - study_math - INFO - ==================================================
+2026-03-17 23:26:32 - study_math - INFO - ==================================================
+2026-03-17 23:26:32 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:26:32 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:26:32 - study_math - INFO - ==================================================
+2026-03-17 23:26:36 - study_math - INFO - ==================================================
+2026-03-17 23:26:36 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:26:36 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:26:36 - study_math - INFO - ==================================================
+2026-03-17 23:26:39 - study_math - INFO - ==================================================
+2026-03-17 23:26:39 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:26:39 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:26:39 - study_math - INFO - ==================================================
+2026-03-17 23:26:42 - study_math - INFO - ==================================================
+2026-03-17 23:26:42 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:26:42 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:26:42 - study_math - INFO - ==================================================
+2026-03-17 23:26:53 - study_math - INFO - ==================================================
+2026-03-17 23:26:53 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:26:53 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:26:53 - study_math - INFO - ==================================================
+2026-03-17 23:27:12 - study_math - INFO - ==================================================
+2026-03-17 23:27:12 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:27:12 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:27:12 - study_math - INFO - ==================================================
+2026-03-17 23:27:17 - study_math - INFO - ==================================================
+2026-03-17 23:27:17 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:27:17 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:27:17 - study_math - INFO - ==================================================
+2026-03-17 23:27:18 - study_math - INFO - ==================================================
+2026-03-17 23:27:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:27:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:27:18 - study_math - INFO - ==================================================
+2026-03-17 23:27:21 - study_math - INFO - ==================================================
+2026-03-17 23:27:21 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:27:21 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:27:21 - study_math - INFO - ==================================================
+2026-03-17 23:27:22 - study_math - INFO - ==================================================
+2026-03-17 23:27:22 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:27:22 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:27:22 - study_math - INFO - ==================================================
+2026-03-17 23:27:25 - study_math - INFO - ==================================================
+2026-03-17 23:27:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:27:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:27:25 - study_math - INFO - ==================================================
+2026-03-17 23:27:28 - study_math - INFO - ==================================================
+2026-03-17 23:27:28 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:27:28 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:27:28 - study_math - INFO - ==================================================
+2026-03-17 23:27:37 - study_math - INFO - ==================================================
+2026-03-17 23:27:37 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:27:37 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:27:37 - study_math - INFO - ==================================================
+2026-03-17 23:27:46 - study_math - INFO - ==================================================
+2026-03-17 23:27:46 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:27:46 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:27:46 - study_math - INFO - ==================================================
+2026-03-17 23:27:48 - study_math - INFO - ==================================================
+2026-03-17 23:27:48 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:27:48 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:27:48 - study_math - INFO - ==================================================
+2026-03-17 23:27:52 - study_math - INFO - ==================================================
+2026-03-17 23:27:52 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:27:52 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:27:52 - study_math - INFO - ==================================================
+2026-03-17 23:27:57 - study_math - INFO - ==================================================
+2026-03-17 23:27:57 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:27:57 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:27:57 - study_math - INFO - ==================================================
+2026-03-17 23:28:02 - study_math - INFO - ==================================================
+2026-03-17 23:28:02 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:28:02 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:28:02 - study_math - INFO - ==================================================
+2026-03-17 23:28:05 - study_math - INFO - ==================================================
+2026-03-17 23:28:05 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:28:05 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:28:05 - study_math - INFO - ==================================================
+2026-03-17 23:28:10 - study_math - INFO - ==================================================
+2026-03-17 23:28:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:28:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:28:10 - study_math - INFO - ==================================================
+2026-03-17 23:28:25 - study_math - INFO - ==================================================
+2026-03-17 23:28:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:28:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:28:25 - study_math - INFO - ==================================================
+2026-03-17 23:38:30 - study_math - INFO - ==================================================
+2026-03-17 23:38:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:38:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:38:30 - study_math - INFO - ==================================================
+2026-03-17 23:38:30 - app - INFO - 初始化分析器...
+2026-03-17 23:38:31 - app - INFO - 分析器初始化完成
+2026-03-17 23:38:39 - study_math - INFO - ==================================================
+2026-03-17 23:38:39 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:38:39 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:38:39 - study_math - INFO - ==================================================
+2026-03-17 23:38:41 - study_math - INFO - ==================================================
+2026-03-17 23:38:41 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:38:41 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:38:41 - study_math - INFO - ==================================================
+2026-03-17 23:38:44 - study_math - INFO - ==================================================
+2026-03-17 23:38:44 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:38:44 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:38:44 - study_math - INFO - ==================================================
+2026-03-17 23:38:57 - study_math - INFO - ==================================================
+2026-03-17 23:38:57 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:38:57 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:38:57 - study_math - INFO - ==================================================
+2026-03-17 23:39:09 - study_math - INFO - ==================================================
+2026-03-17 23:39:09 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:39:09 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:39:09 - study_math - INFO - ==================================================
+2026-03-17 23:40:38 - study_math - INFO - ==================================================
+2026-03-17 23:40:38 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:40:38 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:40:38 - study_math - INFO - ==================================================
+2026-03-17 23:40:39 - study_math - INFO - ==================================================
+2026-03-17 23:40:39 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:40:39 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:40:39 - study_math - INFO - ==================================================
+2026-03-17 23:41:00 - study_math - INFO - ==================================================
+2026-03-17 23:41:00 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:41:00 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:41:00 - study_math - INFO - ==================================================
+2026-03-17 23:41:16 - study_math - INFO - ==================================================
+2026-03-17 23:41:16 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:41:16 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:41:16 - study_math - INFO - ==================================================
+2026-03-17 23:41:25 - study_math - INFO - ==================================================
+2026-03-17 23:41:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:41:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:41:25 - study_math - INFO - ==================================================
+2026-03-17 23:41:30 - study_math - INFO - ==================================================
+2026-03-17 23:41:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:41:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:41:30 - study_math - INFO - ==================================================
+2026-03-17 23:41:32 - study_math - INFO - ==================================================
+2026-03-17 23:41:32 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:41:32 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:41:32 - study_math - INFO - ==================================================
+2026-03-17 23:41:38 - study_math - INFO - ==================================================
+2026-03-17 23:41:38 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:41:38 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:41:38 - study_math - INFO - ==================================================
+2026-03-17 23:49:10 - study_math - INFO - ==================================================
+2026-03-17 23:49:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:49:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:49:10 - study_math - INFO - ==================================================
+2026-03-17 23:49:13 - study_math - INFO - ==================================================
+2026-03-17 23:49:13 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:49:13 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:49:13 - study_math - INFO - ==================================================
+2026-03-17 23:49:19 - study_math - INFO - ==================================================
+2026-03-17 23:49:19 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:49:19 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:49:19 - study_math - INFO - ==================================================
+2026-03-17 23:49:25 - study_math - INFO - ==================================================
+2026-03-17 23:49:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:49:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:49:25 - study_math - INFO - ==================================================
+2026-03-17 23:49:30 - study_math - INFO - ==================================================
+2026-03-17 23:49:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:49:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:49:30 - study_math - INFO - ==================================================
+2026-03-17 23:56:37 - study_math - INFO - ==================================================
+2026-03-17 23:56:37 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:56:37 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:56:37 - study_math - INFO - ==================================================
+2026-03-17 23:56:38 - app - INFO - 初始化分析器...
+2026-03-17 23:56:39 - app - INFO - 分析器初始化完成
+2026-03-17 23:56:42 - study_math - INFO - ==================================================
+2026-03-17 23:56:42 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:56:42 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:56:42 - study_math - INFO - ==================================================
+2026-03-17 23:56:46 - study_math - INFO - ==================================================
+2026-03-17 23:56:46 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:56:46 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:56:46 - study_math - INFO - ==================================================
+2026-03-17 23:57:04 - study_math - INFO - ==================================================
+2026-03-17 23:57:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:57:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:57:04 - study_math - INFO - ==================================================
+2026-03-17 23:57:10 - study_math - INFO - ==================================================
+2026-03-17 23:57:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:57:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:57:10 - study_math - INFO - ==================================================
+2026-03-17 23:57:16 - study_math - INFO - ==================================================
+2026-03-17 23:57:16 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:57:16 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:57:16 - study_math - INFO - ==================================================
+2026-03-17 23:57:18 - study_math - INFO - ==================================================
+2026-03-17 23:57:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:57:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:57:18 - study_math - INFO - ==================================================
+2026-03-17 23:57:23 - study_math - INFO - ==================================================
+2026-03-17 23:57:23 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:57:23 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:57:23 - study_math - INFO - ==================================================
+2026-03-17 23:57:32 - study_math - INFO - ==================================================
+2026-03-17 23:57:32 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:57:32 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:57:32 - study_math - INFO - ==================================================
+2026-03-17 23:57:34 - study_math - INFO - ==================================================
+2026-03-17 23:57:34 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:57:34 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:57:34 - study_math - INFO - ==================================================
+2026-03-17 23:57:41 - study_math - INFO - ==================================================
+2026-03-17 23:57:41 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:57:41 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:57:41 - study_math - INFO - ==================================================
+2026-03-17 23:58:00 - study_math - INFO - ==================================================
+2026-03-17 23:58:00 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:58:00 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:58:00 - study_math - INFO - ==================================================
+2026-03-17 23:58:06 - study_math - INFO - ==================================================
+2026-03-17 23:58:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-17 23:58:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-17 23:58:06 - study_math - INFO - ==================================================
+2026-03-18 00:10:17 - study_math - INFO - ==================================================
+2026-03-18 00:10:17 - study_math - INFO - 学习数学分析系统启动
+2026-03-18 00:10:17 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-18 00:10:17 - study_math - INFO - ==================================================
+2026-03-18 00:10:18 - study_math - INFO - ==================================================
+2026-03-18 00:10:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-18 00:10:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-18 00:10:18 - study_math - INFO - ==================================================
+2026-03-18 00:10:22 - study_math - INFO - ==================================================
+2026-03-18 00:10:22 - study_math - INFO - 学习数学分析系统启动
+2026-03-18 00:10:22 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-18 00:10:22 - study_math - INFO - ==================================================
+2026-03-18 00:10:23 - study_math - INFO - ==================================================
+2026-03-18 00:10:23 - study_math - INFO - 学习数学分析系统启动
+2026-03-18 00:10:23 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-18 00:10:23 - study_math - INFO - ==================================================
+2026-03-18 00:10:26 - study_math - INFO - ==================================================
+2026-03-18 00:10:26 - study_math - INFO - 学习数学分析系统启动
+2026-03-18 00:10:26 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-18 00:10:26 - study_math - INFO - ==================================================
+2026-03-18 00:10:39 - study_math - INFO - ==================================================
+2026-03-18 00:10:39 - study_math - INFO - 学习数学分析系统启动
+2026-03-18 00:10:39 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-18 00:10:39 - study_math - INFO - ==================================================
+2026-03-18 00:10:41 - study_math - INFO - ==================================================
+2026-03-18 00:10:41 - study_math - INFO - 学习数学分析系统启动
+2026-03-18 00:10:41 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-18 00:10:41 - study_math - INFO - ==================================================
+2026-03-18 00:10:44 - study_math - INFO - ==================================================
+2026-03-18 00:10:44 - study_math - INFO - 学习数学分析系统启动
+2026-03-18 00:10:44 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-18 00:10:44 - study_math - INFO - ==================================================
+2026-03-18 00:10:47 - study_math - INFO - ==================================================
+2026-03-18 00:10:47 - study_math - INFO - 学习数学分析系统启动
+2026-03-18 00:10:47 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-18 00:10:47 - study_math - INFO - ==================================================
+2026-03-18 00:10:51 - study_math - INFO - ==================================================
+2026-03-18 00:10:51 - study_math - INFO - 学习数学分析系统启动
+2026-03-18 00:10:51 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-18 00:10:51 - study_math - INFO - ==================================================
+2026-03-18 00:11:08 - study_math - INFO - ==================================================
+2026-03-18 00:11:08 - study_math - INFO - 学习数学分析系统启动
+2026-03-18 00:11:08 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-18 00:11:08 - study_math - INFO - ==================================================
+2026-03-18 00:11:11 - study_math - INFO - ==================================================
+2026-03-18 00:11:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-18 00:11:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-18 00:11:11 - study_math - INFO - ==================================================
+2026-03-18 00:11:12 - study_math - INFO - ==================================================
+2026-03-18 00:11:12 - study_math - INFO - 学习数学分析系统启动
+2026-03-18 00:11:12 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-18 00:11:12 - study_math - INFO - ==================================================
+2026-03-18 00:11:22 - study_math - INFO - ==================================================
+2026-03-18 00:11:22 - study_math - INFO - 学习数学分析系统启动
+2026-03-18 00:11:22 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260317.log
+2026-03-18 00:11:22 - study_math - INFO - ==================================================
