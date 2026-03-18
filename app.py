@@ -2,6 +2,7 @@
 学生成绩分析系统 - Web 界面 (增强版)
 集成人教版小学数学知识点深度分析
 """
+import re
 from typing import List, Dict
 from datetime import datetime
 from pathlib import Path
@@ -12,7 +13,7 @@ import plotly.graph_objects as go
 
 # 导入日志系统
 from logger import init_logging, log_error, log_info, get_logger
-from database import init_database, StudentDAO, ErrorRecordDAO, ExamScoreDAO
+from database import init_database, StudentDAO, ErrorRecordDAO, ExamScoreDAO, get_db_connection
 from excel_importer import ExcelDataImporter
 from pdf_exporter import PDFExporter
 from score_entry import ScoreEntryService
@@ -101,10 +102,20 @@ def get_analyzers():
     logger.info("分析器初始化完成")
     return analyzer, deep_analyzer, error_tracker, knowledge_graph, ability_portfolio, habit_analyzer, class_dashboard, paper_generator
 
-analyzer, deep_analyzer, error_tracker, knowledge_graph, ability_portfolio, habit_analyzer, class_dashboard, paper_generator = get_analyzers()
 
-# 获取所有学期列表
-ALL_SEMESTERS = list(analyzer.semester_data.keys())
+def refresh_analyzers():
+    """刷新分析器中的录入成绩缓存，确保数据是最新的"""
+    analyzer.refresh_entered_scores()
+    deep_analyzer.refresh_entered_scores()
+
+
+analyzer, deep_analyzer, error_tracker, knowledge_graph, ability_portfolio, habit_analyzer, class_dashboard, paper_generator = get_analyzers()
+# 每次页面加载时刷新录入成绩缓存
+refresh_analyzers()
+
+# 获取所有学期列表（使用标准化后的名称）
+SEMESTER_MAP = {analyzer._normalize_semester_name(k): k for k in analyzer.semester_data.keys()}  # 标准化名称 -> 原始名称
+ALL_SEMESTERS = list(SEMESTER_MAP.keys())  # 使用标准化后的学期名称
 
 # 标题
 st.title("📊 学生成绩分析系统")
@@ -155,44 +166,409 @@ else:
 st.sidebar.header("分析模式")
 analysis_mode = st.sidebar.radio(
     "选择分析类型",
-    ["📈 成绩趋势分析", "🧠 知识点深度分析", "📋 诊断报告", "👥 多学生对比", "⚠️ 成绩预警", "📊 班级分析", "🔬 宏观分析", "📕 错题追踪本", "🕸️ 知识点关联图谱", "🌟 能力成长档案", "📝 学习习惯分析", "🏫 班级学情看板", "📄 智能组卷", "📝 成绩录入", "📊 录入成绩查询"],
+    ["📈 成绩趋势分析", "🧠 知识点深度分析", "📋 诊断报告", "👥 多学生对比", "⚠️ 成绩预警", "📊 班级分析", "🔬 宏观分析", "📕 错题追踪本", "🕸️ 知识点关联图谱", "🌟 能力成长档案", "📝 学习习惯分析", "🏫 班级学情看板", "📄 智能组卷", "📝 成绩录入", "📊 录入成绩查询", "⚙️ 数据管理"],
     index=0
 )
 
 st.sidebar.markdown("---")
+st.sidebar.caption("系统版本：v4.0 (架构重构版)")
 
-# 数据管理
-st.sidebar.header("数据管理")
-with st.sidebar.expander("📂 Excel 数据导入"):
-    uploaded_file = st.file_uploader("上传 Excel 成绩表", type=["xlsx", "xls"])
-    if uploaded_file:
+
+# ==================== 数据管理模块 ====================
+if analysis_mode == "⚙️ 数据管理":
+    # 数据管理子菜单
+    data_mgmt_mode = st.sidebar.radio(
+        "数据管理功能",
+        ["📂 Excel 数据导入", "📁 导入文件管理", "📊 导入数据管理", "⚙️ 系统数据设置"],
+        index=0
+    )
+
+    st.markdown("---")
+
+    # ========== 子菜单 1: Excel 数据导入 ==========
+    if data_mgmt_mode == "📂 Excel 数据导入":
+        st.header("📂 Excel 数据导入")
+        st.markdown("上传并导入 Excel 格式的成绩数据文件")
+
+        uploaded_file = st.file_uploader("选择 Excel 成绩表文件", type=["xlsx", "xls"])
+
+        if uploaded_file:
+            try:
+                # 保存上传文件
+                from pathlib import Path
+                data_dir = Path("data/uploads")
+                data_dir.mkdir(parents=True, exist_ok=True)
+                file_path = data_dir / uploaded_file.name
+
+                with open(file_path, "wb") as f:
+                    f.write(uploaded_file.getbuffer())
+
+                # 导入数据
+                importer = ExcelDataImporter()
+                stats = importer.import_errors_from_excel(str(file_path), "1(2) 班上 学期")
+
+                st.success("导入成功！")
+                st.json({
+                    "错题数": stats.get('total_errors', 0),
+                    "学生数": stats.get('students', 0),
+                    "考试数": stats.get('exams', 0)
+                })
+                log_info(f"Excel 导入成功：{uploaded_file.name}, 错题数：{stats.get('total_errors', 0)}")
+            except Exception as e:
+                st.error(f"导入失败：{e}")
+                log_error(e, "Excel 导入失败")
+        else:
+            st.info("请在上方选择 Excel 文件进行上传导入")
+            st.markdown("""
+            **支持的文件格式：**
+            - Excel 2007+ (.xlsx)
+            - Excel 97-2003 (.xls)
+
+            **文件命名规范：**
+            - 文件名应包含班级和学期信息，如：`10032-1(2) 班上 学期数学考试分数-math_scores.xlsx`
+            """)
+
+    # ========== 子菜单 2: 导入文件管理 ==========
+    elif data_mgmt_mode == "📁 导入文件管理":
+        st.header("📁 导入文件管理")
+        st.markdown("管理已导入的 Excel 数据文件")
+
+        from pathlib import Path
+        data_dir = Path("data")
+        excel_files = list(data_dir.glob("*.xlsx"))
+
+        # 统计信息
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Excel 文件数量", len(excel_files))
+        with col2:
+            total_size = sum(ef.stat().st_size for ef in excel_files)
+            st.metric("总文件大小", f"{round(total_size / 1024, 2)} KB")
+
+        if excel_files:
+            st.subheader("Excel 文件列表")
+            excel_info = []
+            for ef in sorted(excel_files, key=lambda x: x.stat().st_mtime, reverse=True):
+                file_size = ef.stat().st_size
+                file_time = datetime.fromtimestamp(ef.stat().st_mtime).strftime("%Y-%m-%d %H:%M")
+                excel_info.append({
+                    "文件名": ef.name,
+                    "大小 (KB)": round(file_size / 1024, 2),
+                    "修改时间": file_time
+                })
+
+            excel_df = pd.DataFrame(excel_info)
+            st.dataframe(excel_df, use_container_width=True, height=300)
+
+            st.divider()
+
+            # 删除文件操作
+            st.subheader("删除文件")
+            delete_excel_name = st.selectbox(
+                "选择要删除的 Excel 文件",
+                options=[""] + [ef.name for ef in excel_files],
+                key="delete_excel_select"
+            )
+
+            col_btn1, col_btn2 = st.columns([3, 1])
+            with col_btn1:
+                if st.button("🗑️ 删除选中的 Excel 文件", type="secondary", use_container_width=True):
+                    if delete_excel_name:
+                        try:
+                            file_to_delete = data_dir / delete_excel_name
+                            file_to_delete.unlink()
+                            st.success(f"已删除文件：{delete_excel_name}")
+                            log_info(f"删除 Excel 文件：{delete_excel_name}")
+                            st.rerun()
+                        except Exception as e:
+                            st.error(f"删除失败：{e}")
+                            log_error(e, f"删除 Excel 文件失败：{delete_excel_name}")
+                    else:
+                        st.warning("请选择要删除的文件")
+        else:
+            st.info("暂无 Excel 文件")
+
+    # ========== 子菜单 3: 导入数据管理 ==========
+    elif data_mgmt_mode == "📊 导入数据管理":
+        st.header("📊 导入数据管理")
+        st.markdown("浏览和管理从 Excel 导入的成绩数据")
+
+        from score_analyzer import ScoreAnalyzer
+
         try:
-            # 保存上传文件
-            from pathlib import Path
-            data_dir = Path("data/uploads")
-            data_dir.mkdir(parents=True, exist_ok=True)
-            file_path = data_dir / uploaded_file.name
+            analyzer_temp = ScoreAnalyzer()
+            analyzer_temp.load_all_data()
 
-            with open(file_path, "wb") as f:
-                f.write(uploaded_file.getbuffer())
+            # 统计信息
+            col1, col2 = st.columns(2)
+            with col1:
+                st.metric("学期数量", len(analyzer_temp.semester_data))
+            with col2:
+                total_records = sum(len(df) for df in analyzer_temp.semester_data.values())
+                st.metric("总记录数", total_records)
 
-            # 导入数据
-            importer = ExcelDataImporter()
-            stats = importer.import_errors_from_excel(str(file_path), "1(2) 班上 学期")
+            # 选择学期查看
+            selected_sem = st.selectbox(
+                "选择要查看的学期",
+                options=list(analyzer_temp.semester_data.keys()),
+                key="excel_sem_select"
+            )
 
-            st.success(f"导入成功！")
-            st.json({
-                "错题数": stats.get('total_errors', 0),
-                "学生数": stats.get('students', 0),
-                "考试数": stats.get('exams', 0)
-            })
-            log_info(f"Excel 导入成功：{uploaded_file.name}, 错题数：{stats.get('total_errors', 0)}")
+            if selected_sem:
+                df = analyzer_temp.semester_data[selected_sem]
+
+                # 过滤空列：只保留至少有一个学生有成绩的考试列
+                score_cols = [col for col in df.columns if col not in ['学号', '姓名']]
+                valid_cols = ['学号', '姓名']
+
+                for col in score_cols:
+                    # 检查该列是否有至少一个非空值
+                    if df[col].notna().any():
+                        valid_cols.append(col)
+
+                df_filtered = df[valid_cols]
+
+                st.write(f"**记录数**: {len(df_filtered)} 人")
+
+                # 显示有效考试列表
+                valid_exams = [col for col in valid_cols if col not in ['学号', '姓名']]
+                empty_exams = [col for col in score_cols if col not in valid_exams]
+
+                if valid_exams:
+                    st.success(f"**有成绩的考试**: {', '.join(valid_exams)}")
+                if empty_exams:
+                    st.info(f"**空考次（已隐藏）**: {len(empty_exams)} 个 - {', '.join(empty_exams[:5])}{'...' if len(empty_exams) > 5 else ''}")
+
+                # 数据表格（只显示有数据的列）
+                st.dataframe(df_filtered, use_container_width=True, height=400)
         except Exception as e:
-            st.error(f"导入失败：{e}")
-            log_error(e, "Excel 导入失败")
+            st.error(f"加载失败：{e}")
+            log_error(e, "加载 Excel 数据失败")
 
-st.sidebar.caption("系统版本：v3.7 (全班成绩录入版)")
+    # ========== 子菜单 4: 系统数据设置 ==========
+    elif data_mgmt_mode == "⚙️ 系统数据设置":
+        st.header("⚙️ 系统数据设置")
+        st.markdown("管理系统数据库中的成绩和学生数据")
 
+        from database import ExamScoreDAO, StudentDAO
+
+        # 数据状态
+        st.subheader("数据状态")
+        db_score_count = len(ExamScoreDAO.get_all_scores())
+        db_student_count = len(StudentDAO.get_all_students())
+
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("录入成绩条数", db_score_count)
+        with col2:
+            st.metric("学生总数", db_student_count)
+
+        st.divider()
+
+        # 数据清理
+        st.subheader("数据清理")
+
+        col_btn1, col_btn2 = st.columns(2)
+        with col_btn1:
+            if st.button("🗑️ 清理所有录入成绩", type="secondary", use_container_width=True):
+                try:
+                    conn = get_db_connection()
+                    cursor = conn.cursor()
+                    cursor.execute("DELETE FROM exam_scores")
+                    conn.commit()
+                    conn.close()
+                    st.success("已清理所有录入成绩！请刷新页面重新加载数据。")
+                    log_info("用户清理了所有录入成绩")
+                except Exception as e:
+                    st.error(f"清理失败：{e}")
+                    log_error(e, "清理录入成绩失败")
+
+        with col_btn2:
+            if st.button("🗑️ 清理所有数据（含学生）", type="secondary", use_container_width=True):
+                try:
+                    conn = get_db_connection()
+                    cursor = conn.cursor()
+                    cursor.execute("DELETE FROM exam_scores")
+                    cursor.execute("DELETE FROM students")
+                    cursor.execute("DELETE FROM error_records")
+                    conn.commit()
+                    conn.close()
+                    st.success("已清理所有数据！请刷新页面重新开始。")
+                    log_info("用户清理了所有数据")
+                except Exception as e:
+                    st.error(f"清理失败：{e}")
+                    log_error(e, "清理所有数据失败")
+
+        st.divider()
+
+        # 数据同步
+        st.subheader("数据同步")
+
+        if st.button("📥 从 Excel 同步学生信息", type="primary", use_container_width=True):
+            try:
+                temp_analyzer = ScoreAnalyzer()
+                temp_analyzer.load_all_data()
+
+                # 同步学生到数据库
+                count = 0
+                for sid, name in temp_analyzer.student_names.items():
+                    if not StudentDAO.get_student(sid):
+                        # 从学期名称推断年级和学期
+                        grade = "1"
+                        semester = "上"
+                        for sem_key in temp_analyzer.semester_data.keys():
+                            match = re.search(r'(\d) 年级 ([上下]) 学期', sem_key)
+                            if match:
+                                grade = match.group(1)
+                                semester = match.group(2)
+                            break
+
+                        StudentDAO.add_student(sid, name, f"{grade}年级", semester)
+                        count += 1
+
+                st.success(f"已同步 {count} 个学生到数据库！请刷新页面查看。")
+                log_info(f"从 Excel 同步学生信息：{count}人")
+            except Exception as e:
+                st.error(f"同步失败：{e}")
+                log_error(e, "从 Excel 同步学生失败")
+
+
+# ==================== 成绩数据查询与维护 ====================
+if analysis_mode == "📊 录入成绩查询":
+    st.header("📊 录入成绩查询与维护")
+    st.markdown("查询和管理系统中所有录入的成绩数据")
+
+    # 查询条件
+    col1, col2 = st.columns(2)
+    with col1:
+        query_student_id = st.number_input("学号", min_value=0, value=0, key="query_sid")
+    with col2:
+        query_semester = st.text_input("学期", placeholder="如：10037-3(2) 班下学期", key="query_sem")
+
+    query_exam = st.text_input("考试名称", placeholder="如：周练 1", key="query_exam")
+
+    # 查询按钮
+    col_btn1, col_btn2, col_btn3 = st.columns([2, 2, 1])
+    with col_btn1:
+        do_query = st.button("🔍 查询", type="primary", use_container_width=True)
+    with col_btn2:
+        show_all = st.button("显示全部", use_container_width=True)
+
+    # 执行查询
+    if do_query or show_all:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # 构建查询条件
+        conditions = []
+        params = []
+
+        if query_student_id > 0:
+            conditions.append("student_id = ?")
+            params.append(query_student_id)
+
+        if query_semester.strip():
+            conditions.append("semester LIKE ?")
+            params.append(f"%{query_semester.strip()}%")
+
+        if query_exam.strip():
+            conditions.append("exam_name LIKE ?")
+            params.append(f"%{query_exam.strip()}%")
+
+        where_clause = " AND ".join(conditions) if conditions else "1=1"
+
+        cursor.execute(f"""
+            SELECT id, student_id, semester, exam_name, exam_date, score, created_at
+            FROM exam_scores
+            WHERE {where_clause}
+            ORDER BY semester, exam_name, student_id
+        """, params)
+
+        rows = cursor.fetchall()
+        conn.close()
+
+        if rows:
+            st.success(f"找到 {len(rows)} 条记录")
+
+            # 转换为 DataFrame
+            df = pd.DataFrame(rows, columns=["ID", "学号", "学期", "考试名称", "考试日期", "分数", "创建时间"])
+
+            # 显示数据表格
+            st.dataframe(df, use_container_width=True, height=400)
+
+            # 批量操作
+            st.subheader("批量操作")
+            col_op1, col_op2 = st.columns(2)
+
+            with col_op1:
+                # 选择要删除的记录 ID
+                ids_to_delete = st.multiselect(
+                    "选择要删除的记录 ID",
+                    options=df["ID"].tolist(),
+                    format_func=lambda x: f"ID:{x}"
+                )
+
+                if st.button("🗑️ 删除选中记录", type="secondary", use_container_width=True):
+                    if ids_to_delete:
+                        conn = get_db_connection()
+                        cursor = conn.cursor()
+                        cursor.execute(f"DELETE FROM exam_scores WHERE id IN ({','.join(['?']*len(ids_to_delete))})", ids_to_delete)
+                        conn.commit()
+                        deleted = cursor.rowcount
+                        conn.close()
+                        st.success(f"已删除 {deleted} 条记录")
+                        st.rerun()
+                    else:
+                        st.warning("请选择要删除的记录")
+
+            with col_op2:
+                # 按学号删除
+                delete_sid = st.number_input("删除指定学号的所有成绩", min_value=0, value=0, key="del_sid")
+                if st.button("🗑️ 删除该学号所有成绩", type="secondary", use_container_width=True):
+                    if delete_sid > 0:
+                        conn = get_db_connection()
+                        cursor = conn.cursor()
+                        cursor.execute("DELETE FROM exam_scores WHERE student_id = ?", (delete_sid,))
+                        conn.commit()
+                        deleted = cursor.rowcount
+                        conn.close()
+                        st.success(f"已删除 {deleted} 条记录")
+                        st.rerun()
+                    else:
+                        st.warning("请输入学号")
+
+            # 统计信息
+            st.subheader("统计信息")
+            col_stat1, col_stat2, col_stat3 = st.columns(3)
+            with col_stat1:
+                st.metric("记录总数", len(rows))
+            with col_stat2:
+                st.metric("平均分", round(df["分数"].mean(), 2) if not df.empty else 0)
+            with col_stat3:
+                st.metric("最高分", df["分数"].max() if not df.empty else 0)
+        else:
+            st.info("没有找到符合条件的记录")
+
+    # 显示所有成绩数据的快速预览
+    st.divider()
+    st.subheader("📋 数据快速预览")
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT semester, exam_name, COUNT(*) as count, AVG(score) as avg_score
+        FROM exam_scores
+        GROUP BY semester, exam_name
+        ORDER BY semester, exam_name
+    """)
+    summary_rows = cursor.fetchall()
+    conn.close()
+
+    if summary_rows:
+        summary_df = pd.DataFrame(summary_rows, columns=["学期", "考试名称", "记录数", "平均分"])
+        st.dataframe(summary_df, use_container_width=True, height=200)
+    else:
+        st.info("暂无录入成绩数据")
 
 # 成绩录入
 with st.sidebar.expander("📝 录入考试成绩"):
@@ -991,10 +1367,22 @@ elif analysis_mode == "📊 班级分析":
 
             # 详细数据表
             with st.expander("📋 查看详细数据表"):
-                # 获取该学期所有学生成绩
+                # 获取该学期所有学生成绩（包含录入成绩）
                 semester_df = analyzer.semester_data.get(selected_semester)
+
+                # 获取录入的成绩（从数据库）
+                entered_scores = ExamScoreDAO.get_all_scores()
+                entered_scores_by_student = {}
+                for s in entered_scores:
+                    if s['semester'] != selected_semester:
+                        continue
+                    sid = s['student_id']
+                    if sid not in entered_scores_by_student:
+                        entered_scores_by_student[sid] = []
+                    entered_scores_by_student[sid].append(s['score'])
+
                 if semester_df is not None:
-                    # 计算每个学生的平均分
+                    # 计算每个学生的平均分（Excel + 录入成绩）
                     student_avgs = []
                     for _, row in semester_df.iterrows():
                         # 检查学号是否有效
@@ -1007,6 +1395,7 @@ elif analysis_mode == "📊 班级分析":
                             continue
 
                         scores = []
+                        # 从 Excel 获取成绩
                         for col in semester_df.columns:
                             if col not in ['学号', '姓名']:
                                 val = row[col]
@@ -1015,6 +1404,13 @@ elif analysis_mode == "📊 班级分析":
                                         scores.append(float(val))
                                     except (ValueError, TypeError):
                                         pass
+
+                        # 从录入成绩获取
+                        if student_id in entered_scores_by_student:
+                            for score in entered_scores_by_student[student_id]:
+                                if score is not None:
+                                    scores.append(float(score))
+
                         if scores:
                             student_avgs.append({
                                 '学号': student_id,
