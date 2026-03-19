@@ -341,15 +341,20 @@ class DeepScoreAnalyzer:
         self.student_names: Dict[int, str] = {}
         self.knowledge_points = KNOWLEDGE_SYSTEM
         self.entered_scores_cache: Dict[int, List[Dict]] = {}  # 录入成绩缓存
+        self.exam_order: List[str] = []  # 保存 Excel 中考试列的原始顺序
 
     def _normalize_semester_name(self, semester: str) -> str:
         """标准化学期名称，去除 -math_scores 等后缀"""
         import re
-        # 使用更灵活的正则表达式：匹配如 "10037-3(2) 班下学期" 或 "10037-3(2) 班上学期"
-        # 分开捕获数字部分和班级部分，去除中间的空格以实现模糊匹配
-        match = re.search(r'(\d+-\d+\(\d+\))\s*(班.{3})', semester)
+        # 匹配如 "10032-1(2) 班上学期" 或 "10037-3(2) 班下学期"，提取 "1(2) 班上学期" 格式
+        match = re.search(r'\d+-(\d+\(\d+\)\s*班.+学期)', semester)
         if match:
-            return match.group(1) + match.group(2)  # 不包含空格
+            # 去除中间空格，统一格式
+            return match.group(1).replace(' ', '')
+        # 如果没有匹配到，尝试直接匹配 "1(2) 班上学期" 格式
+        match2 = re.search(r'(\d+\(\d+\)\s*班.+学期)', semester)
+        if match2:
+            return match2.group(1).replace(' ', '')
         return semester
 
     def refresh_entered_scores(self):
@@ -421,11 +426,101 @@ class DeepScoreAnalyzer:
 
         return scores
 
+    def _get_exam_sort_key(self, exam_name: str) -> Tuple[int, int]:
+        """
+        从考试名称提取排序关键字，支持自然排序
+
+        例如：周练 1 -> (1, 1), 周练 10 -> (1, 10), 期末模 1 -> (9, 1)
+        返回 (类型权重，序号)，确保周练 2 排在周练 10 前面
+        """
+        # 定义考试类型权重
+        type_weights = {
+            '周练': 1,
+            '练习': 2,
+            '单元': 3,
+            '期中': 8,
+            '期末模': 9,
+            '期末': 10,
+        }
+
+        # 匹配考试类型和序号
+        for exam_type, weight in type_weights.items():
+            if exam_name.startswith(exam_type):
+                # 提取序号
+                num_part = exam_name[len(exam_type):]
+                try:
+                    num = int(num_part)
+                    return (weight, num)
+                except ValueError:
+                    return (weight, 0)
+
+        # 如果不匹配任何类型，返回默认值
+        return (99, 0)
+
+    def get_class_stats(self, semester: str = None) -> pd.DataFrame:
+        """
+        获取班级每次考试的统计数据（平均分、最高分、最低分）
+
+        Args:
+            semester: 学期名称（可选），如 "1(2) 班上学期"
+
+        Returns:
+            DataFrame，包含考试名称、平均分、最高分、最低分
+        """
+        if self.students_df is None:
+            return pd.DataFrame()
+
+        stats = []
+        exam_cols = set()
+
+        # 收集所有考试列
+        for col in self.students_df.columns:
+            if col not in ['学号', '姓名']:
+                exam_cols.add(col)
+
+        # 如果指定了学期，过滤
+        if semester:
+            normalized_semester = self._normalize_semester_name(semester)
+            exam_cols = {col for col in exam_cols
+                        if self._normalize_semester_name(col.split('_', 1)[0] if '_' in col else col) == normalized_semester}
+
+        # 计算每次考试的统计数据，按自然排序
+        for col in sorted(exam_cols, key=lambda x: self._get_exam_sort_key(x.split('_', 1)[1] if '_' in x else x)):
+            # 提取考试名称
+            exam_name = col.split('_', 1)[1] if '_' in col else col
+            sem_name = self._normalize_semester_name(col.split('_', 1)[0] if '_' in col else col)
+
+            # 获取该列所有学生的成绩
+            scores = self.students_df[col].dropna()
+
+            if len(scores) > 0:
+                stats.append({
+                    '学期': sem_name,
+                    '考试': exam_name,
+                    '平均分': round(scores.mean(), 2),
+                    '最高分': scores.max(),
+                    '最低分': scores.min(),
+                    '参考人数': len(scores)
+                })
+
+        return pd.DataFrame(stats)
+
     def load_all_data(self) -> pd.DataFrame:
         """加载所有数据"""
         all_scores = []
 
-        for file in sorted(self.data_dir.glob("*.xlsx")):
+        # 扫描 data 根目录和 uploads 子目录
+        excel_files = []
+
+        # 扫描 uploads 子目录（新上传的文件）
+        uploads_dir = self.data_dir / "uploads"
+        if uploads_dir.exists():
+            excel_files.extend(sorted(uploads_dir.glob("*.xlsx")))
+
+        # 扫描 data 根目录（备份文件）
+        excel_files.extend(sorted(self.data_dir.glob("*.xlsx")))
+
+        for file in excel_files:
             semester_name = self._parse_semester_name(file.name)
             df = pd.read_excel(file)
 
