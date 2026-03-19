@@ -43,15 +43,13 @@ class ClassLearningDashboard:
         self.knowledge_points = knowledge_points
 
     def _normalize_semester_name(self, semester: str) -> str:
-        """标准化学期名称，去除 -math_scores 等后缀"""
-        # 去除 -math_scores、_math_scores 等后缀
+        """标准化学期名称，去除 -math_scores 等后缀和数字前缀"""
         import re
-        # 提取核心学期名称，如 10037-3(2) 班下学期
-        # 使用更灵活的正则表达式以匹配不同格式的学期名称
-        # 分开捕获数字部分和班级部分，去除中间的空格以实现模糊匹配
-        match = re.search(r'(\d+-\d+\(\d+\))\s*(班.{3})', semester)
+        # 匹配格式：10032-1(2) 班上学期数学考试分数 或 1(2) 班上学期
+        # 提取如 "1(2) 班上学期" 格式
+        match = re.search(r'(\d+\(\d+\).*?学期)', semester)
         if match:
-            return match.group(1) + match.group(2)  # 不包含空格
+            return match.group(1).replace(' ', '')
         return semester
 
     def analyze_class_overall(self, semester: str) -> Optional[ClassAnalysis]:
@@ -67,15 +65,60 @@ class ClassLearningDashboard:
         # 标准化学期名称，用于匹配
         normalized_semester = self._normalize_semester_name(semester)
 
+        print(f"[analyze_class_overall] input semester={semester}, normalized={normalized_semester}")
+        print(f"[analyze_class_overall] semester_data keys={list(self.semester_data.keys())}")
+
         # 查找匹配的 Excel 学期数据（支持模糊匹配）
         df = None
         for key in self.semester_data.keys():
-            if self._normalize_semester_name(key) == normalized_semester:
+            key_normalized = self._normalize_semester_name(key)
+            print(f"[analyze_class_overall] checking key={key}, normalized={key_normalized}, match={key_normalized == normalized_semester}")
+            if key_normalized == normalized_semester:
                 df = self.semester_data[key]
                 break
 
+        # 如果没有 Excel 数据，从数据库获取
         if df is None:
-            return None
+            print(f"[analyze_class_overall] Excel data not found, trying database...")
+            # 从数据库获取该学期的成绩
+            all_scores = ExamScoreDAO.get_all_scores()
+            print(f"[analyze_class_overall] all_scores count={len(all_scores)}")
+            print(f"[analyze_class_overall] all_scores semesters: {set(s['semester'] for s in all_scores)}")
+
+            semester_scores = [s for s in all_scores if self._normalize_semester_name(s['semester']) == normalized_semester]
+            print(f"[analyze_class_overall] semester_scores count={len(semester_scores)}")
+
+            if not semester_scores:
+                print(f"[analyze_class_overall] No scores found for semester={semester}")
+                return None
+
+            # 获取该学期的所有学生
+            student_ids = set(s['student_id'] for s in semester_scores)
+
+            # 获取学生姓名
+            from database import get_db_connection
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT student_id, name FROM students WHERE student_id IN ({})".format(','.join('?' * len(student_ids))), list(student_ids))
+            students = cursor.fetchall()
+            conn.close()
+
+            # 创建 DataFrame
+            df = pd.DataFrame([{'学号': sid, '姓名': name} for sid, name in students])
+
+            # 按学号和考试名称组织成绩
+            scores_by_student = {}
+            for s in semester_scores:
+                sid = s['student_id']
+                exam = s['exam_name']
+                score = s['score']
+                if sid not in scores_by_student:
+                    scores_by_student[sid] = {}
+                scores_by_student[sid][exam] = score
+
+            # 将成绩添加到 DataFrame
+            for exam_names in set(s['exam_name'] for s in semester_scores):
+                df[exam_names] = df['学号'].apply(lambda sid: scores_by_student.get(int(sid), {}).get(exam_names, np.nan))
 
         # 获取录入的成绩（从数据库）
         entered_scores = ExamScoreDAO.get_all_scores()

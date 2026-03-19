@@ -1827,100 +1827,102 @@ elif analysis_mode == "👥 多学生对比":
             max_selections=5
         )
 
-        if len(compare_students) >= 2:
-            compare_ids = [student_dict[name] for name in compare_students]
-
         # 基础统计对比
         st.subheader("📊 基础统计对比")
-        comparison_df = analyzer.compare_students(compare_ids)
 
-        if not comparison_df.empty:
-            # 对比图表
-            fig = go.Figure()
+        if len(compare_students) >= 2:
+            compare_ids = [student_dict[name] for name in compare_students]
+            comparison_df = analyzer.compare_students(compare_ids)
 
-            for _, row in comparison_df.iterrows():
-                fig.add_trace(go.Bar(
-                    name=f"{row['姓名']}",
-                    x=['平均分', '最高分', '最低分'],
-                    y=[row['平均分'], row['最高分'], row['最低分']]
-                ))
-
-            fig.update_layout(
-                title="学生成绩对比",
-                barmode='group',
-                yaxis_range=[0, 100],
-                height=500
-            )
-            st.plotly_chart(fig, use_container_width=True)
-
-            # 数据表
-            display_df = comparison_df[['姓名', '学号', '平均分', '最高分', '最低分', '标准差', '优秀率', '及格率']].copy()
-            display_df.columns = ['姓名', '学号', '平均分', '最高分', '最低分', '标准差', '优秀率 (%)', '及格率 (%)']
-            st.dataframe(display_df, use_container_width=True, hide_index=True)
-
-        # 知识领域对比
-        st.subheader("🧠 知识领域对比")
-        category_data = []
-        for sid in compare_ids:
-            name = analyzer.student_names.get(sid, 'Unknown')
-            cat_perf = deep_analyzer.analyze_category_performance(sid)
-            for cat, data in cat_perf.items():
-                category_data.append({
-                    '学生': name,
-                    '知识领域': cat,
-                    '平均分': data['avg_score'],
-                    '表现': data['performance']
-                })
-
-        if category_data:
-            category_df = pd.DataFrame(category_data)
-
-            fig = px.bar(
-                category_df,
-                x='学生',
-                y='平均分',
-                color='知识领域',
-                barmode='group',
-                title="各学生知识领域平均分对比",
-                height=500
-            )
-            st.plotly_chart(fig, use_container_width=True)
-
-        # 雷达图对比
-        st.subheader("🎯 能力雷达图")
-        if len(compare_ids) <= 4:
-            # 获取第一个学生的知识领域作为雷达图维度
-            first_cat_perf = deep_analyzer.analyze_category_performance(compare_ids[0])
-            categories = list(first_cat_perf.keys()) if first_cat_perf else []
-
-            if categories:
+            if not comparison_df.empty:
+                # 对比图表
                 fig = go.Figure()
 
-                for sid in compare_ids:
-                    name = analyzer.student_names.get(sid, 'Unknown')
-                    cat_perf = deep_analyzer.analyze_category_performance(sid)
-
-                    values = [cat_perf.get(cat, {}).get('avg_score', 0) for cat in categories]
-                    values.append(values[0])  # 闭合雷达图
-
-                    fig.add_trace(go.Scatterpolar(
-                        r=values,
-                        theta=categories + [categories[0]],
-                        fill='toself',
-                        name=name
+                for _, row in comparison_df.iterrows():
+                    fig.add_trace(go.Bar(
+                        name=f"{row['姓名']}",
+                        x=['平均分', '最高分', '最低分'],
+                        y=[row['平均分'], row['最高分'], row['最低分']]
                     ))
 
                 fig.update_layout(
-                    polar=dict(
-                        radialaxis=dict(
-                            visible=True,
-                            range=[0, 100]
-                        )),
-                    showlegend=True,
-                    title="知识领域能力雷达图",
-                    height=600
+                    title="学生成绩对比",
+                    barmode='group',
+                    yaxis_range=[0, 100],
+                    height=500
                 )
                 st.plotly_chart(fig, use_container_width=True)
+
+                # 数据表
+                display_df = comparison_df[['姓名', '学号', '平均分', '最高分', '最低分', '标准差', '优秀率', '及格率']].copy()
+                display_df.columns = ['姓名', '学号', '平均分', '最高分', '最低分', '标准差', '优秀率 (%)', '及格率 (%)']
+                st.dataframe(display_df, use_container_width=True, hide_index=True)
+
+            # 知识领域对比
+            st.subheader("🧠 知识领域对比")
+            category_data = []
+            for sid in compare_ids:
+                name = analyzer.student_names.get(sid, 'Unknown')
+                cat_perf = deep_analyzer.analyze_category_performance(sid)
+                for cat, data in cat_perf.items():
+                    category_data.append({
+                        '学生': name,
+                        '知识领域': cat,
+                        '平均分': data['avg_score'],
+                        '表现': data['performance']
+                    })
+
+            if category_data:
+                category_df = pd.DataFrame(category_data)
+
+                fig = px.bar(
+                    category_df,
+                    x='学生',
+                    y='平均分',
+                    color='知识领域',
+                    barmode='group',
+                    title="各学生知识领域平均分对比",
+                    height=500
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+            # 雷达图对比
+            st.subheader("🎯 能力雷达图")
+            if len(compare_ids) <= 4:
+                # 获取第一个学生的知识领域作为雷达图维度
+                first_cat_perf = deep_analyzer.analyze_category_performance(compare_ids[0])
+                categories = list(first_cat_perf.keys()) if first_cat_perf else []
+
+                if categories:
+                    fig = go.Figure()
+
+                    for sid in compare_ids:
+                        name = analyzer.student_names.get(sid, 'Unknown')
+                        cat_perf = deep_analyzer.analyze_category_performance(sid)
+
+                        values = [cat_perf.get(cat, {}).get('avg_score', 0) for cat in categories]
+                        values.append(values[0])  # 闭合雷达图
+
+                        fig.add_trace(go.Scatterpolar(
+                            r=values,
+                            theta=categories + [categories[0]],
+                            fill='toself',
+                            name=name
+                        ))
+
+                    fig.update_layout(
+                        polar=dict(
+                            radialaxis=dict(
+                                visible=True,
+                                range=[0, 100]
+                            )),
+                        showlegend=True,
+                        title="知识领域能力雷达图",
+                        height=600
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("👈 请选择至少 2 名学生进行对比分析")
 
 # ==================== 模式 5: 成绩预警 ====================
 elif analysis_mode == "⚠️ 成绩预警":
@@ -2012,59 +2014,204 @@ elif analysis_mode == "📊 班级分析":
             # 分数段分布
             st.subheader("📊 分数段分布")
 
-            dist_data = list(class_stats['distribution'].items())
-            dist_labels = [item[0] for item in dist_data]
-            dist_values = [item[1] for item in dist_data]
+            # 分数段设置（可展开）
+            with st.expander("⚙️ 分数段设置", expanded=False):
+                st.caption("自定义成绩分数段划分，设置后全局生效（所有学生和学期都适用）")
+
+                # 加载当前配置
+                current_ranges = load_score_ranges()
+
+                # 使用 session_state 管理编辑中的配置
+                if 'editing_score_ranges_class' not in st.session_state:
+                    st.session_state.editing_score_ranges_class = [r.copy() for r in current_ranges]
+
+                # 显示当前配置的分数段
+                st.write("**当前分数段配置:**")
+
+                # 回调函数：根据 min/max 自动更新名称
+                def auto_update_name_class(idx):
+                    r = st.session_state.editing_score_ranges_class[idx]
+                    new_min = st.session_state.get(f"class_range_min_{idx}", r['min'])
+                    new_max = st.session_state.get(f"class_range_max_{idx}", r['max'])
+                    current_name = st.session_state.get(f"class_range_name_{idx}", r['name'])
+
+                    # 检查名称是否是自动格式
+                    auto_pattern = r'^\d+-\d+分 (\([^)]+\))?$'
+                    is_auto_name = re.match(auto_pattern, current_name) is not None
+
+                    # 如果是自动格式，则更新名称
+                    if is_auto_name:
+                        suffix_match = re.search(r'(\([^)]+\))$', current_name)
+                        suffix = suffix_match.group(1) if suffix_match else ''
+                        st.session_state.editing_score_ranges_class[idx]['name'] = f"{new_min}-{new_max}分{suffix}"
+
+                # 为每个分数段创建编辑行
+                ranges_to_delete = []
+
+                for i, r in enumerate(st.session_state.editing_score_ranges_class):
+                    cols = st.columns([2, 1, 1, 1])
+                    with cols[0]:
+                        st.text_input(
+                            "名称",
+                            value=r['name'],
+                            key=f"class_range_name_{i}",
+                            label_visibility="collapsed",
+                            on_change=lambda idx=i: auto_update_name_class(idx)
+                        )
+                        st.session_state.editing_score_ranges_class[i]['name'] = st.session_state[f"class_range_name_{i}"]
+                    with cols[1]:
+                        st.number_input(
+                            "最低分",
+                            min_value=0,
+                            max_value=100,
+                            value=r['min'],
+                            key=f"class_range_min_{i}",
+                            label_visibility="collapsed",
+                            on_change=lambda idx=i: auto_update_name_class(idx)
+                        )
+                        st.session_state.editing_score_ranges_class[i]['min'] = st.session_state[f"class_range_min_{i}"]
+                    with cols[2]:
+                        st.number_input(
+                            "最高分",
+                            min_value=0,
+                            max_value=100,
+                            value=r['max'],
+                            key=f"class_range_max_{i}",
+                            label_visibility="collapsed",
+                            on_change=lambda idx=i: auto_update_name_class(idx)
+                        )
+                        st.session_state.editing_score_ranges_class[i]['max'] = st.session_state[f"class_range_max_{i}"]
+                    with cols[3]:
+                        if st.button("🗑️", key=f"delete_class_range_{i}"):
+                            ranges_to_delete.append(i)
+
+                # 删除标记的分数段
+                for i in sorted(ranges_to_delete, reverse=True):
+                    st.session_state.editing_score_ranges_class.pop(i)
+                    st.rerun()
+
+                # 添加新分数段按钮
+                col_add, _ = st.columns([1, 3])
+                with col_add:
+                    if st.button("➕ 添加分数段", use_container_width=True):
+                        st.session_state.editing_score_ranges_class.append({
+                            "name": f"新分数段{len(st.session_state.editing_score_ranges_class) + 1}",
+                            "min": 0,
+                            "max": 59
+                        })
+                        st.rerun()
+
+                # 操作按钮
+                st.markdown("---")
+                col1, col2 = st.columns(2)
+                with col1:
+                    if st.button("💾 保存配置", use_container_width=True, key="save_class_ranges"):
+                        if save_score_ranges(st.session_state.editing_score_ranges_class):
+                            st.success("保存成功！配置已全局生效")
+                            st.rerun()
+                        else:
+                            st.error("保存失败")
+                with col2:
+                    if st.button("🔄 恢复默认", use_container_width=True, key="reset_class_ranges"):
+                        if reset_to_default():
+                            st.session_state.editing_score_ranges_class = [r.copy() for r in DEFAULT_SCORE_RANGES]
+                            st.success("已恢复默认")
+                            st.rerun()
+
+            # 重新计算分布数据（使用保存后的配置）
+            active_ranges = load_score_ranges()
+
+            # 重新计算每个分数段的人数（使用所有学生的所有成绩）
+            dist_data = {}
+            for r in active_ranges:
+                dist_data[r['name']] = 0
+
+            # 使用 all_scores_for_distribution 中的所有成绩进行分数段统计
+            for score in class_stats.get('all_scores_for_distribution', []):
+                for r in active_ranges:
+                    if r['min'] <= score <= r['max']:
+                        dist_data[r['name']] += 1
+                        break
+
+            dist_labels = list(dist_data.keys())
+            dist_values = list(dist_data.values())
+
+            # 计算总人次
+            total_scores = sum(dist_values)
+
+            # 显示当前使用的分数段配置提示
+            st.caption(f"📋 当前使用 {len(active_ranges)} 个分数段：{' | '.join([r['name'] for r in active_ranges])}")
+            st.caption(f"📊 统计范围：{class_stats['total_students']} 名学生的所有成绩，共 {total_scores} 人次")
 
             if dist_values:
-                # 转换为 DataFrame 以避免 plotly 参数冲突
-                df_dist = pd.DataFrame({
-                    '分数段': dist_labels,
-                    '人数': dist_values
-                })
-
                 col1, col2 = st.columns(2)
 
-                with col1:
-                    # 柱状图
-                    fig_bar = px.bar(
-                        df_dist,
-                        x='分数段',
-                        y='人数',
-                        labels={'x': '分数段', 'y': '人数'},
-                        title='各分数段人数分布',
-                        color='人数',
-                        color_continuous_scale='YlGnBu'
-                    )
-                    fig_bar.update_layout(height=400, showlegend=False)
-                    st.plotly_chart(fig_bar, use_container_width=True)
+                # 过滤掉 0 值的分数段
+                filtered_dist = {k: v for k, v in dist_data.items() if v > 0}
 
-                with col2:
-                    # 饼图
-                    colors = ['#e74c3c', '#e67e22', '#f1c40f', '#3498db', '#2ecc71']
-                    fig_pie = px.pie(
-                        values=df_dist['人数'],
-                        names=df_dist['分数段'],
-                        title='分数段占比',
-                        color_discrete_sequence=colors
-                    )
-                    st.plotly_chart(fig_pie, use_container_width=True)
+                if filtered_dist:
+                    labels = list(filtered_dist.keys())
+                    values = list(filtered_dist.values())
+                    colors = ['#2ecc71', '#3498db', '#f1c40f', '#e67e22', '#e74c3c'][:len(filtered_dist)]
+
+                    with col1:
+                        # 饼图 - 使用 go.Pie
+                        fig = go.Figure(data=[go.Pie(
+                            labels=labels,
+                            values=values,
+                            hole=0.3,
+                            marker_colors=colors
+                        )])
+                        fig.update_traces(
+                            textposition='outside',
+                            textinfo='percent+label',
+                            texttemplate='%{label}<br>%{value} (%{percent})'
+                        )
+                        fig.update_layout(title=f"成绩分数段分布 (共{total_scores}人次)")
+                        st.plotly_chart(fig, use_container_width=True)
+
+                    with col2:
+                        # 柱状图 - 使用 go.Bar
+                        fig_bar = go.Figure(data=[go.Bar(
+                            x=labels,
+                            y=values,
+                            marker_color=colors,
+                            text=values,
+                            textposition='outside'
+                        )])
+                        fig_bar.update_layout(
+                            title="各分数段成绩分布",
+                            xaxis_title='分数段',
+                            yaxis_title='人数',
+                            yaxis=dict(dtick=1),
+                            showlegend=False
+                        )
+                        st.plotly_chart(fig_bar, use_container_width=True)
+                else:
+                    st.info("暂无成绩数据")
 
             st.markdown("---")
 
             # 成绩分布直方图
             st.subheader("📈 成绩分布直方图")
 
-            if class_stats['scores']:
-                fig_hist = px.histogram(
-                    class_stats['scores'],
-                    nbins=20,
-                    labels={'value': '平均分', 'count': '人数'},
+            if class_stats.get('scores') and len(class_stats['scores']) > 0:
+                # 使用 go.Histogram 渲染直方图
+                fig_hist = go.Figure(data=[go.Histogram(
+                    x=class_stats['scores'],
+                    nbinsx=20,
+                    marker_color='#3498db'
+                )])
+                fig_hist.update_layout(
                     title='学生平均分分布直方图',
-                    color_discrete_sequence=['#3498db']
+                    xaxis_title='平均分',
+                    yaxis_title='人数',
+                    height=400,
+                    showlegend=False
                 )
-                fig_hist.update_layout(height=400, showlegend=False)
                 st.plotly_chart(fig_hist, use_container_width=True)
+            else:
+                st.info("暂无成绩数据")
 
             # 详细数据表
             with st.expander("📋 查看详细数据表"):
@@ -2416,45 +2563,49 @@ elif analysis_mode == "🔬 宏观分析":
             st.subheader("📈 成绩趋势与拟合线")
 
             # 获取成绩趋势数据
-            trend_df = analyzer.get_score_trend(selected_student_id)
-            if not trend_df.empty:
+            trend_df = analyzer.get_score_trend(selected_student_id, selected_semesters[0] if len(selected_semesters) == 1 else None)
+
+            if trend_df is not None and not trend_df.empty:
                 # 添加序号
                 trend_df['序号'] = range(1, len(trend_df) + 1)
 
-            fig = go.Figure()
+                # 实际成绩点
+                scatter_trace = go.Scatter(
+                    x=trend_df['序号'].tolist(),
+                    y=trend_df['分数'].tolist(),
+                    mode='markers',
+                    name='实际成绩',
+                    marker=dict(size=10, color='#3498db')
+                )
 
-            # 实际成绩点
-            fig.add_trace(go.Scatter(
-                x=trend_df['序号'],
-                y=trend_df['分数'],
-                mode='markers',
-                name='实际成绩',
-                marker=dict(size=10, color='#3498db')
-            ))
+                fig = go.Figure(data=[scatter_trace])
 
-            # 趋势线
-            from scipy import stats
-            x = trend_df['序号'].values
-            y = trend_df['分数'].values
-            if len(x) >= 2:
-                slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
-                trend_line = slope * x + intercept
+                # 趋势线
+                from scipy import stats
+                x = trend_df['序号'].values
+                y = trend_df['分数'].values
+                if len(x) >= 2:
+                    slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
+                    trend_line = slope * x + intercept
 
-                fig.add_trace(go.Scatter(
-                    x=x,
-                    y=trend_line,
-                    mode='lines',
-                    name=f'趋势线 (斜率={slope:.2f})',
-                    line=dict(color='#e74c3c', width=2, dash='dash')
-                ))
+                    trend_trace = go.Scatter(
+                        x=x.tolist(),
+                        y=trend_line.tolist(),
+                        mode='lines',
+                        name=f'趋势线 (斜率={slope:.2f})',
+                        line=dict(color='#e74c3c', width=2, dash='dash')
+                    )
+                    fig.add_trace(trend_trace)
 
-            fig.update_layout(
-                xaxis_title="考试次序",
-                yaxis_title="分数",
-                yaxis_range=[0, 100],
-                height=400
-            )
-            st.plotly_chart(fig, use_container_width=True)
+                fig.update_layout(
+                    xaxis_title="考试次序",
+                    yaxis_title="分数",
+                    yaxis_range=[0, 100],
+                    height=400
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("暂无成绩数据，无法生成趋势图")
 
         st.markdown("---")
 
@@ -3230,6 +3381,16 @@ elif analysis_mode == "📝 学习习惯分析":
 # ==================== 模式 12: 班级学情看板 ====================
 elif analysis_mode == "🏫 班级学情看板":
     st.header("🏫 班级学情看板")
+
+    # 直接在页面顶部显示调试信息
+    import re
+    test_str1 = '1(2) 班上学期'
+    test_str2 = '10032-1(2) 班上学期数学考试分数'
+    pattern = r'(\d+\(\d+\).*?学期)'
+    r1 = re.search(pattern, test_str1)
+    r2 = re.search(pattern, test_str2)
+    st.write(f"**📋 正则测试:** '{test_str1}' -> '{r1.group(1) if r1 else None}' | '{test_str2}' -> '{r2.group(1) if r2 else None}'")
+
     st.markdown("教师视角的班级整体学习情况分析")
 
     # 学期选择
@@ -3240,8 +3401,26 @@ elif analysis_mode == "🏫 班级学情看板":
     )
 
     if selected_semester:
+        # 调试：显示学期数据和录入成绩
+        st.caption(f"📋 调试：selected_semester={selected_semester}")
+        st.caption(f"📋 调试：analyzer.semester_data keys={list(analyzer.semester_data.keys())}")
+        st.caption(f"📋 调试：analyzer.students_df shape={analyzer.students_df.shape if analyzer.students_df is not None else None}")
+
+        # 测试标准化函数
+        import re
+        norm_pattern = r'(\d+\(\d+\).*?学期)'
+        norm_selected = re.search(norm_pattern, selected_semester)
+        norm_excel = re.search(norm_pattern, '10032-1(2) 班上学期数学考试分数')
+        norm_selected_result = norm_selected.group(1).replace(' ', '') if norm_selected else None
+        norm_excel_result = norm_excel.group(1).replace(' ', '') if norm_excel else None
+
+        st.caption(f"📋 调试：norm_selected={norm_selected_result}, norm_excel={norm_excel_result}, match={norm_selected_result == norm_excel_result}")
+
         # 获取班级分析
         class_analysis = class_dashboard.analyze_class_overall(selected_semester)
+
+        # 调试：显示分析结果
+        st.caption(f"📋 调试：class_analysis={class_analysis}")
 
         if class_analysis:
             # 统计卡片

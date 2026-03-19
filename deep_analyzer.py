@@ -1021,7 +1021,7 @@ class DeepScoreAnalyzer:
 
         for week in range(start_week, end_week + 1):
             # 获取该周次的考试
-            week_exams = [s for s in all_scores if s.week == week]
+            week_exams = [s for s in all_scores if s['week'] == week]
 
             # 获取该周次的知识点
             knowledge_codes = get_knowledge_by_week(grade_code, week)
@@ -1044,13 +1044,13 @@ class DeepScoreAnalyzer:
             }
 
             if week_exams:
-                scores = [s.score for s in week_exams]
+                scores = [s['score'] for s in week_exams]
                 week_record["avg_score"] = round(sum(scores) / len(scores), 2)
                 week_record["exams"] = [
                     {
-                        "exam_name": s.exam_name,
-                        "score": s.score,
-                        "error_knowledge": s.error_knowledge
+                        "exam_name": s['exam_name'],
+                        "score": s['score'],
+                        "error_knowledge": s['error_knowledge']
                     }
                     for s in week_exams
                 ]
@@ -1058,7 +1058,7 @@ class DeepScoreAnalyzer:
                 # 收集错题知识点
                 all_errors = []
                 for s in week_exams:
-                    all_errors.extend(s.error_knowledge)
+                    all_errors.extend(s['error_knowledge'])
                 week_record["error_knowledge"] = list(set(all_errors))
 
             tracking_data.append(week_record)

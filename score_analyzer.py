@@ -10,7 +10,7 @@ from datetime import datetime
 import re
 
 from database import ExamScoreDAO
-from score_config import get_score_distribution_for_scores
+from score_config import get_score_distribution_for_scores, load_score_ranges
 
 
 class ScoreAnalyzer:
@@ -27,15 +27,11 @@ class ScoreAnalyzer:
     def _normalize_semester_name(self, semester: str) -> str:
         """标准化学期名称，去除 -math_scores 等后缀"""
         import re
-        # 匹配如 "10032-1(2) 班上学期" 或 "10037-3(2) 班下学期"，提取 "1(2) 班上学期" 格式
-        match = re.search(r'\d+-(\d+\(\d+\)\s*班.+学期)', semester)
+        # 匹配格式：10032-1(2) 班上学期数学考试分数 或 1(2) 班上学期
+        # 提取如 "1(2) 班上学期" 格式
+        match = re.search(r'(\d+\(\d+\).*?学期)', semester)
         if match:
-            # 去除中间空格，统一格式
             return match.group(1).replace(' ', '')
-        # 如果没有匹配到，尝试直接匹配 "1(2) 班上学期" 格式
-        match2 = re.search(r'(\d+\(\d+\)\s*班.+学期)', semester)
-        if match2:
-            return match2.group(1).replace(' ', '')
         return semester
 
     def refresh_entered_scores(self):
@@ -535,11 +531,15 @@ class ScoreAnalyzer:
         if not all_students:
             return {}
 
+        # 加载自定义分数段配置
+        score_ranges = load_score_ranges()
+
         # 计算班级整体统计
         class_stats = {
             'total_students': len(all_students),
-            'scores': [],
-            'distribution': {'90-100': 0, '80-89': 0, '70-79': 0, '60-69': 0, '60 以下': 0},
+            'scores': [],  # 所有学生的所有成绩（用于直方图）
+            'all_scores_for_distribution': [],  # 所有成绩（用于分数段统计）
+            'distribution': {r['name']: 0 for r in score_ranges},
             'students_above_90': 0,
             'students_below_60': 0,
         }
@@ -560,17 +560,13 @@ class ScoreAnalyzer:
                 if avg < 60:
                     class_stats['students_below_60'] += 1
 
-                # 分数段统计
-                if avg >= 90:
-                    class_stats['distribution']['90-100'] += 1
-                elif avg >= 80:
-                    class_stats['distribution']['80-89'] += 1
-                elif avg >= 70:
-                    class_stats['distribution']['70-79'] += 1
-                elif avg >= 60:
-                    class_stats['distribution']['60-69'] += 1
-                else:
-                    class_stats['distribution']['60 以下'] += 1
+                # 将该学生的所有成绩加入分数段统计
+                for score in score_values:
+                    class_stats['all_scores_for_distribution'].append(score)
+                    for r in score_ranges:
+                        if r['min'] <= score <= r['max']:
+                            class_stats['distribution'][r['name']] += 1
+                            break
 
         if student_avgs:
             class_stats['class_avg'] = round(sum(student_avgs) / len(student_avgs), 2)
