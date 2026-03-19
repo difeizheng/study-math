@@ -10,6 +10,7 @@ from datetime import datetime
 import re
 
 from database import ExamScoreDAO
+from score_config import get_score_distribution_for_scores
 
 
 class ScoreAnalyzer:
@@ -21,15 +22,20 @@ class ScoreAnalyzer:
         self.semester_data: Dict[str, pd.DataFrame] = {}
         self.student_names: Dict[int, str] = {}
         self.entered_scores_cache: Dict[int, List[Dict]] = {}  # 录入成绩缓存 {学号：[成绩]}
+        self.exam_order: List[str] = []  # 保存 Excel 中考试列的原始顺序
 
     def _normalize_semester_name(self, semester: str) -> str:
         """标准化学期名称，去除 -math_scores 等后缀"""
         import re
-        # 使用更灵活的正则表达式：匹配如 "10037-3(2) 班下学期" 或 "10037-3(2) 班上学期"
-        # 分开捕获数字部分和班级部分，去除中间的空格以实现模糊匹配
-        match = re.search(r'(\d+-\d+\(\d+\))\s*(班.{3})', semester)
+        # 匹配如 "10032-1(2) 班上学期" 或 "10037-3(2) 班下学期"，提取 "1(2) 班上学期" 格式
+        match = re.search(r'\d+-(\d+\(\d+\)\s*班.+学期)', semester)
         if match:
-            return match.group(1) + match.group(2)  # 不包含空格
+            # 去除中间空格，统一格式
+            return match.group(1).replace(' ', '')
+        # 如果没有匹配到，尝试直接匹配 "1(2) 班上学期" 格式
+        match2 = re.search(r'(\d+\(\d+\)\s*班.+学期)', semester)
+        if match2:
+            return match2.group(1).replace(' ', '')
         return semester
 
     def refresh_entered_scores(self):
@@ -51,9 +57,28 @@ class ScoreAnalyzer:
         """加载所有学期的数据并合并"""
         all_scores = []
 
-        for file in sorted(self.data_dir.glob("*.xlsx")):
+        # 扫描 data 根目录和 uploads 子目录
+        excel_files = []
+
+        # 扫描 uploads 子目录（新上传的文件）
+        uploads_dir = self.data_dir / "uploads"
+        if uploads_dir.exists():
+            excel_files.extend(sorted(uploads_dir.glob("*.xlsx")))
+
+        # 扫描 data 根目录（备份文件）
+        excel_files.extend(sorted(self.data_dir.glob("*.xlsx")))
+
+        for file in excel_files:
             semester_name = self._parse_semester_name(file.name)
             df = pd.read_excel(file)
+
+            # 保存原始列顺序（排除学号、姓名）
+            original_cols = list(df.columns)
+            if len(original_cols) >= 2:
+                # 假设前两列是学号和姓名
+                exam_cols = original_cols[2:]
+                # 添加学期前缀后保存
+                self.exam_order = [f"{semester_name}_{col}" for col in exam_cols]
 
             # 标准化列名
             df = self._normalize_columns(df, semester_name)
@@ -141,9 +166,22 @@ class ScoreAnalyzer:
                     es_normalized = self._normalize_semester_name(es['semester'])
                     if es_normalized != normalized_semester:
                         continue
-                key = f"{es['semester']}_{es['exam_name']}"
-                if key not in scores and es['score'] is not None:
-                    scores[key] = float(es['score'])
+                # 使用标准化后的学期名称构建键名，以便与 Excel 成绩去重
+                normalized_es_semester = self._normalize_semester_name(es['semester'])
+                key = f"{normalized_es_semester}_{es['exam_name']}"
+
+                # 检查是否已存在（包括使用原始学期名称的 Excel 成绩）
+                if key not in scores:
+                    # 再检查是否有 Excel 成绩使用相同的标准化名称
+                    exam_exists = False
+                    for existing_key in scores.keys():
+                        existing_norm_semester = self._normalize_semester_name(existing_key.split('_', 1)[0] if '_' in existing_key else existing_key)
+                        existing_exam = existing_key.split('_', 1)[1] if '_' in existing_key else existing_key
+                        if existing_norm_semester == normalized_es_semester and existing_exam == es['exam_name']:
+                            exam_exists = True
+                            break
+                    if not exam_exists and es['score'] is not None:
+                        scores[key] = float(es['score'])
 
         return scores
 
@@ -177,10 +215,96 @@ class ScoreAnalyzer:
                     trends.append({
                         '学期': sem,
                         '考试': exam,
-                        '分数': value
+                        '分数': value,
+                        '_sort_key': self._get_exam_sort_key(exam)  # 用于排序
                     })
 
-        return pd.DataFrame(trends)
+        df = pd.DataFrame(trends)
+
+        # 按考试顺序排序
+        if not df.empty:
+            df = df.sort_values('_sort_key').drop('_sort_key', axis=1).reset_index(drop=True)
+
+        return df
+
+    def _get_exam_sort_key(self, exam_name: str) -> Tuple[int, int]:
+        """
+        从考试名称提取排序关键字，支持自然排序
+
+        例如：周练 1 -> (1, 1), 周练 10 -> (1, 10), 期末模 1 -> (9, 1)
+        返回 (类型权重，序号)，确保周练 2 排在周练 10 前面
+        """
+        # 定义考试类型权重
+        type_weights = {
+            '周练': 1,
+            '练习': 2,
+            '单元': 3,
+            '期中': 8,
+            '期末模': 9,
+            '期末': 10,
+        }
+
+        # 匹配考试类型和序号
+        for exam_type, weight in type_weights.items():
+            if exam_name.startswith(exam_type):
+                # 提取序号
+                num_part = exam_name[len(exam_type):]
+                try:
+                    num = int(num_part)
+                    return (weight, num)
+                except ValueError:
+                    return (weight, 0)
+
+        # 如果不匹配任何类型，返回默认值
+        return (99, 0)
+
+    def get_class_stats(self, semester: str = None) -> pd.DataFrame:
+        """
+        获取班级每次考试的统计数据（平均分、最高分、最低分）
+
+        Args:
+            semester: 学期名称（可选），如 "1(2) 班上学期"
+
+        Returns:
+            DataFrame，包含考试名称、平均分、最高分、最低分
+        """
+        if self.students_df is None:
+            return pd.DataFrame()
+
+        stats = []
+        exam_cols = set()
+
+        # 收集所有考试列
+        for col in self.students_df.columns:
+            if col not in ['学号', '姓名']:
+                exam_cols.add(col)
+
+        # 如果指定了学期，过滤
+        if semester:
+            normalized_semester = self._normalize_semester_name(semester)
+            exam_cols = {col for col in exam_cols
+                        if self._normalize_semester_name(col.split('_', 1)[0] if '_' in col else col) == normalized_semester}
+
+        # 计算每次考试的统计数据
+        for col in sorted(exam_cols, key=lambda x: self._get_exam_sort_key(x.split('_', 1)[1] if '_' in x else x)):
+            # 提取考试名称
+            exam_name = col.split('_', 1)[1] if '_' in col else col
+            sem_name = self._normalize_semester_name(col.split('_', 1)[0] if '_' in col else col)
+
+            # 获取该列所有学生的成绩
+            scores = self.students_df[col].dropna()
+
+            if len(scores) > 0:
+                stats.append({
+                    '学期': sem_name,
+                    '考试': exam_name,
+                    '平均分': round(scores.mean(), 2),
+                    '最高分': scores.max(),
+                    '最低分': scores.min(),
+                    '参考人数': len(scores)
+                })
+
+        return pd.DataFrame(stats)
 
     def calculate_statistics(self, student_id: int, semester: str = None) -> Dict:
         """计算学生统计信息（包含录入的成绩）"""
@@ -274,26 +398,63 @@ class ScoreAnalyzer:
 
         return sorted(weak_areas, key=lambda x: x['平均分'])
 
-    def get_score_distribution(self, student_id: int) -> Dict:
-        """获取分数分布（使用合并后的成绩）"""
-        # 使用合并后的成绩
-        scores = self.get_merged_scores(student_id)
+    def get_score_distribution(self, student_id: int, semester=None) -> Dict:
+        """
+        获取分数分布（使用合并后的成绩）
+
+        Args:
+            student_id: 学生 ID
+            semester: 学期名称或学期列表（可选）
+                     - str: 只统计该学期
+                     - list: 统计选中的多个学期
+                     - None: 统计所有学期
+
+        Returns:
+            分数段分布字典，如 {'90-100': 15, '80-89': 5, ...}
+        """
+        # 获取所有成绩（不过滤学期）
+        scores = self.get_merged_scores(student_id, semester=None)
 
         if not scores:
             return {}
 
-        all_scores = [v for k, v in scores.items() if pd.notna(v)]
+        # 收集所有有效分数
+        all_scores = []
+        for col, value in scores.items():
+            if pd.notna(value):
+                # 提取学期
+                parts = col.split('_', 1)
+                if len(parts) == 2:
+                    raw_sem = parts[0]
+                    col_semester = self._normalize_semester_name(raw_sem)
+
+                    # 根据 semester 参数过滤
+                    should_include = False
+                    if semester is None:
+                        # 不过滤，包含所有
+                        should_include = True
+                    elif isinstance(semester, str):
+                        # 单个学期
+                        norm_semester = self._normalize_semester_name(semester)
+                        if col_semester == norm_semester:
+                            should_include = True
+                    elif isinstance(semester, list):
+                        # 多个学期
+                        norm_semesters = [self._normalize_semester_name(s) for s in semester]
+                        if col_semester in norm_semesters:
+                            should_include = True
+
+                    if should_include:
+                        all_scores.append(value)
+                else:
+                    # 没有学期信息的成绩，直接加入
+                    all_scores.append(value)
 
         if not all_scores:
             return {}
 
-        return {
-            '90-100': len([s for s in all_scores if s >= 90]),
-            '80-89': len([s for s in all_scores if 80 <= s < 90]),
-            '70-79': len([s for s in all_scores if 70 <= s < 80]),
-            '60-69': len([s for s in all_scores if 60 <= s < 70]),
-            '60 以下': len([s for s in all_scores if s < 60])
-        }
+        # 使用配置的分数段计算分布
+        return get_score_distribution_for_scores(all_scores)
 
     def get_score_alerts(self, student_id: int) -> List[Dict]:
         """获取成绩预警信息（使用合并后的成绩）"""
