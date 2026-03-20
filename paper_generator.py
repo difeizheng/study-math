@@ -956,6 +956,160 @@ class SmartPaperGenerator:
         return suggestion
 
 
+# PDF 导出功能
+def export_paper_pdf(paper: ExamPaper, output_path: str) -> str:
+    """
+    导出试卷为 PDF 格式
+
+    Args:
+        paper: 试卷对象
+        output_path: 输出文件路径
+
+    Returns:
+        生成的 PDF 文件路径
+    """
+    from reportlab.lib import colors
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    from reportlab.lib.units import cm
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
+    from reportlab.lib.enums import TA_CENTER, TA_LEFT
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
+    import os
+
+    # 注册中文字体
+    font_paths = [
+        r"C:\Windows\Fonts\simhei.ttf",
+        r"C:\Windows\Fonts\simsun.ttc",
+        r"C:\Windows\Fonts\msyh.ttf",
+    ]
+
+    font_name = 'SimHei'
+    for font_path in font_paths:
+        if os.path.exists(font_path):
+            try:
+                pdfmetrics.registerFont(TTFont('SimHei', font_path))
+                break
+            except:
+                pass
+    else:
+        font_name = 'Helvetica'
+
+    # 创建文档
+    doc = SimpleDocTemplate(
+        output_path,
+        pagesize=A4,
+        leftMargin=2*cm,
+        rightMargin=2*cm,
+        topMargin=2*cm,
+        bottomMargin=2*cm
+    )
+
+    styles = getSampleStyleSheet()
+    title_style = ParagraphStyle(
+        name='TitleStyle',
+        parent=styles['Heading1'],
+        fontName=font_name,
+        fontSize=18,
+        alignment=TA_CENTER,
+        spaceAfter=20
+    )
+
+    info_style = ParagraphStyle(
+        name='InfoStyle',
+        parent=styles['Normal'],
+        fontName=font_name,
+        fontSize=10,
+        alignment=TA_CENTER,
+        spaceAfter=10
+    )
+
+    heading_style = ParagraphStyle(
+        name='HeadingStyle',
+        parent=styles['Heading2'],
+        fontName=font_name,
+        fontSize=14,
+        spaceAfter=10,
+        spaceBefore=15
+    )
+
+    content_style = ParagraphStyle(
+        name='ContentStyle',
+        parent=styles['Normal'],
+        fontName=font_name,
+        fontSize=11,
+        leading=18,
+        spaceAfter=8
+    )
+
+    elements = []
+
+    # 标题
+    elements.append(Paragraph(paper.title, title_style))
+    elements.append(Spacer(1, 0.3*cm))
+
+    # 试卷信息
+    info_text = f"生成时间：{paper.generated_date} | 建议时长：{paper.duration_minutes}分钟 | 总分：{paper.total_score}分"
+    elements.append(Paragraph(info_text, info_style))
+
+    focus_text = f"重点考察：{', '.join(paper.focus_areas) if paper.focus_areas else '综合练习'}"
+    elements.append(Paragraph(focus_text, info_style))
+    elements.append(Spacer(1, 0.5*cm))
+
+    # 密封线
+    elements.append(Paragraph("┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅", info_style))
+    elements.append(Spacer(1, 0.3*cm))
+
+    # 按题型分类
+    questions_by_type = {}
+    for q in paper.questions:
+        qtype = q.question_type
+        if qtype not in questions_by_type:
+            questions_by_type[qtype] = []
+        questions_by_type[qtype].append(q)
+
+    type_order = ["计算题", "填空题", "选择题", "判断题", "应用题", "比较题", "数数题", "统计题"]
+    type_titles = {
+        "计算题": "一、计算题",
+        "填空题": "二、填空题",
+        "选择题": "三、选择题",
+        "判断题": "四、判断题",
+        "应用题": "五、应用题",
+        "比较题": "六、比较题",
+        "数数题": "七、数数题",
+        "统计题": "八、统计题",
+    }
+
+    question_num = 1
+    for qtype in type_order:
+        if qtype in questions_by_type and questions_by_type[qtype]:
+            questions = questions_by_type[qtype]
+            elements.append(Paragraph(type_titles.get(qtype, qtype), heading_style))
+
+            for i, q in enumerate(questions, question_num):
+                q_text = f"{i}. {q.question_text} （    分）"
+                elements.append(Paragraph(q_text, content_style))
+
+            question_num += len(questions)
+            elements.append(Spacer(1, 0.3*cm))
+
+    # 分页
+    elements.append(PageBreak())
+
+    # 参考答案
+    elements.append(Paragraph("参考答案", heading_style))
+    elements.append(Spacer(1, 0.3*cm))
+
+    for i, q in enumerate(paper.questions, 1):
+        answer_text = f"{i}. {q.answer}"
+        elements.append(Paragraph(answer_text, content_style))
+
+    # 生成 PDF
+    doc.build(elements)
+    return output_path
+
+
 def main():
     """测试"""
     generator = SmartPaperGenerator()

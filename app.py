@@ -4129,7 +4129,7 @@ elif analysis_mode == "📄 智能组卷":
                 st.markdown("---")
                 st.subheader("📥 导出试卷")
 
-                col1, col2 = st.columns(2)
+                col1, col2, col3 = st.columns(3)
 
                 with col1:
                     paper_md = paper_generator.export_paper_word(paper)
@@ -4148,6 +4148,31 @@ elif analysis_mode == "📄 智能组卷":
                         file_name=f"{student_name}_答题卡.md",
                         mime="text/markdown"
                     )
+
+                with col3:
+                    # PDF 导出
+                    from paper_generator import export_paper_pdf
+                    import tempfile
+                    import os
+
+                    pdf_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
+                    pdf_path = pdf_file.name
+                    pdf_file.close()
+
+                    try:
+                        export_paper_pdf(paper, pdf_path)
+                        with open(pdf_path, 'rb') as f:
+                            pdf_data = f.read()
+
+                        st.download_button(
+                            label="📥 下载试卷 (PDF)",
+                            data=pdf_data,
+                            file_name=f"{student_name}_{paper_type}练习卷.pdf",
+                            mime="application/pdf"
+                        )
+                    finally:
+                        if os.path.exists(pdf_path):
+                            os.remove(pdf_path)
 
                 # 练习建议
                 st.markdown("---")
