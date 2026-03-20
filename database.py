@@ -136,6 +136,12 @@ def init_database():
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_habit_student ON habit_analysis(student_id)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_ability_student ON ability_records(student_id)")
 
+    # 成绩表索引（性能优化）
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_exam_student ON exam_scores(student_id)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_exam_semester ON exam_scores(semester)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_exam_name ON exam_scores(exam_name)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_exam_student_semester ON exam_scores(student_id, semester)")
+
     conn.commit()
     conn.close()
     print("数据库初始化完成")

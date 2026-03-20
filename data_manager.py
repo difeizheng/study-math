@@ -24,7 +24,22 @@ from knowledge_week_map import (
     WEEK_TO_KNOWLEDGE_MAP
 )
 
+# 尝试导入 streamlit 缓存（如果可用）
+try:
+    import streamlit as st
+    STREAMLIT_AVAILABLE = True
+except ImportError:
+    STREAMLIT_AVAILABLE = False
+
 logger = logging.getLogger(__name__)
+
+
+# 缓存装饰器工厂
+def _cache_data(func):
+    """数据查询缓存装饰器"""
+    if STREAMLIT_AVAILABLE:
+        return st.cache_data(ttl=300)(func)  # 5 分钟缓存
+    return func  # 非 Streamlit 环境下直接返回原函数
 
 
 @dataclass
@@ -94,6 +109,7 @@ class DataManager:
 
     # ==================== 基础数据查询 ====================
 
+    @_cache_data
     def get_students(self, class_id: Optional[int] = None) -> List[Dict]:
         """
         获取学生列表
@@ -113,6 +129,7 @@ class DataManager:
             for row in rows
         ]
 
+    @_cache_data
     def get_exam_list(self) -> List[ExamInfo]:
         """
         获取所有考试列表 (从数据库 + Excel 表头解析)
@@ -152,6 +169,7 @@ class DataManager:
 
         return exam_list
 
+    @_cache_data
     def get_scores(
         self,
         student_id: Optional[int] = None,
