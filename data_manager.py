@@ -37,6 +37,11 @@ logger = logging.getLogger(__name__)
 # 缓存装饰器工厂
 def _cache_data(func):
     """数据查询缓存装饰器"""
+    import os
+    # 在测试环境下跳过缓存
+    if os.environ.get('PYTEST_RUNNING'):
+        return func
+
     if STREAMLIT_AVAILABLE:
         return st.cache_data(ttl=300)(func)  # 5 分钟缓存
     return func  # 非 Streamlit 环境下直接返回原函数

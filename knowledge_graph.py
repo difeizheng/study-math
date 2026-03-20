@@ -674,22 +674,6 @@ class KnowledgeGraph:
         )
 
         return fig
-            if all(p in mastered_set for p in prereqs):
-                recommendations.append({
-                    "code": code,
-                    "name": node.name,
-                    "grade": node.grade,
-                    "semester": node.semester,
-                    "category": node.category,
-                    "importance": node.importance,
-                    "difficulty": node.difficulty,
-                    "readiness": 100 if not prereqs else round(len([p for p in prereqs if p in mastered_set]) / len(prereqs) * 100)
-                })
-
-        # 按重要性和难度排序（优先学重要且不太难的）
-        recommendations.sort(key=lambda x: (-x["importance"], x["difficulty"]))
-
-        return recommendations
 
 
 def main():
