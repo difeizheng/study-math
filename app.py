@@ -2289,10 +2289,17 @@ elif analysis_mode == "🔬 宏观分析":
     st.header("🔬 宏观综合分析")
     st.markdown("基于教育测量学的定量与定性综合分析")
 
-    # 添加对比功能选择
-    compare_mode = st.checkbox("🔍 启用两人对比模式", value=False)
+    # 添加子标签页
+    macro_tab1, macro_tab2, macro_tab3, macro_tab4 = st.tabs([
+        "📊 综合分析", "📅 多学期对比", "🔥 知识盲区热力图", "📈 排名趋势"
+    ])
 
-    if compare_mode:
+    # ========== 标签页 1: 综合分析 ==========
+    with macro_tab1:
+        # 添加对比功能选择
+        compare_mode = st.checkbox("🔍 启用两人对比模式", value=False)
+
+        if compare_mode:
         # 选择第二个学生进行对比
         selected_student_name_2 = st.sidebar.selectbox(
             "选择要对比的学生",
@@ -2632,6 +2639,202 @@ elif analysis_mode == "🔬 宏观分析":
         st.subheader("💡 针对性建议")
         for i, rec in enumerate(macro_data['recommendations'], 1):
             st.markdown(f"{i}. {rec}")
+
+    # ========== 标签页 2: 多学期对比 ==========
+    with macro_tab2:
+        st.subheader("📅 多学期成绩对比")
+        st.markdown("选择多个学期进行成绩对比分析")
+
+        # 学期选择
+        available_semesters = st.multiselect(
+            "选择要对比的学期（最多 4 个）",
+            options=ALL_SEMESTERS,
+            default=[selected_semesters[0]] if len(selected_semesters) > 0 else [],
+            max_selections=4,
+            key="macro_semester_multi"
+        )
+
+        if len(available_semesters) >= 1:
+            # 获取每个学期的成绩
+            semester_data = {}
+            for sem in available_semesters:
+                scores = data_manager.get_scores(student_id=selected_student_id, semester=sem)
+                if scores:
+                    avg_score = sum(float(s['score']) for s in scores) / len(scores)
+                    semester_data[sem] = {
+                        'scores': scores,
+                        'avg': avg_score,
+                        'count': len(scores)
+                    }
+
+            if semester_data:
+                # 学期平均分对比
+                st.subheader("📊 学期平均分对比")
+                sem_names = list(semester_data.keys())
+                sem_avgs = [semester_data[s]['avg'] for s in sem_names]
+
+                fig = go.Figure(data=[
+                    go.Bar(x=sem_names, y=sem_avgs, marker_color=['#3498db', '#e74c3c', '#2ecc71', '#f1c40f'][:len(sem_names)])
+                ])
+                fig.update_layout(
+                    xaxis_title="学期",
+                    yaxis_title="平均分",
+                    yaxis_range=[0, 100],
+                    height=400
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                # 详细数据
+                st.subheader("📋 详细数据")
+                for sem in sem_names:
+                    with st.expander(f"{sem} - {semester_data[sem]['count']}次考试，平均分{semester_data[sem]['avg']:.1f}"):
+                        for score in semester_data[sem]['scores']:
+                            st.write(f"- {score['exam_name']}: {score['score']}分")
+            else:
+                st.info("暂无成绩数据")
+        else:
+            st.info("请至少选择一个学期")
+
+    # ========== 标签页 3: 知识盲区热力图 ==========
+    with macro_tab3:
+        st.subheader("🔥 知识盲区热力图")
+        st.markdown("按知识类别和年级展示知识点掌握情况")
+
+        # 获取所有知识点成绩
+        knowledge_scores = data_manager.get_knowledge_scores(student_id=selected_student_id)
+
+        if knowledge_scores:
+            # 准备热力图数据
+            from deep_analyzer import KNOWLEDGE_SYSTEM
+            kp_by_category = {}
+            for code, kp in KNOWLEDGE_SYSTEM.items():
+                if kp.category not in kp_by_category:
+                    kp_by_category[kp.category] = []
+                kp_by_category[kp.category].append((code, kp))
+
+            # 计算每个知识点的平均分
+            kp_avg_scores = {}
+            for ks in knowledge_scores:
+                kp_code = ks['knowledge_code']
+                score = float(ks['score'])
+                if kp_code not in kp_avg_scores:
+                    kp_avg_scores[kp_code] = []
+                kp_avg_scores[kp_code].append(score)
+
+            # 计算平均分
+            for kp_code in kp_avg_scores:
+                kp_avg_scores[kp_code] = sum(kp_avg_scores[kp_code]) / len(kp_avg_scores[kp_code])
+
+            # 构建热力图数据
+            categories = ['数与代数', '图形与几何', '统计与概率', '综合与实践']
+            grades = ['一年级', '二年级', '三年级', '四年级', '五年级', '六年级']
+
+            heat_data = []
+            y_labels = []
+
+            for grade in grades:
+                for category in categories:
+                    row_data = []
+                    for kp_code, kp in KNOWLEDGE_SYSTEM.items():
+                        if kp.grade == grade[0] and kp.category == category:
+                            avg = kp_avg_scores.get(kp_code, None)
+                            row_data.append(avg if avg is not None else 0)
+                    if any(row_data):
+                        heat_data.append(row_data)
+                        y_labels.append(f"{grade}-{category}")
+
+            if heat_data:
+                fig = go.Figure(data=go.Heatmap(
+                    z=heat_data,
+                    x=[''] * len(heat_data[0]),  # 简化处理
+                    y=y_labels,
+                    colorscale='RdYlGn',
+                    zmin=0,
+                    zmax=100,
+                    showscale=True
+                ))
+                fig.update_layout(
+                    title="知识点掌握热力图（红色=薄弱，绿色=掌握）",
+                    xaxis_title="知识点",
+                    yaxis_title="年级 - 类别",
+                    height=600
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                # 薄弱知识点列表
+                st.subheader("⚠️ 薄弱知识点（<60 分）")
+                weak_kps = []
+                for kp_code, avg in kp_avg_scores.items():
+                    if avg < 60:
+                        kp = KNOWLEDGE_SYSTEM.get(kp_code)
+                        if kp:
+                            weak_kps.append((kp.name, kp.grade, kp.category, avg))
+
+                if weak_kps:
+                    weak_kps.sort(key=lambda x: x[3])
+                    for name, grade, category, avg in weak_kps:
+                        st.warning(f"{grade}{category} - {name}: {avg:.1f}分")
+                else:
+                    st.success("暂无薄弱知识点！")
+            else:
+                st.info("暂无知识点成绩数据")
+        else:
+            st.info("暂无知识点成绩数据")
+
+    # ========== 标签页 4: 排名趋势 ==========
+    with macro_tab4:
+        st.subheader("📈 成绩排名趋势")
+        st.markdown("分析考试成绩排名变化趋势")
+
+        # 获取考试记录
+        exam_scores = data_manager.get_scores(student_id=selected_student_id)
+
+        if exam_scores:
+            # 按学期分组统计
+            semester_groups = {}
+            for score in exam_scores:
+                sem = score['semester']
+                if sem not in semester_groups:
+                    semester_groups[sem] = []
+                semester_groups[sem].append(score)
+
+            st.subheader("📊 考试记录统计")
+            for sem, scores in semester_groups.items():
+                st.info(f"{sem}: {len(scores)}次考试")
+
+            # 排名趋势（需要计算每次考试的排名）
+            st.subheader("📈 成绩变化趋势")
+
+            # 按考试日期排序
+            sorted_scores = sorted(exam_scores, key=lambda x: x.get('exam_date', ''))
+
+            if sorted_scores:
+                exam_names = [s['exam_name'] for s in sorted_scores]
+                exam_scores_list = [float(s['score']) for s in sorted_scores]
+
+                fig = go.Figure(data=go.Scatter(
+                    x=list(range(1, len(exam_scores_list) + 1)),
+                    y=exam_scores_list,
+                    mode='lines+markers',
+                    name='成绩',
+                    marker=dict(size=8)
+                ))
+                fig.update_layout(
+                    xaxis_title="考试次序",
+                    yaxis_title="分数",
+                    yaxis_range=[0, 100],
+                    height=400
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                # 显示详细成绩
+                st.subheader("📋 成绩详情")
+                for i, s in enumerate(sorted_scores, 1):
+                    st.write(f"**{i}. {s['exam_name']}** ({s.get('exam_date', '未知日期')}): {s['score']}分")
+            else:
+                st.info("暂无成绩数据")
+        else:
+            st.info("暂无考试记录")
 
 # ==================== 模式 8: 错题追踪本 ====================
 elif analysis_mode == "📕 错题追踪本":
@@ -3371,57 +3574,235 @@ elif analysis_mode == "📝 学习习惯分析":
     # 习惯维度评分
     analysis = habit_analyzer.analyze_student_habits(selected_student_id)
 
-    st.subheader("📊 学习习惯评分")
+    # 子菜单
+    habit_tab1, habit_tab2, habit_tab3, habit_tab4, habit_tab5 = st.tabs([
+        "📊 习惯评分", "📝 题型分析", "⏱️ 时间分布", "🎭 学习画像", "📈 趋势分析"
+    ])
 
-    col1, col2 = st.columns(2)
+    # ========== 标签 1: 习惯评分 ==========
+    with habit_tab1:
+        col1, col2 = st.columns(2)
 
-    with col1:
-        # 雷达图
-        habit_names = list(analysis.habit_scores.keys())
-        habit_values = list(analysis.habit_scores.values())
+        with col1:
+            # 雷达图
+            habit_names = list(analysis.habit_scores.keys())
+            habit_values = list(analysis.habit_scores.values())
 
-        # 闭合雷达图
-        values_closed = habit_values + [habit_values[0]]
-        categories_closed = habit_names + [habit_names[0]]
+            # 闭合雷达图
+            values_closed = habit_values + [habit_values[0]]
+            categories_closed = habit_names + [habit_names[0]]
 
-        fig = go.Figure()
-        fig.add_trace(go.Scatterpolar(
-            r=values_closed,
-            theta=categories_closed,
-            fill='toself',
-            name='习惯得分',
-            line_color='#2ecc71',
-            marker=dict(size=8)
-        ))
+            fig = go.Figure()
+            fig.add_trace(go.Scatterpolar(
+                r=values_closed,
+                theta=categories_closed,
+                fill='toself',
+                name='习惯得分',
+                line_color='#2ecc71',
+                marker=dict(size=8)
+            ))
 
-        fig.update_layout(
-            polar=dict(
-                radialaxis=dict(
-                    visible=True,
-                    range=[0, 100]
-                )),
-            showlegend=False,
-            height=400,
-            title="学习习惯雷达图"
-        )
-        st.plotly_chart(fig, use_container_width=True)
+            fig.update_layout(
+                polar=dict(
+                    radialaxis=dict(
+                        visible=True,
+                        range=[0, 100]
+                    )),
+                showlegend=False,
+                height=400,
+                title="学习习惯雷达图"
+            )
+            st.plotly_chart(fig, use_container_width=True)
 
-    with col2:
-        # 习惯得分卡片
-        st.markdown("**各维度评分**:")
-        for habit, score in analysis.habit_scores.items():
-            level = "🌟" if score >= 85 else "👍" if score >= 70 else "👌" if score >= 55 else "💪"
-            st.markdown(f"- **{habit}**: {score} {level}")
+        with col2:
+            # 习惯得分卡片
+            st.markdown("**各维度评分**:")
+            for habit, score in analysis.habit_scores.items():
+                level = "🌟" if score >= 85 else "👍" if score >= 70 else "👌" if score >= 55 else "💪"
+                st.markdown(f"- **{habit}**: {score} {level}")
 
-        st.markdown("---")
+            st.markdown("---")
 
-        # 错误类型分布
-        st.markdown("**错误类型分布**:")
-        if analysis.error_distribution:
-            for error_type, count in analysis.error_distribution.items():
-                st.markdown(f"- {error_type}: {count}次")
+            # 错误类型分布
+            st.markdown("**错误类型分布**:")
+            if analysis.error_distribution:
+                for error_type, count in analysis.error_distribution.items():
+                    st.markdown(f"- {error_type}: {count}次")
+            else:
+                st.info("暂无错误记录数据")
+
+    # ========== 标签 2: 题型分析 ==========
+    with habit_tab2:
+        st.subheader("📝 题型正确率对比")
+
+        question_type_stats = habit_analyzer.get_question_type_stats(selected_student_id)
+
+        if question_type_stats:
+            # 柱状图
+            col1, col2 = st.columns(2)
+
+            with col1:
+                fig = go.Figure()
+                fig.add_trace(go.Bar(
+                    x=list(question_type_stats.keys()),
+                    y=[data["accuracy"] for data in question_type_stats.values()],
+                    marker_color=['#2ecc71' if data["accuracy"] >= 80 else '#f1c40f' if data["accuracy"] >= 60 else '#e74c3c'
+                                 for data in question_type_stats.values()],
+                    text=[f"{data['accuracy']}%" for data in question_type_stats.values()],
+                    textposition='outside'
+                ))
+                fig.update_layout(
+                    title="各题型正确率",
+                    xaxis_title="题型",
+                    yaxis_title="正确率 (%)",
+                    yaxis=dict(range=[0, 100]),
+                    height=400
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+            with col2:
+                # 详细数据
+                st.markdown("**题型分析详情**:")
+                for q_type, data in question_type_stats.items():
+                    with st.expander(f"{q_type} - 正确率 {data['accuracy']}%"):
+                        st.markdown(f"**描述**: {data['description']}")
+                        st.markdown(f"**错误次数**: {data['error_count']}")
+                        if data['accuracy'] < 70:
+                            st.warning(f"建议：加强{x_type}的专项练习")
+                        elif data['accuracy'] < 85:
+                            st.info(f"注意：{q_type}还有提升空间")
+                        else:
+                            st.success(f"很好：{q_type}掌握较好")
         else:
-            st.info("暂无错误记录数据")
+            st.info("暂无题型分析数据，需要添加更多错题记录")
+
+    # ========== 标签 3: 时间分布 ==========
+    with habit_tab3:
+        st.subheader("⏱️ 答题时间分布分析")
+
+        time_analysis = habit_analyzer.get_time_distribution_analysis(selected_student_id)
+
+        if "message" not in time_analysis:
+            col1, col2, col3 = st.columns(3)
+
+            with col1:
+                st.metric("考试次数", time_analysis["total_exams"])
+            with col2:
+                st.metric("时间相关错误", time_analysis["time_related_errors"])
+            with col3:
+                time_level = "🌟" if time_analysis["time_management_score"] >= 85 else "👍" if time_analysis["time_management_score"] >= 70 else "💪"
+                st.metric("时间管理评分", f"{time_analysis['time_management_score']}分", delta=time_level)
+
+            st.markdown("---")
+
+            # 考试错误数柱状图
+            if time_analysis["exams"]:
+                fig = go.Figure()
+                fig.add_trace(go.Bar(
+                    x=time_analysis["exams"],
+                    y=time_analysis["error_counts"],
+                    marker_color='#3498db'
+                ))
+                fig.update_layout(
+                    title="各考试错误数对比",
+                    xaxis_title="考试名称",
+                    yaxis_title="错误数",
+                    height=350
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+            # 时间管理建议
+            st.markdown("---")
+            st.markdown("**💡 时间管理建议**:")
+            if time_analysis["time_management_score"] < 60:
+                st.warning("时间管理较差，建议进行限时训练，提高答题速度")
+            elif time_analysis["time_management_score"] < 80:
+                st.info("时间管理一般，可以继续优化答题节奏")
+            else:
+                st.success("时间管理良好，保持现有答题节奏")
+        else:
+            st.info(time_analysis["message"])
+
+    # ========== 标签 4: 学习画像 ==========
+    with habit_tab4:
+        st.subheader("🎭 学生学习习惯画像")
+
+        profile = habit_analyzer.get_habit_profile(selected_student_id)
+
+        if profile["profile_type"] != "暂无数据":
+            # 画像卡片
+            st.info(f"**{profile['profile_type']}** - 匹配度 {profile['match_rate']}%")
+            st.markdown(f"**描述**: {profile['description']}")
+
+            st.markdown("**📋 针对性建议**:")
+            for i, sug in enumerate(profile.get("suggestions", []), 1):
+                st.markdown(f"{i}. {sug}")
+
+            # 画像雷达图
+            if "radar_data" in profile:
+                fig = go.Figure()
+                fig.add_trace(go.Scatterpolar(
+                    r=profile["radar_data"]["values"] + [profile["radar_data"]["values"][0]],
+                    theta=profile["radar_data"]["categories"] + [profile["radar_data"]["categories"][0]],
+                    fill='toself',
+                    name='画像匹配度',
+                    line_color='#9b59b6',
+                    marker=dict(size=8)
+                ))
+                fig.update_layout(
+                    polar=dict(
+                        radialaxis=dict(
+                            visible=True,
+                            range=[0, 100]
+                        )),
+                    showlegend=False,
+                    height=400,
+                    title="学习习惯画像分析"
+                )
+                st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info(profile["description"])
+
+    # ========== 标签 5: 趋势分析 ==========
+    with habit_tab5:
+        st.subheader("📈 时间序列学习行为分析")
+
+        trend_analysis = habit_analyzer.get_habit_trend_analysis(selected_student_id)
+
+        if "message" not in trend_analysis:
+            # 总体趋势
+            col1, col2 = st.columns(2)
+            with col1:
+                st.metric("进步习惯数", trend_analysis["overall_improvement"], delta="📈")
+            with col2:
+                st.metric("退步习惯数", trend_analysis["overall_decline"], delta="📉")
+
+            st.markdown("---")
+
+            # 各习惯趋势
+            for habit, data in trend_analysis["trends"].items():
+                trend_icon = {"上升": "📈", "下降": "📉", "稳定": "➡️"}.get(data["trend"], "")
+                st.markdown(f"**{habit}**: {data['trend']} {trend_icon} (变化：{data['change']:+.1f}分，平均：{data['avg']:.1f}分)")
+
+            # 趋势图
+            fig = go.Figure()
+            for habit, data in trend_analysis["trends"].items():
+                if data.get("values"):
+                    fig.add_trace(go.Scatter(
+                        y=data["values"],
+                        mode='lines+markers',
+                        name=habit
+                    ))
+            fig.update_layout(
+                title="学习习惯变化趋势",
+                xaxis_title="时间（月）",
+                yaxis_title="得分",
+                yaxis=dict(range=[0, 100]),
+                height=400
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info(trend_analysis["message"])
 
     st.markdown("---")
 
