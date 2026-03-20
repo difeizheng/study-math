@@ -1,7 +1,7 @@
-# 会话上下文 - 2026-03-19
+# 会话上下文 - 2026-03-20
 
 ## 当前版本
-- **v5.2.1** - 同步 deep_analyzer.py 与 score_analyzer.py 的一致性
+- **v5.2.2** - 班级分析分数段分布和学期名称匹配
 
 ## 架构版本
 - **v5.0** - 数据管理重构版
@@ -104,6 +104,8 @@
 - `error_records`: id, student_id, knowledge_code, exam_name, error_type, created_at
 
 ## Git 提交历史
+- v5.2.2: 班级分析分数段分布和学期名称匹配
+- v5.2.1: 同步 deep_analyzer.py 与 score_analyzer.py 的一致性
 - v5.2: 自定义分数段配置功能
 - v5.1.1: 修复 SAI 指数 KeyError 错误
 - v5.1: 时序追踪和轨迹诊断功能
@@ -116,6 +118,33 @@
 ## 运行状态
 - 应用运行在 http://192.168.81.59:8501
 - 启动时自动从 Excel 导入成绩到数据库
+
+## 已修复的问题 (2026-03-20) - v5.2.2
+
+### 1. AttributeError: 'dict' object has no attribute 'week'
+- **位置**: deep_analyzer.py 第 1024 行 get_weekly_tracking() 方法
+- **原因**: get_scores() 返回字典列表，但代码使用对象属性访问方式 (s.week)
+- **修复**: 将 `s.week` 改为 `s['week']`，`s.score` 改为 `s['score']` 等
+
+### 2. NameError: name 'compare_ids' is not defined
+- **位置**: app.py 第 1835 行、1864 行等多处
+- **原因**: compare_ids 只在 if 条件内定义，但在条件外被使用
+- **修复**: 将使用 compare_ids 和 comparison_df 的代码都移到 `if len(compare_students) >= 2:` 条件内
+
+### 3. 班级分析分数段分布统计错误
+- **问题**: 分数段基于学生平均分统计，而非所有成绩
+- **修复**:
+  - score_analyzer.py: 使用 `all_scores_for_distribution` 统计所有成绩
+  - app.py: 添加分数段配置面板（与成绩趋势分析一致）
+  - 使用 go.Histogram 渲染直方图
+
+### 4. 宏观分析成绩趋势图无数据
+- **原因**: get_score_trend() 调用时未传入学期参数
+- **修复**: 传入 `selected_semesters[0]` 参数
+
+### 5. 班级学情看板无数据
+- **原因**: _normalize_semester_name() 正则表达式不匹配带数字前缀的学期名
+- **修复**: 统一使用 `r'(\d+\(\d+\).*? 学期)'` 模式，匹配 `10032-1(2) 班上学期` 和 `1(2) 班上学期`
 
 ## 已修复的问题 (2026-03-19)
 

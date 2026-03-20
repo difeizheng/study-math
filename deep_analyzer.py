@@ -665,8 +665,23 @@ class DeepScoreAnalyzer:
         """获取学生合并后的成绩 {考试列名：(学期，分数)}"""
         scores = {}
 
-        # 1. 从 Excel 获取成绩
-        if self.students_df is not None:
+        # 1. 优先从数据库获取成绩（DataManager 数据源）
+        db_scores = self.get_scores(student_id=student_id)
+        for db_score in db_scores:
+            exam_name = db_score['exam_name']
+            semester = self._get_semester_from_exam_name(exam_name)
+            if exam_name not in scores and db_score['score'] is not None:
+                scores[exam_name] = (semester, float(db_score['score']))
+
+        # 2. 合并录入的成绩（从 ExamScoreDAO）
+        if student_id in self.entered_scores_cache:
+            for es in self.entered_scores_cache[student_id]:
+                key = es['exam_name']
+                if key not in scores and es['score'] is not None:
+                    scores[key] = (es['semester'], float(es['score']))
+
+        # 3. 如果数据库为空，从 Excel 获取成绩（向后兼容）
+        if not scores and self.students_df is not None:
             student_data = self.students_df[self.students_df['学号'] == student_id]
             if not student_data.empty:
                 for col in self.students_df.columns:
@@ -679,14 +694,17 @@ class DeepScoreAnalyzer:
                                 semester = parts[0]
                                 scores[col] = (semester, float(value))
 
-        # 2. 合并录入的成绩
-        if student_id in self.entered_scores_cache:
-            for es in self.entered_scores_cache[student_id]:
-                key = f"{es['semester']}_{es['exam_name']}"
-                if key not in scores and es['score'] is not None:
-                    scores[key] = (es['semester'], float(es['score']))
-
         return scores
+
+    def _get_semester_from_exam_name(self, exam_name: str) -> str:
+        """从考试名称或录入成绩中获取学期信息"""
+        # 尝试从录入成绩缓存中查找学期
+        for sid, scores in self.entered_scores_cache.items():
+            for es in scores:
+                if es['exam_name'] == exam_name:
+                    return es['semester']
+        # 默认返回空字符串
+        return ""
 
     def analyze_knowledge_mastery(self, student_id: int) -> Dict[str, Dict]:
         """分析学生对各知识点的掌握程度（使用合并后的成绩）"""

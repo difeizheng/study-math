@@ -287,6 +287,71 @@ class ErrorTracker:
 
         return trend
 
+    def get_frequent_errors(self, student_id: int, limit: int = 10) -> List[Dict]:
+        """
+        获取高频错题排行（按知识点统计错误次数）
+
+        Args:
+            student_id: 学生 ID
+            limit: 返回数量限制
+
+        Returns:
+            高频错题列表，按错误次数降序排列
+        """
+        stats = ErrorRecordDAO.get_error_statistics(student_id)
+        frequent = []
+
+        # 按知识点统计的错误次数排序
+        sorted_knowledge = sorted(
+            stats.get("by_knowledge", []),
+            key=lambda x: x["count"],
+            reverse=True
+        )[:limit]
+
+        for kp_data in sorted_knowledge:
+            kp_code = kp_data["knowledge_code"]
+            kp_name = kp_data["knowledge_name"]
+            error_count = kp_data["count"]
+
+            # 获取该知识点的详细错误类型
+            errors = ErrorRecordDAO.get_errors_by_knowledge(student_id, kp_code)
+            error_types = list(set([e["error_type"] for e in errors]))
+
+            frequent.append({
+                "knowledge_code": kp_code,
+                "knowledge_name": kp_name,
+                "error_count": error_count,
+                "error_types": error_types,
+                "mastered_count": sum([1 for e in errors if e.get("is_mastered", False)]),
+                "mastery_rate": round(sum([1 for e in errors if e.get("is_mastered", False)]) / len(errors) * 100, 1) if errors else 0
+            })
+
+        return frequent
+
+    def get_errors_by_semester(self, student_id: int, semester: str) -> List[Dict]:
+        """
+        按学期获取错题
+
+        Args:
+            student_id: 学生 ID
+            semester: 学期名称
+
+        Returns:
+            该学期的错题列表
+        """
+        errors = self.get_student_errors(student_id)
+        return [e for e in errors if e.semester == semester]
+
+    def export_error_book_pdf(self, student_id: int, output_path: str) -> str:
+        """导出错题本 PDF"""
+        from pdf_exporter import PDFExporter
+
+        errors = self.get_student_errors(student_id)
+        student_name = self.student_names.get(student_id, "Unknown")
+
+        exporter = PDFExporter()
+        return exporter.export_error_report(student_name, student_id, errors, output_path)
+
     def export_error_book(self, student_id: int) -> str:
         """导出错题本（Markdown 格式）"""
         errors = self.get_student_errors(student_id)

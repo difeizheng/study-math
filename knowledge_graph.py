@@ -502,6 +502,178 @@ class KnowledgeGraph:
 
             # 检查所有前置知识是否已掌握
             prereqs = self.nodes[code].prerequisites
+
+    def get_visualization_data(self, student_id: int = None,
+                               mastery_data: Dict[str, Dict] = None,
+                               grade_filter: Optional[str] = None) -> Dict:
+        """
+        获取知识图谱可视化数据（用于 plotly 绘制）
+
+        Args:
+            student_id: 学生 ID（可选）
+            mastery_data: 知识点掌握数据 {code: {avg_score: ...}}（可选）
+            grade_filter: 年级过滤（如"一年级"）
+
+        Returns:
+            可视化数据，包含 nodes 和 edges 列表
+        """
+        nodes = []
+        edges = []
+
+        # 颜色映射（根据掌握程度）
+        def get_node_color(mastery_score: float) -> str:
+            if mastery_score >= 90:
+                return "#2ecc71"  # 绿色 - 优秀
+            elif mastery_score >= 75:
+                return "#3498db"  # 蓝色 - 良好
+            elif mastery_score >= 60:
+                return "#f1c40f"  # 黄色 - 中等
+            else:
+                return "#e74c3c"  # 红色 - 需努力
+
+        for code, node in self.nodes.items():
+            # 年级过滤
+            if grade_filter and node.grade != grade_filter:
+                continue
+
+            # 获取掌握程度
+            mastery_score = None
+            if mastery_data and code in mastery_data:
+                mastery_score = mastery_data[code]["avg_score"]
+
+            # 节点颜色
+            if mastery_score is not None:
+                color = get_node_color(mastery_score)
+                size = 15 + (mastery_score / 100) * 10  # 分数越高节点越大
+            else:
+                color = "#95a5a6"  # 灰色 - 无数据
+                size = 15
+
+            nodes.append({
+                "id": code,
+                "label": node.name[:15] + ".." if len(node.name) > 15 else node.name,
+                "full_name": node.name,
+                "grade": node.grade,
+                "semester": node.semester,
+                "category": node.category,
+                "importance": node.importance,
+                "difficulty": node.difficulty,
+                "color": color,
+                "size": size,
+                "mastery_score": mastery_score,
+                "x": None,  # 稍后由布局算法计算
+                "y": None
+            })
+
+            # 添加依赖关系边
+            for prereq in node.prerequisites:
+                if grade_filter:
+                    prereq_node = self.nodes.get(prereq)
+                    if prereq_node and prereq_node.grade != grade_filter:
+                        continue
+
+                edges.append({
+                    "source": prereq,
+                    "target": code,
+                    "type": "prerequisite"
+                })
+
+        return {"nodes": nodes, "edges": edges}
+
+    def get_visualization_figure(self, student_id: int = None,
+                                  mastery_data: Dict[str, Dict] = None,
+                                  grade_filter: Optional[str] = None,
+                                  width: int = 800, height: int = 600) -> 'go.Figure':
+        """
+        生成知识图谱可视化 Figure（使用 plotly）
+
+        Args:
+            student_id: 学生 ID（可选）
+            mastery_data: 知识点掌握数据
+            grade_filter: 年级过滤
+            width: 图宽度
+            height: 图高度
+
+        Returns:
+            plotly Figure 对象
+        """
+        import plotly.graph_objects as go
+        from typing import Tuple
+
+        vis_data = self.get_visualization_data(student_id, mastery_data, grade_filter)
+        nodes = vis_data["nodes"]
+        edges = vis_data["edges"]
+
+        if not nodes:
+            return go.Figure().add_annotation(text="暂无数据", xref="paper", yref="paper",
+                                               x=0.5, y=0.5, showarrow=False)
+
+        # 简单布局：按年级和重要性排列
+        grade_positions = {"一年级": 0, "二年级": 1, "三年级": 2, "四年级": 3, "五年级": 4, "六年级": 5}
+
+        node_positions = {}
+        for node in nodes:
+            grade_y = grade_positions.get(node["grade"], 0)
+            importance_x = node["importance"] * 2  # 重要性决定 x 位置
+            node_positions[node["id"]] = (importance_x, grade_y)
+            node["x"] = importance_x
+            node["y"] = grade_y
+
+        # 绘制边
+        edge_x, edge_y = [], []
+        for edge in edges:
+            if edge["source"] in node_positions and edge["target"] in node_positions:
+                x0, y0 = node_positions[edge["source"]]
+                x1, y1 = node_positions[edge["target"]]
+                edge_x.extend([x0, x1, None])
+                edge_y.extend([y0, y1, None])
+
+        # 绘制节点
+        node_x = [node["x"] for node in nodes]
+        node_y = [node["y"] for node in nodes]
+        node_colors = [node["color"] for node in nodes]
+        node_sizes = [node["size"] for node in nodes]
+        node_texts = [
+            f"<b>{node['full_name']}</b><br>{node['grade']}{node['semester']}<br>"
+            f"重要性：{'⭐' * node['importance']}<br>难度：{'🔥' * node['difficulty']}<br>"
+            f"掌握度：{node['mastery_score'] if node['mastery_score'] else '无数据'}分"
+            for node in nodes
+        ]
+
+        fig = go.Figure()
+
+        # 添加边
+        if edge_x:
+            fig.add_trace(go.Scatter(
+                x=edge_x, y=edge_y,
+                line=dict(width=1, color="#bdc3c7"),
+                hoverinfo='none',
+                mode='lines'
+            ))
+
+        # 添加节点
+        fig.add_trace(go.Scatter(
+            x=node_x, y=node_y,
+            mode='markers+text',
+            marker=dict(size=node_sizes, color=node_colors, line=dict(width=1, color='black')),
+            text=[node["label"] for node in nodes],
+            textposition="middle center",
+            textfont=dict(size=8),
+            hovertext=node_texts,
+            hoverinfo='text'
+        ))
+
+        fig.update_layout(
+            title="知识点关联图谱（颜色表示掌握程度：绿 - 优秀/蓝 - 良好/黄 - 中等/红 - 需努力）",
+            showlegend=False,
+            xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+            width=width,
+            height=height,
+            plot_bgcolor='white'
+        )
+
+        return fig
             if all(p in mastered_set for p in prereqs):
                 recommendations.append({
                     "code": code,

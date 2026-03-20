@@ -2745,6 +2745,24 @@ elif analysis_mode == "📕 错题追踪本":
 
             st.markdown("---")
 
+            # 高频错题排行
+            st.markdown("#### 🔝 高频错题排行")
+            frequent_errors = error_tracker.get_frequent_errors(selected_student_id, limit=10)
+
+            if frequent_errors:
+                freq_data = []
+                for i, fe in enumerate(frequent_errors, 1):
+                    freq_data.append({
+                        "排行": i,
+                        "知识点": fe["knowledge_name"],
+                        "错误次数": fe["error_count"],
+                        "已掌握": fe["mastered_count"],
+                        "掌握率": f"{fe['mastery_rate']}%"
+                    })
+                st.dataframe(pd.DataFrame(freq_data), use_container_width=True, hide_index=True)
+
+            st.markdown("---")
+
             # 详细数据表
             st.markdown("#### 各知识点掌握情况")
             kp_data = []
@@ -2808,16 +2826,30 @@ elif analysis_mode == "📕 错题追踪本":
 
         if stats.get("total", 0) > 0:
             # 筛选器
-            filter_type = st.selectbox(
-                "筛选错误类型",
-                options=["全部"] + list(ERROR_TYPES.keys())
-            )
+            col1, col2 = st.columns(2)
+            with col1:
+                filter_type = st.selectbox(
+                    "筛选错误类型",
+                    options=["全部"] + list(ERROR_TYPES.keys()),
+                    key="error_filter_type"
+                )
+            with col2:
+                # 按知识点筛选
+                all_kp_names = list(set([e.knowledge_name for e in error_tracker.get_student_errors(selected_student_id)]))
+                filter_kp = st.selectbox(
+                    "筛选知识点",
+                    options=["全部"] + sorted(all_kp_names),
+                    key="error_filter_kp"
+                )
 
             # 获取错题列表
             errors = error_tracker.get_student_errors(selected_student_id)
 
             if filter_type != "全部":
                 errors = [e for e in errors if e.error_type == filter_type]
+
+            if filter_kp != "全部":
+                errors = [e for e in errors if e.knowledge_name == filter_kp]
 
             # 显示错题
             for i, error in enumerate(errors, 1):
@@ -2843,13 +2875,39 @@ elif analysis_mode == "📕 错题追踪本":
 
             # 导出按钮
             st.markdown("---")
-            error_book = error_tracker.export_error_book(selected_student_id)
-            st.download_button(
-                label="📥 导出错题本 (Markdown)",
-                data=error_book,
-                file_name=f"{student_name}_错题本.md",
-                mime="text/markdown"
-            )
+            st.subheader("📥 导出错题本")
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+                # Markdown 格式
+                error_book = error_tracker.export_error_book(selected_student_id)
+                st.download_button(
+                    label="📄 导出 Markdown 格式",
+                    data=error_book,
+                    file_name=f"{student_name}_错题本.md",
+                    mime="text/markdown",
+                    use_container_width=True
+                )
+
+            with col2:
+                # PDF 格式
+                import tempfile
+                import os
+
+                pdf_path = os.path.join(tempfile.gettempdir(), f"{student_name}_错题本.pdf")
+                try:
+                    error_tracker.export_error_book_pdf(selected_student_id, pdf_path)
+                    with open(pdf_path, "rb") as pdf_file:
+                        st.download_button(
+                            label="📕 导出 PDF 格式",
+                            data=pdf_file.read(),
+                            file_name=f"{student_name}_错题本.pdf",
+                            mime="application/pdf",
+                            use_container_width=True
+                        )
+                except Exception as e:
+                    st.error(f"生成 PDF 失败：{str(e)}")
         else:
             st.info("暂无错题记录")
 
@@ -3068,14 +3126,43 @@ elif analysis_mode == "🕸️ 知识点关联图谱":
         # 选择要查看的年级
         view_grade = st.selectbox(
             "选择要查看的年级",
-            options=["全部", "一年级", "二年级", "三年级"]
+            options=["全部", "一年级", "二年级", "三年级", "四年级", "五年级", "六年级"],
+            key="kg_grade_select"
         )
 
-        # 生成图谱数据
-        graph_data = knowledge_graph.export_graph_json()
+        # 是否显示学生掌握情况
+        show_mastery = st.checkbox("显示当前学生掌握情况", value=False,
+                                    help="根据成绩用颜色标记知识点：绿色 - 优秀/蓝色 - 良好/黄色 - 中等/红色 - 需努力")
 
-        st.code(graph_data[:1000] + "...", language="json")
-        st.info("💡 完整 JSON 数据已生成，可用于前端可视化库（如 D3.js、ECharts）绘制知识图谱")
+        # 获取学生知识点掌握数据
+        mastery_data = None
+        if show_mastery and selected_student_id:
+            mastery_data = deep_analyzer.analyze_knowledge_mastery(selected_student_id)
+
+        # 年级过滤
+        grade_filter = None if view_grade == "全部" else view_grade
+
+        # 生成可视化图谱
+        st.markdown("### 📊 知识图谱可视化")
+
+        try:
+            fig = knowledge_graph.get_visualization_figure(
+                student_id=selected_student_id if show_mastery else None,
+                mastery_data=mastery_data,
+                grade_filter=grade_filter,
+                width=800,
+                height=600
+            )
+            st.plotly_chart(fig, use_container_width=True)
+
+            st.info("💡 **提示**: 鼠标悬停在节点上可查看详细知识点的信息，包括重要性、难度和掌握程度")
+        except Exception as e:
+            st.error(f"生成图谱失败：{str(e)}")
+
+        # 原始 JSON 数据
+        with st.expander("📄 查看原始 JSON 数据"):
+            graph_data = knowledge_graph.export_graph_json()
+            st.code(graph_data[:2000] + "..." if len(graph_data) > 2000 else graph_data, language="json")
 
         # 简单的文字版依赖图
         st.markdown("---")
