@@ -751,52 +751,48 @@ if analysis_mode == "⚙️ 数据管理":
         with col_btn2:
             if st.button("🗑️ 清理所有数据（含学生）", type="secondary", use_container_width=True):
                 try:
-                    # 先清除所有缓存，释放数据库连接
+                    # 先清除所有缓存
                     analyzer.entered_scores_cache = {}
                     deep_analyzer.entered_scores_cache = {}
-                    get_analyzers.clear()
-
-                    # 清除 data_manager 的缓存
-                    if hasattr(data_manager, 'get_exam_list'):
-                        data_manager.get_exam_list.clear()
-                    if hasattr(data_manager, 'get_students'):
-                        data_manager.get_students.clear()
-                    if hasattr(data_manager, 'get_scores'):
-                        data_manager.get_scores.clear()
-
-                    # 等待一小段时间让缓存释放连接
-                    import time
-                    time.sleep(0.5)
-
-                    conn = get_db_connection()
-                    cursor = conn.cursor()
-
-                    # 启用 WAL 模式减少锁定
-                    cursor.execute("PRAGMA journal_mode=WAL")
-
-                    # 设置超时
-                    cursor.execute("PRAGMA busy_timeout=5000")
-
-                    cursor.execute("DELETE FROM exam_scores")
-                    cursor.execute("DELETE FROM error_records")
-                    cursor.execute("DELETE FROM students")
-
-                    conn.commit()
-                    conn.close()
-
-                    st.success("已清理所有数据！请刷新页面（F5）重新开始。")
-                    log_info("用户清理了所有数据")
-
-                    # 使用 session_state 标记需要重新加载
-                    st.session_state['data_changed'] = True
-
-                    # 清除分析器缓存
                     analyzer.student_names = {}
                     analyzer.semester_data = {}
                     analyzer.students_df = None
                     deep_analyzer.student_names = {}
                     deep_analyzer.semester_data = {}
                     deep_analyzer.students_df = None
+
+                    # 关闭并删除数据库文件
+                    import sqlite3
+                    import shutil
+                    from datetime import datetime
+
+                    db_path = "data/study_math.db"
+
+                    # 备份数据库
+                    backup_path = f"data/study_math_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.db"
+                    if Path(db_path).exists():
+                        shutil.copy(db_path, backup_path)
+                        log_info(f"已备份数据库到：{backup_path}")
+
+                    # 删除旧数据库和相关文件
+                    for ext in ["", "-wal", "-shm"]:
+                        try:
+                            p = Path(db_path + ext)
+                            if p.exists():
+                                p.unlink()
+                        except:
+                            pass
+
+                    # 重新初始化数据库
+                    init_database()
+
+                    st.success("已清理所有数据！页面将自动刷新。")
+                    log_info("用户清理了所有数据（重建数据库）")
+
+                    # 延迟后刷新
+                    import time
+                    time.sleep(1)
+                    st.rerun()
 
                 except Exception as e:
                     st.error(f"清理失败：{e}")
