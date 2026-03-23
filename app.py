@@ -739,6 +739,11 @@ if analysis_mode == "⚙️ 数据管理":
                     # 使用 session_state 标记需要重新加载
                     st.session_state['data_changed'] = True
 
+                    # 清除分析器缓存
+                    analyzer.entered_scores_cache = {}
+                    deep_analyzer.entered_scores_cache = {}
+                    get_analyzers.clear()
+
                 except Exception as e:
                     st.error(f"清理失败：{e}")
                     log_error(e, "清理录入成绩失败")
@@ -758,6 +763,17 @@ if analysis_mode == "⚙️ 数据管理":
 
                     # 使用 session_state 标记需要重新加载
                     st.session_state['data_changed'] = True
+
+                    # 清除分析器缓存
+                    analyzer.entered_scores_cache = {}
+                    deep_analyzer.entered_scores_cache = {}
+                    analyzer.student_names = {}
+                    analyzer.semester_data = {}
+                    analyzer.students_df = None
+                    deep_analyzer.student_names = {}
+                    deep_analyzer.semester_data = {}
+                    deep_analyzer.students_df = None
+                    get_analyzers.clear()
 
                 except Exception as e:
                     st.error(f"清理失败：{e}")
