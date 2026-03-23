@@ -2828,7 +2828,7 @@ elif analysis_mode == "🔬 宏观分析":
             for sem in available_semesters:
                 scores = data_manager.get_scores(student_id=selected_student_id, semester=sem)
                 if scores:
-                    avg_score = sum(float(s['score']) for s in scores) / len(scores)
+                    avg_score = sum(float(score.score) for score in scores) / len(scores)
                     semester_data[sem] = {
                         'scores': scores,
                         'avg': avg_score,
@@ -2857,7 +2857,7 @@ elif analysis_mode == "🔬 宏观分析":
                 for sem in sem_names:
                     with st.expander(f"{sem} - {semester_data[sem]['count']}次考试，平均分{semester_data[sem]['avg']:.1f}"):
                         for score in semester_data[sem]['scores']:
-                            st.write(f"- {score['exam_name']}: {score['score']}分")
+                            st.write(f"- {score.exam_name}: {score.score}分")
             else:
                 st.info("暂无成绩数据")
         else:
@@ -2882,12 +2882,11 @@ elif analysis_mode == "🔬 宏观分析":
 
             # 计算每个知识点的平均分
             kp_avg_scores = {}
-            for ks in knowledge_scores:
-                kp_code = ks['knowledge_code']
-                score = float(ks['score'])
-                if kp_code not in kp_avg_scores:
-                    kp_avg_scores[kp_code] = []
-                kp_avg_scores[kp_code].append(score)
+            for kp_code, scores_list in knowledge_scores.items():
+                for exam_name, score in scores_list:
+                    if kp_code not in kp_avg_scores:
+                        kp_avg_scores[kp_code] = []
+                    kp_avg_scores[kp_code].append(score)
 
             # 计算平均分
             for kp_code in kp_avg_scores:
@@ -2961,7 +2960,7 @@ elif analysis_mode == "🔬 宏观分析":
             # 按学期分组统计
             semester_groups = {}
             for score in exam_scores:
-                sem = score['semester']
+                sem = score.semester if hasattr(score, 'semester') else '未知学期'
                 if sem not in semester_groups:
                     semester_groups[sem] = []
                 semester_groups[sem].append(score)
@@ -2974,11 +2973,11 @@ elif analysis_mode == "🔬 宏观分析":
             st.subheader("📈 成绩变化趋势")
 
             # 按考试日期排序
-            sorted_scores = sorted(exam_scores, key=lambda x: x.get('exam_date', ''))
+            sorted_scores = sorted(exam_scores, key=lambda x: x.exam_date or '')
 
             if sorted_scores:
-                exam_names = [s['exam_name'] for s in sorted_scores]
-                exam_scores_list = [float(s['score']) for s in sorted_scores]
+                exam_names = [s.exam_name for s in sorted_scores]
+                exam_scores_list = [float(s.score) for s in sorted_scores]
 
                 fig = go.Figure(data=go.Scatter(
                     x=list(range(1, len(exam_scores_list) + 1)),
@@ -2998,7 +2997,7 @@ elif analysis_mode == "🔬 宏观分析":
                 # 显示详细成绩
                 st.subheader("📋 成绩详情")
                 for i, s in enumerate(sorted_scores, 1):
-                    st.write(f"**{i}. {s['exam_name']}** ({s.get('exam_date', '未知日期')}): {s['score']}分")
+                    st.write(f"**{i}. {s.exam_name}** ({s.exam_date or '未知日期'}): {s.score}分")
             else:
                 st.info("暂无成绩数据")
         else:

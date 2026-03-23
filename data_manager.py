@@ -66,6 +66,8 @@ class StudentScore:
     score: float
     week: int  # 对应的周次
     error_knowledge: List[str] = field(default_factory=list)  # 错题知识点
+    exam_date: str = ""  # 考试日期
+    semester: str = ""  # 学期
 
 
 @dataclass
@@ -198,7 +200,7 @@ class DataManager:
         query = """
             SELECT e.student_id, s.name, e.exam_name, e.score, e.exam_date
             FROM exam_scores e
-            JOIN students s ON e.student_id = s.student_id
+            JOIN students s ON e.student_id = s.id
             WHERE 1=1
         """
         params = []
@@ -210,6 +212,10 @@ class DataManager:
         if exam_name:
             query += " AND e.exam_name = ?"
             params.append(exam_name)
+
+        if semester:
+            query += " AND e.semester = ?"
+            params.append(semester)
 
         cursor.execute(query, params)
         rows = cursor.fetchall()
@@ -232,7 +238,9 @@ class DataManager:
                 exam_name=row[2],
                 score=row[3],
                 week=exam_week,
-                error_knowledge=error_kp
+                error_knowledge=error_kp,
+                exam_date=row[4] or "",
+                semester=semester or ""
             ))
 
         return scores
@@ -272,14 +280,14 @@ class DataManager:
     def get_knowledge_scores(
         self,
         student_id: int,
-        grade_code: str
+        grade_code: str = None
     ) -> Dict[str, List[Tuple[str, float]]]:
         """
         按知识点获取成绩 (用于知识点深度分析)
 
         Args:
             student_id: 学生 ID
-            grade_code: 年级代码
+            grade_code: 年级代码 (可选，为 None 时返回所有年级)
 
         Returns:
             {知识点编码：[(考试名称，成绩)]} 字典
@@ -287,17 +295,20 @@ class DataManager:
         all_scores = self.get_scores(student_id=student_id)
         knowledge_scores: Dict[str, List[Tuple[str, float]]] = {}
 
+        # 如果没有指定年级代码，遍历所有可能的年级代码
+        grade_codes = [grade_code] if grade_code else ['G1U', 'G1D', 'G2U', 'G2D', 'G3U', 'G3D', 'G4U', 'G4D', 'G5U', 'G5D', 'G6U', 'G6D']
+
         for score in all_scores:
             if score.week <= 0:
                 continue
 
-            # 获取该周次对应的知识点
-            kp_codes = get_knowledge_by_week(grade_code, score.week)
-
-            for kp_code in kp_codes:
-                if kp_code not in knowledge_scores:
-                    knowledge_scores[kp_code] = []
-                knowledge_scores[kp_code].append((score.exam_name, score.score))
+            # 遍历所有年级代码，获取知识点
+            for gc in grade_codes:
+                kp_codes = get_knowledge_by_week(gc, score.week)
+                for kp_code in kp_codes:
+                    if kp_code not in knowledge_scores:
+                        knowledge_scores[kp_code] = []
+                    knowledge_scores[kp_code].append((score.exam_name, score.score))
 
         return knowledge_scores
 
