@@ -115,7 +115,7 @@ class DataManager:
     # ==================== 基础数据查询 ====================
 
     @_cache_data
-    def get_students(self, class_id: Optional[int] = None) -> List[Dict]:
+    def get_students(_self, class_id: Optional[int] = None) -> List[Dict]:
         """
         获取学生列表
 
@@ -125,7 +125,7 @@ class DataManager:
         Returns:
             学生列表，每个元素包含 student_id, name, grade 等
         """
-        conn = self._get_connection()
+        conn = _self._get_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT student_id, name, grade FROM students ORDER BY student_id")
         rows = cursor.fetchall()
@@ -135,14 +135,14 @@ class DataManager:
         ]
 
     @_cache_data
-    def get_exam_list(self) -> List[ExamInfo]:
+    def get_exam_list(_self) -> List[ExamInfo]:
         """
         获取所有考试列表 (从数据库 + Excel 表头解析)
 
         Returns:
             ExamInfo 列表，包含考试名称、周次、知识点等信息
         """
-        conn = self._get_connection()
+        conn = _self._get_connection()
         cursor = conn.cursor()
 
         # 从 exam_scores 表获取所有考试名称
@@ -176,7 +176,7 @@ class DataManager:
 
     @_cache_data
     def get_scores(
-        self,
+        _self,
         student_id: Optional[int] = None,
         exam_name: Optional[str] = None,
         semester: Optional[str] = None
@@ -192,7 +192,7 @@ class DataManager:
         Returns:
             StudentScore 列表
         """
-        conn = self._get_connection()
+        conn = _self._get_connection()
         cursor = conn.cursor()
 
         query = """

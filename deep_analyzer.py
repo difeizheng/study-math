@@ -17,6 +17,7 @@ from knowledge_week_map import (
     get_week_description,
     WEEK_TO_KNOWLEDGE_MAP
 )
+from analyzer_base import BaseAnalyzer
 
 
 @dataclass
@@ -331,17 +332,16 @@ GRADE_STATS = {
 }
 
 
-class DeepScoreAnalyzer:
+class DeepScoreAnalyzer(BaseAnalyzer):
     """深度成绩分析器"""
 
     def __init__(self, data_dir: str = "data"):
-        self.data_dir = Path(data_dir)
-        self.students_df: Optional[pd.DataFrame] = None
-        self.semester_data: Dict[str, pd.DataFrame] = {}
-        self.student_names: Dict[int, str] = {}
+        super().__init__(data_dir)
         self.knowledge_points = KNOWLEDGE_SYSTEM
-        self.entered_scores_cache: Dict[int, List[Dict]] = {}  # 录入成绩缓存
-        self.exam_order: List[str] = []  # 保存 Excel 中考试列的原始顺序
+
+    def load_all_data(self) -> pd.DataFrame:
+        """加载所有数据（别名）"""
+        return self.load_excel_data()
 
     def _normalize_semester_name(self, semester: str) -> str:
         """标准化学期名称，去除 -math_scores 等后缀"""
@@ -356,21 +356,6 @@ class DeepScoreAnalyzer:
         if match2:
             return match2.group(1).replace(' ', '')
         return semester
-
-    def refresh_entered_scores(self):
-        """刷新录入成绩缓存"""
-        self.entered_scores_cache = {}
-        all_scores = ExamScoreDAO.get_all_scores()
-        for s in all_scores:
-            sid = s['student_id']
-            if sid not in self.entered_scores_cache:
-                self.entered_scores_cache[sid] = []
-            self.entered_scores_cache[sid].append({
-                'semester': s['semester'],
-                'exam_name': s['exam_name'],
-                'score': s['score'],
-                'exam_date': s['exam_date']
-            })
 
     def get_scores(self, student_id: Optional[int] = None) -> List[Dict]:
         """
@@ -426,139 +411,16 @@ class DeepScoreAnalyzer:
 
         return scores
 
-    def _get_exam_sort_key(self, exam_name: str) -> Tuple[int, int]:
-        """
-        从考试名称提取排序关键字，支持自然排序
-
-        例如：周练 1 -> (1, 1), 周练 10 -> (1, 10), 期末模 1 -> (9, 1)
-        返回 (类型权重，序号)，确保周练 2 排在周练 10 前面
-        """
-        # 定义考试类型权重
-        type_weights = {
-            '周练': 1,
-            '练习': 2,
-            '单元': 3,
-            '期中': 8,
-            '期末模': 9,
-            '期末': 10,
-        }
-
-        # 匹配考试类型和序号
-        for exam_type, weight in type_weights.items():
-            if exam_name.startswith(exam_type):
-                # 提取序号
-                num_part = exam_name[len(exam_type):]
-                try:
-                    num = int(num_part)
-                    return (weight, num)
-                except ValueError:
-                    return (weight, 0)
-
-        # 如果不匹配任何类型，返回默认值
-        return (99, 0)
-
     def get_class_stats(self, semester: str = None) -> pd.DataFrame:
         """
         获取班级每次考试的统计数据（平均分、最高分、最低分）
-
-        Args:
-            semester: 学期名称（可选），如 "1(2) 班上学期"
-
-        Returns:
-            DataFrame，包含考试名称、平均分、最高分、最低分
+        调用基类方法
         """
-        if self.students_df is None:
-            return pd.DataFrame()
-
-        stats = []
-        exam_cols = set()
-
-        # 收集所有考试列
-        for col in self.students_df.columns:
-            if col not in ['学号', '姓名']:
-                exam_cols.add(col)
-
-        # 如果指定了学期，过滤
-        if semester:
-            normalized_semester = self._normalize_semester_name(semester)
-            exam_cols = {col for col in exam_cols
-                        if self._normalize_semester_name(col.split('_', 1)[0] if '_' in col else col) == normalized_semester}
-
-        # 计算每次考试的统计数据，按自然排序
-        for col in sorted(exam_cols, key=lambda x: self._get_exam_sort_key(x.split('_', 1)[1] if '_' in x else x)):
-            # 提取考试名称
-            exam_name = col.split('_', 1)[1] if '_' in col else col
-            sem_name = self._normalize_semester_name(col.split('_', 1)[0] if '_' in col else col)
-
-            # 获取该列所有学生的成绩
-            scores = self.students_df[col].dropna()
-
-            if len(scores) > 0:
-                stats.append({
-                    '学期': sem_name,
-                    '考试': exam_name,
-                    '平均分': round(scores.mean(), 2),
-                    '最高分': scores.max(),
-                    '最低分': scores.min(),
-                    '参考人数': len(scores)
-                })
-
-        return pd.DataFrame(stats)
+        return super().get_class_stats(semester)
 
     def load_all_data(self) -> pd.DataFrame:
-        """加载所有数据"""
-        all_scores = []
-
-        # 扫描 data 根目录和 uploads 子目录
-        excel_files = []
-
-        # 扫描 uploads 子目录（新上传的文件）
-        uploads_dir = self.data_dir / "uploads"
-        if uploads_dir.exists():
-            excel_files.extend(sorted(uploads_dir.glob("*.xlsx")))
-
-        # 扫描 data 根目录（备份文件）
-        excel_files.extend(sorted(self.data_dir.glob("*.xlsx")))
-
-        for file in excel_files:
-            semester_name = self._parse_semester_name(file.name)
-            df = pd.read_excel(file)
-
-            # 标准化列名
-            if '学号' not in df.columns:
-                df.columns = ['学号', '姓名'] + list(df.columns[2:])
-
-            # 清理成绩列中的空值（空格、'nan' 字符串等）
-            score_columns = [col for col in df.columns if col not in ['学号', '姓名']]
-            for col in score_columns:
-                # 将空格、'nan' 字符串等替换为真正的 NaN
-                df[col] = df[col].apply(lambda x: None if (isinstance(x, str) and (x.strip() == '' or x.lower() == 'nan')) else x)
-
-            # 存储学生姓名
-            for _, row in df.iterrows():
-                if pd.notna(row['学号']):
-                    self.student_names[int(row['学号'])] = row['姓名']
-
-            all_scores.append(df)
-            self.semester_data[semester_name] = df
-
-        if all_scores:
-            # 合并所有数据 - 按学号和姓名分组，将不同学期的数据合并到同一行
-            combined_df = pd.concat(all_scores, ignore_index=True)
-            self.students_df = combined_df.groupby(['学号', '姓名'], as_index=False).first()
-
-        # 刷新录入成绩缓存
-        self.refresh_entered_scores()
-
-        return self.students_df
-
-    def _parse_semester_name(self, filename: str) -> str:
-        """解析学期名称"""
-        # 使用 .+ 代替 [上下] 以正确匹配中文字符
-        match = re.search(r'(\d+-\d+\(\d+\) 班.+学期)', filename)
-        if match:
-            return match.group(1)
-        return filename.replace("-math_scores.xlsx", "")
+        """加载所有数据（别名）"""
+        return self.load_excel_data()
 
     def _normalize_exam_name(self, exam_name: str) -> str:
         """标准化考试名称，便于匹配"""

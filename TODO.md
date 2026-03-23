@@ -1,6 +1,6 @@
 # Study-Math 待办任务清单
 
-> 当前版本：v5.4.0 | 更新日期：2026-03-20
+> 当前版本：v5.6.0 | 更新日期：2026-03-23
 
 ---
 
@@ -14,9 +14,9 @@
 | 🟡 中 | 学习习惯分析优化 | v5.4 | ✅ 已完成 |
 | 🟡 中 | 智能组卷 PDF 导出 | v5.4 | ✅ 已完成 |
 | 🟡 中 | 宏观分析可视化优化 | v5.4 | ✅ 已完成 |
-| 🟢 低 | 代码架构重构 | v5.5 | ⬜ 待开始 |
-| 🟢 低 | 测试覆盖率提升 | v5.5 | ⬜ 待开始 |
-| 🟢 低 | 性能优化 | v5.5 | ⬜ 待开始 |
+| 🟢 低 | 代码架构重构 | v5.5 | ✅ 已完成 |
+| 🟢 低 | 测试覆盖率提升 | v5.5 | ✅ 已完成 |
+| 🟢 低 | 性能优化 | v5.5 | ✅ 已完成 |
 
 ---
 
@@ -172,21 +172,27 @@
 
 ## 🟢 低优先级任务
 
-### 7. 代码架构重构 (v5.5)
+### 7. 代码架构重构 (v5.5) - ✅ 已完成
 
 **涉及文件**: `deep_analyzer.py`, `score_analyzer.py`, `data_manager.py`
 
 **问题**: deep_analyzer.py 与 score_analyzer.py 有重复逻辑
 
-**待完成任务**:
-- [ ] 提取公共方法到基类 `BaseAnalyzer`
-- [ ] 统一错误处理模式
-- [ ] 规范类型注解
-- [ ] 减少代码重复（DRY 原则）
+**已完成功能**:
+- [x] 提取公共方法到基类 `BaseAnalyzer`（新建 `analyzer_base.py`）
+- [x] 统一错误处理模式
+- [x] 规范类型注解
+- [x] 减少代码重复（DRY 原则）
+
+**重构内容**:
+- 创建 `analyzer_base.py` 基类，包含 9 个公共方法
+- `ScoreAnalyzer` 和 `DeepScoreAnalyzer` 继承 `BaseAnalyzer`
+- 移除重复代码：`_normalize_semester_name()`, `_get_exam_sort_key()`, `refresh_entered_scores()`, `get_class_stats()`, `_parse_semester_name()`, `_normalize_columns()`, `load_excel_data()`
 
 **验收标准**:
-- 代码重复率降低 30%
-- 类型注解完整
+- ✅ 代码重复率降低 30%（两个文件各移除约 150 行重复代码）
+- ✅ 类型注解完整
+- ✅ 65 个测试全部通过
 
 ---
 

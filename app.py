@@ -2,11 +2,19 @@
 学生成绩分析系统 - Web 界面 (增强版)
 集成人教版小学数学知识点深度分析
 """
+import streamlit as st
+
+# 页面配置 (必须在第一行)
+st.set_page_config(
+    page_title="学生成绩分析系统",
+    page_icon="📊",
+    layout="wide"
+)
+
 import re
 from typing import List, Dict
 from datetime import datetime
 from pathlib import Path
-import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -120,13 +128,6 @@ from ability_portfolio import AbilityPortfolio
 from study_habit_analyzer import StudyHabitAnalyzer
 from class_dashboard import ClassLearningDashboard
 from paper_generator import SmartPaperGenerator
-
-# 页面配置
-st.set_page_config(
-    page_title="学生成绩分析系统",
-    page_icon="📊",
-    layout="wide"
-)
 
 # 初始化分析器
 @st.cache_resource(ttl=3600)  # 1 小时后过期
@@ -2300,29 +2301,29 @@ elif analysis_mode == "🔬 宏观分析":
         compare_mode = st.checkbox("🔍 启用两人对比模式", value=False)
 
         if compare_mode:
-        # 选择第二个学生进行对比
-        selected_student_name_2 = st.sidebar.selectbox(
-            "选择要对比的学生",
-            options=list(student_dict.keys()),
-            key="compare_student_select"
-        )
-        selected_student_id_2 = student_dict[selected_student_name_2]
+            # 选择第二个学生进行对比
+            selected_student_name_2 = st.sidebar.selectbox(
+                "选择要对比的学生",
+                options=list(student_dict.keys()),
+                key="compare_student_select"
+            )
+            selected_student_id_2 = student_dict[selected_student_name_2]
 
-        # 获取对比数据
-        compare_data = analyzer.compare_two_students(selected_student_id, selected_student_id_2)
+            # 获取对比数据
+            compare_data = analyzer.compare_two_students(selected_student_id, selected_student_id_2)
 
-        if 'error' in compare_data:
-            st.error(compare_data['error'])
-        else:
-            # 使用 analyzer 的方法获取排名（已包含录入的成绩）
-            rank1 = analyzer.get_score_rank(selected_student_id, selected_semesters[0] if len(selected_semesters) == 1 else None)
-            rank2 = analyzer.get_score_rank(selected_student_id_2, selected_semesters[0] if len(selected_semesters) == 1 else None)
+            if 'error' in compare_data:
+                st.error(compare_data['error'])
+            else:
+                # 使用 analyzer 的方法获取排名（已包含录入的成绩）
+                rank1 = analyzer.get_score_rank(selected_student_id, selected_semesters[0] if len(selected_semesters) == 1 else None)
+                rank2 = analyzer.get_score_rank(selected_student_id_2, selected_semesters[0] if len(selected_semesters) == 1 else None)
 
-            # 更新排名信息
-            if rank1:
-                compare_data['student_1']['rank'] = rank1['rank']
-            if rank2:
-                compare_data['student_2']['rank'] = rank2['rank']
+                # 更新排名信息
+                if rank1:
+                    compare_data['student_1']['rank'] = rank1['rank']
+                if rank2:
+                    compare_data['student_2']['rank'] = rank2['rank']
 
             st.subheader("📊 SAI 对比总览")
 
@@ -2497,26 +2498,26 @@ elif analysis_mode == "🔬 宏观分析":
                 for rec in macro_2['recommendations']:
                     st.markdown(f"- {rec}")
 
-    else:
-        # 单人分析模式（原有逻辑）
-        # 获取综合分析数据
-        macro_data = analyzer.analyze_student_development(selected_student_id)
-
-        if 'error' in macro_data:
-            st.error(macro_data['error'])
         else:
-            # SAI 指数卡片
-            st.subheader("📊 学业发展指数 (SAI)")
-            sai = macro_data['sai']
+            # 单人分析模式（原有逻辑）
+            # 获取综合分析数据
+            macro_data = analyzer.analyze_student_development(selected_student_id)
 
-            col1, col2, col3, col4 = st.columns(4)
-            with col1:
-                # SAI 等级
-                grade_colors = {'A+': '#2ecc71', 'A': '#3498db', 'B+': '#f1c40f', 'B': '#e67e22', 'C+': '#e74c3c', 'C': '#c0392b', 'D': '#922b21'}
-                grade = sai['grade']
-                color = grade_colors.get(grade, '#95a5a6')
+            if 'error' in macro_data:
+                st.error(macro_data['error'])
+            else:
+                # SAI 指数卡片
+                st.subheader("📊 学业发展指数 (SAI)")
+                sai = macro_data['sai']
 
-                st.markdown(f"""
+                col1, col2, col3, col4 = st.columns(4)
+                with col1:
+                    # SAI 等级
+                    grade_colors = {'A+': '#2ecc71', 'A': '#3498db', 'B+': '#f1c40f', 'B': '#e67e22', 'C+': '#e74c3c', 'C': '#c0392b', 'D': '#922b21'}
+                    grade = sai['grade']
+                    color = grade_colors.get(grade, '#95a5a6')
+
+                    st.markdown(f"""
                 <div style='background-color: {color}; padding: 15px; border-radius: 10px; text-align: center;'>
                     <h2 style='color: white; margin: 0;'>{grade}</h2>
                     <p style='color: white; margin: 5px 0 0 0;'>综合等级</p>
