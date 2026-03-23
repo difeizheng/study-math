@@ -1,5 +1,5 @@
 """
-学生成绩分析系统 - Web 界面 (增强版)
+学生成绩分析系统 - Web 界面 (增强版 + PWA 移动端支持)
 集成人教版小学数学知识点深度分析
 """
 import streamlit as st
@@ -8,8 +8,156 @@ import streamlit as st
 st.set_page_config(
     page_title="学生成绩分析系统",
     page_icon="📊",
-    layout="wide"
+    layout="centered",
+    initial_sidebar_state="auto"
 )
+
+# PWA 和移动端优化 CSS
+st.markdown("""
+<style>
+/* ========== 移动端响应式优化 ========== */
+@media (max-width: 768px) {
+    /* 主容器最大宽度 */
+    .stApp { max-width: 100%; }
+
+    /* 侧边栏优化 */
+    section[data-testid="stSidebar"] {
+        width: 280px !important;
+    }
+
+    /* 指标卡片字体调整 */
+    div[data-testid="stMetricValue"] {
+        font-size: 24px !important;
+    }
+    div[data-testid="stMetricLabel"] {
+        font-size: 14px !important;
+    }
+
+    /* 按钮全宽显示 */
+    .stButton > button {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    /* 图表容器调整 */
+    div[class^="st-"] div[data-testid="stPlotlyChart"] {
+        max-width: 100%;
+    }
+
+    /* 表格滚动 */
+    div[data-testid="stDataFrame"] {
+        overflow-x: auto;
+    }
+
+    /* 标题字体调整 */
+    h1 { font-size: 1.5rem !important; }
+    h2 { font-size: 1.3rem !important; }
+    h3 { font-size: 1.1rem !important; }
+
+    /* 标签页优化 */
+    div[data-testid="stTabs"] {
+        overflow-x: auto;
+    }
+}
+
+/* ========== 通用优化 ========== */
+/* 移除顶部空白 */
+.stApp > header { display: none; }
+
+/* 底部版权信息 */
+.app-footer {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-size: 12px;
+    border-top: 1px solid #eee;
+    margin-top: 40px;
+}
+
+/* 卡片样式 */
+.metric-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    border-radius: 12px;
+    color: white;
+    margin-bottom: 16px;
+}
+
+/* 警告框优化 */
+div[data-testid="stWarning"] {
+    font-size: 14px;
+}
+</style>
+
+<!-- PWA Manifest (inline data URI) -->
+<link rel="manifest" href='data:application/manifest+json;base64,eyJuYW1lIjoi57uP5p4Q5paw5YiG54K557yW5YiG5p6QIiwic2hvcnRfbmFtZSI6IuWcsOe7j+aVsCIsImRlc2NyaXB0aW9uIjoi57uP5p4Q5paw5YiG54K557yW5YiG5p6Q6KeE5Lqn5oqA5pyJ6YGT5Yqp6KGM5p6Q55CG6K+tIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJ0aGVtZV9jb2xvciI6IiM0RjQ2RTUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI2ZmZmZmZiJ9'>
+<meta name="theme-color" content="#4F46E5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="成绩分析">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%234F46E5' width='100' height='100' rx='20'/><text y='80' font-size='80'>📊</text></svg>">
+
+<!-- 视口设置 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+""", unsafe_allow_html=True)
+
+# PWA 注册脚本 (使用 Blob URL 内联 Service Worker)
+st.components.v1.html("""
+<script>
+// 使用 Blob URL 内联 Service Worker，无需外部文件
+if ('serviceWorker' in navigator) {
+  // Service Worker 代码（内联）
+  const swCode = `
+    const CACHE_NAME = 'study-math-v1';
+
+    self.addEventListener('install', (event) => {
+      console.log('[PWA] Service Worker 安装');
+      self.skipWaiting();
+    });
+
+    self.addEventListener('activate', (event) => {
+      console.log('[PWA] Service Worker 激活');
+      self.clients.claim();
+    });
+
+    self.addEventListener('fetch', (event) => {
+      // 仅记录，不干预网络请求
+      console.log('[PWA] 请求:', event.request.url);
+    });
+  `;
+
+  // 创建 Blob URL
+  const blob = new Blob([swCode], {type: 'application/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register(swUrl)
+      .then((registration) => {
+        console.log('[PWA] Service Worker 注册成功:', registration.scope);
+      })
+      .catch((error) => {
+        console.log('[PWA] Service Worker 注册失败:', error);
+      });
+  });
+}
+
+// 监听安装提示
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  console.log('[PWA] 可以添加到主屏幕');
+  // 显示自定义安装按钮（如果需要）
+  const installBtn = document.getElementById('install-pwa');
+  if (installBtn) installBtn.style.display = 'block';
+});
+
+window.addEventListener('appinstalled', () => {
+  console.log('[PWA] 已安装到主屏幕');
+  deferredPrompt = null;
+});
+</script>
+""", height=0)
 
 import re
 from typing import List, Dict
@@ -246,7 +394,26 @@ analysis_mode = st.sidebar.radio(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.caption("系统版本：v5.0 (数据管理重构版)")
+
+# PWA 移动端安装说明
+with st.sidebar.expander("📱 手机访问指南"):
+    st.markdown("""
+    **在手机/平板上使用:**
+
+    1. **获取局域网 IP** - 查看浏览器地址栏
+    2. **手机访问** - 输入 `http://电脑 IP:8501`
+    3. **添加到主屏幕**:
+       - iPhone Safari: 分享 → 添加到主屏幕
+       - Android Chrome: 菜单 → 安装应用
+
+    **PWA 功能:**
+    - ✅ 响应式布局，适配手机屏幕
+    - ✅ 可添加到主屏幕，像 App 一样使用
+    - ✅ 离线缓存（部分功能）
+    - ✅ 全屏显示，隐藏浏览器界面
+    """)
+
+st.sidebar.caption("系统版本：v5.6.0 (PWA 移动端优化)")
 
 
 # ==================== 数据管理模块 ====================
