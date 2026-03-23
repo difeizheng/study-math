@@ -797,7 +797,7 @@ if analysis_mode == "⚙️ 数据管理":
                     st.error(f"清理失败：{e}")
                     log_error(e, "清理所有数据失败")
 
-        st.info("💡 提示：清理数据库不会删除 Excel 文件。如需完全清空，请使用下方的"移除 Excel 数据"按钮。")
+        st.info("💡 提示：清理数据库不会删除 Excel 文件。如需完全清空，请使用下方的「移除 Excel 数据」按钮。")
 
         with col_btn3:
             # 移动 Excel 文件到备份目录
