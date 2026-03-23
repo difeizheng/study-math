@@ -761,7 +761,6 @@ if analysis_mode == "⚙️ 数据管理":
                     deep_analyzer.semester_data = {}
                     deep_analyzer.students_df = None
 
-                    # 关闭并删除数据库文件
                     import sqlite3
                     import shutil
                     from datetime import datetime
@@ -798,6 +797,8 @@ if analysis_mode == "⚙️ 数据管理":
                     st.error(f"清理失败：{e}")
                     log_error(e, "清理所有数据失败")
 
+        st.info("💡 提示：清理数据库不会删除 Excel 文件。如需完全清空，请使用下方的"移除 Excel 数据"按钮。")
+
         with col_btn3:
             # 移动 Excel 文件到备份目录
             if st.button("📁 移除 Excel 数据", type="secondary", use_container_width=True):
@@ -807,9 +808,17 @@ if analysis_mode == "⚙️ 数据管理":
                     backup_dir.mkdir(exist_ok=True)
 
                     moved_count = 0
+                    # 移动 data 目录下的 Excel 文件
                     for excel_file in Path("data").glob("*.xlsx"):
                         shutil.move(str(excel_file), str(backup_dir / excel_file.name))
                         moved_count += 1
+
+                    # 移动 data/uploads 目录下的 Excel 文件
+                    uploads_dir = Path("data/uploads")
+                    if uploads_dir.exists():
+                        for excel_file in uploads_dir.glob("*.xlsx"):
+                            shutil.move(str(excel_file), str(backup_dir / excel_file.name))
+                            moved_count += 1
 
                     st.success(f"已将 {moved_count} 个 Excel 文件移动到 data_backup 目录！刷新页面后生效。")
                     log_info(f"用户移除了 {moved_count} 个 Excel 文件到备份目录")
