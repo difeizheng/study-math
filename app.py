@@ -338,6 +338,9 @@ db_students = StudentDAO.get_student_list()
 if db_students:
     # 数据库有学生，使用数据库数据
     student_dict = {f"{sid} - {name}": sid for sid, name in db_students}
+    # 更新 analyzer.student_names 以便其他模块使用
+    for sid, name in db_students:
+        analyzer.student_names[sid] = name
 else:
     # 数据库为空，使用 Excel 数据
     students = analyzer.get_student_list()
@@ -356,7 +359,7 @@ else:
     selected_student_id = student_dict[selected_student_name]
 
 # 获取学生信息
-student_name = analyzer.student_names.get(selected_student_id, "Unknown")
+student_name = analyzer.student_names.get(selected_student_id, "Unknown") if selected_student_id else "Unknown"
 st.sidebar.info(f"**学号**: {selected_student_id}\n**姓名**: {student_name}")
 
 # 学期选择
@@ -893,7 +896,13 @@ if analysis_mode == "⚙️ 数据管理":
                     total_imported = 0
                     imported_files = []
 
-                    for file in sorted(data_dir.glob("*.xlsx")):
+                    # 遍历 data 目录和 data/uploads 目录中的所有 Excel 文件
+                    excel_files = list(sorted(data_dir.glob("*.xlsx")))
+                    uploads_dir = data_dir / "uploads"
+                    if uploads_dir.exists():
+                        excel_files.extend(sorted(uploads_dir.glob("*.xlsx")))
+
+                    for file in excel_files:
                         try:
                             importer = ExcelDataImporter()
                             df = importer.load_excel(str(file))
@@ -2735,122 +2744,122 @@ elif analysis_mode == "🔬 宏观分析":
                 </div>
                 """, unsafe_allow_html=True)
 
-            with col2:
-                st.metric("SAI 指数", f"{sai['index']}/100")
-            with col3:
-                st.metric("预估百分位", f"Top {sai['percentile']}%")
-            with col4:
-                qual = macro_data['qualitative']
-                st.metric("学业水平", qual['level'])
+                with col2:
+                    st.metric("SAI 指数", f"{sai['index']}/100")
+                with col3:
+                    st.metric("预估百分位", f"Top {sai['percentile']}%")
+                with col4:
+                    qual = macro_data['qualitative']
+                    st.metric("学业水平", qual['level'])
 
-            # 定性分析结论
-            st.subheader("📝 综合分析结论")
-            st.info(macro_data['summary'].replace('\n', '\n\n'))
+                # 定性分析结论
+                st.subheader("📝 综合分析结论")
+                st.info(macro_data['summary'].replace('\n', '\n\n'))
 
-            st.markdown("---")
+                st.markdown("---")
 
-            # 定量分析详情
-            st.subheader("📈 定量分析指标")
+                # 定量分析详情
+                st.subheader("📈 定量分析指标")
 
-            col1, col2 = st.columns(2)
+                col1, col2 = st.columns(2)
 
-            with col1:
-                st.markdown("#### 集中趋势")
-                quant = macro_data['quantitative']
-                st.metric("平均分", quant['mean'])
-                st.metric("中位数", quant['median'])
+                with col1:
+                    st.markdown("#### 集中趋势")
+                    quant = macro_data['quantitative']
+                    st.metric("平均分", quant['mean'])
+                    st.metric("中位数", quant['median'])
 
-                st.markdown("#### 离散程度")
-                st.metric("标准差", quant['std'])
-                st.metric("变异系数 (CV)", f"{quant['cv']:.4f}")
-                st.metric("极差", quant['range'])
+                    st.markdown("#### 离散程度")
+                    st.metric("标准差", quant['std'])
+                    st.metric("变异系数 (CV)", f"{quant['cv']:.4f}")
+                    st.metric("极差", quant['range'])
 
-            with col2:
-                st.markdown("#### 分布形态")
-                st.metric("偏度", quant['skewness'],
-                         delta="左偏" if quant['skewness'] < -0.5 else "右偏" if quant['skewness'] > 0.5 else "对称")
-                st.metric("峰度", quant['kurtosis'],
-                         delta="尖峰" if quant['kurtosis'] > 0 else "平峰" if quant['kurtosis'] < 0 else "正常")
+                with col2:
+                    st.markdown("#### 分布形态")
+                    st.metric("偏度", quant['skewness'],
+                             delta="左偏" if quant['skewness'] < -0.5 else "右偏" if quant['skewness'] > 0.5 else "对称")
+                    st.metric("峰度", quant['kurtosis'],
+                             delta="尖峰" if quant['kurtosis'] > 0 else "平峰" if quant['kurtosis'] < 0 else "正常")
 
-                st.markdown("#### 发展趋势")
-                st.metric("斜率", quant['slope'],
-                         delta="进步" if quant['slope'] > 0 else "退步" if quant['slope'] < 0 else "稳定")
-                st.metric("相关系数", quant['correlation'])
+                    st.markdown("#### 发展趋势")
+                    st.metric("斜率", quant['slope'],
+                             delta="进步" if quant['slope'] > 0 else "退步" if quant['slope'] < 0 else "稳定")
+                    st.metric("相关系数", quant['correlation'])
 
-            # 趋势图
-            st.markdown("---")
-            st.subheader("📈 成绩趋势与拟合线")
+                # 趋势图
+                st.markdown("---")
+                st.subheader("📈 成绩趋势与拟合线")
 
-            # 获取成绩趋势数据
-            trend_df = analyzer.get_score_trend(selected_student_id, selected_semesters[0] if len(selected_semesters) == 1 else None)
+                # 获取成绩趋势数据
+                trend_df = analyzer.get_score_trend(selected_student_id, selected_semesters[0] if len(selected_semesters) == 1 else None)
 
-            if trend_df is not None and not trend_df.empty:
-                # 添加序号
-                trend_df['序号'] = range(1, len(trend_df) + 1)
+                if trend_df is not None and not trend_df.empty:
+                    # 添加序号
+                    trend_df['序号'] = range(1, len(trend_df) + 1)
 
-                # 实际成绩点
-                scatter_trace = go.Scatter(
-                    x=trend_df['序号'].tolist(),
-                    y=trend_df['分数'].tolist(),
-                    mode='markers',
-                    name='实际成绩',
-                    marker=dict(size=10, color='#3498db')
-                )
-
-                fig = go.Figure(data=[scatter_trace])
-
-                # 趋势线
-                from scipy import stats
-                x = trend_df['序号'].values
-                y = trend_df['分数'].values
-                if len(x) >= 2:
-                    slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
-                    trend_line = slope * x + intercept
-
-                    trend_trace = go.Scatter(
-                        x=x.tolist(),
-                        y=trend_line.tolist(),
-                        mode='lines',
-                        name=f'趋势线 (斜率={slope:.2f})',
-                        line=dict(color='#e74c3c', width=2, dash='dash')
+                    # 实际成绩点
+                    scatter_trace = go.Scatter(
+                        x=trend_df['序号'].tolist(),
+                        y=trend_df['分数'].tolist(),
+                        mode='markers',
+                        name='实际成绩',
+                        marker=dict(size=10, color='#3498db')
                     )
-                    fig.add_trace(trend_trace)
 
-                fig.update_layout(
-                    xaxis_title="考试次序",
-                    yaxis_title="分数",
-                    yaxis_range=[0, 100],
-                    height=400
-                )
-                st.plotly_chart(fig, use_container_width=True)
-            else:
-                st.info("暂无成绩数据，无法生成趋势图")
+                    fig = go.Figure(data=[scatter_trace])
 
-        st.markdown("---")
+                    # 趋势线
+                    from scipy import stats
+                    x = trend_df['序号'].values
+                    y = trend_df['分数'].values
+                    if len(x) >= 2:
+                        slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
+                        trend_line = slope * x + intercept
 
-        # 定性分析
-        st.subheader("📋 定性评价")
-        qual = macro_data['qualitative']
+                        trend_trace = go.Scatter(
+                            x=x.tolist(),
+                            y=trend_line.tolist(),
+                            mode='lines',
+                            name=f'趋势线 (斜率={slope:.2f})',
+                            line=dict(color='#e74c3c', width=2, dash='dash')
+                        )
+                        fig.add_trace(trend_trace)
 
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.markdown(f"**学业成就等级**")
-            st.info(f"{qual['level']}\n\n{qual['level_desc']}")
-        with col2:
-            st.markdown(f"**成绩稳定性**")
-            stability_emoji = "✅" if "稳定" in qual['stability'] else "⚠️" if "波动" in qual['stability'] else "👌"
-            st.info(f"{stability_emoji} {qual['stability']}")
-        with col3:
-            st.markdown(f"**发展趋势**")
-            trend_emoji = "📈" if "进步" in qual['trend'] else "📉" if "退步" in qual['trend'] else "➡️"
-            st.info(f"{trend_emoji} {qual['trend']}")
+                    fig.update_layout(
+                        xaxis_title="考试次序",
+                        yaxis_title="分数",
+                        yaxis_range=[0, 100],
+                        height=400
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.info("暂无成绩数据，无法生成趋势图")
 
-        st.markdown("---")
+                st.markdown("---")
 
-        # 建议
-        st.subheader("💡 针对性建议")
-        for i, rec in enumerate(macro_data['recommendations'], 1):
-            st.markdown(f"{i}. {rec}")
+                # 定性分析
+                st.subheader("📋 定性评价")
+                qual = macro_data['qualitative']
+
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.markdown(f"**学业成就等级**")
+                    st.info(f"{qual['level']}\n\n{qual['level_desc']}")
+                with col2:
+                    st.markdown(f"**成绩稳定性**")
+                    stability_emoji = "✅" if "稳定" in qual['stability'] else "⚠️" if "波动" in qual['stability'] else "👌"
+                    st.info(f"{stability_emoji} {qual['stability']}")
+                with col3:
+                    st.markdown(f"**发展趋势**")
+                    trend_emoji = "📈" if "进步" in qual['trend'] else "📉" if "退步" in qual['trend'] else "➡️"
+                    st.info(f"{trend_emoji} {qual['trend']}")
+
+                st.markdown("---")
+
+                # 建议
+                st.subheader("💡 针对性建议")
+                for i, rec in enumerate(macro_data['recommendations'], 1):
+                    st.markdown(f"{i}. {rec}")
 
     # ========== 标签页 2: 多学期对比 ==========
     with macro_tab2:

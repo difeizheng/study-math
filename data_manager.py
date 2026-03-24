@@ -338,7 +338,11 @@ class DataManager:
 
             # 从文件名解析学期：如 "10032-1(2) 班上学期 math_scores.xlsx" -> "1(2) 班上学期"
             import re
-            semester_match = re.search(r'(\d+\(\d+\) 班 [上下] 学期)', source_file)
+            # 使用 Unicode 变量构建正则表达式，避免编码问题
+            xueqi = '\u5b66\u671f'  # 学期
+            ban = '\u73ed'  # 班
+            semester_pattern = r'(\d+\(\d+\)' + ban + '.*?' + xueqi + ')'
+            semester_match = re.search(semester_pattern, source_file)
             semester = semester_match.group(1) if semester_match else "1(2) 班上学期"
 
             # 使用默认考试日期
