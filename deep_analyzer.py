@@ -978,20 +978,20 @@ class DeepScoreAnalyzer(BaseAnalyzer):
         knowledge_curve = {}
 
         for score_record in all_scores:
-            if score_record.week <= 0:
+            if score_record['week'] <= 0:
                 continue
 
             # 获取该周次对应的知识点
-            kp_codes = get_knowledge_by_week(grade_code, score_record.week)
+            kp_codes = get_knowledge_by_week(grade_code, score_record['week'])
 
             for kp_code in kp_codes:
                 if kp_code not in knowledge_curve:
                     knowledge_curve[kp_code] = []
 
                 knowledge_curve[kp_code].append({
-                    "week": score_record.week,
-                    "score": score_record.score,
-                    "exam_name": score_record.exam_name
+                    "week": score_record['week'],
+                    "score": score_record['score'],
+                    "exam_name": score_record['exam_name']
                 })
 
         # 按周次排序

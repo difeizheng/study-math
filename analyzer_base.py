@@ -48,6 +48,37 @@ class BaseAnalyzer:
             return match.group(1).replace(' ', '')
         return semester
 
+    def _sort_semesters(self, semesters: List[str]) -> List[str]:
+        """
+        对学期列表进行排序，按年级和学期类型排序
+
+        排序规则：
+        1. 先按年级排序（1 班 -> 2 班 -> 3 班...）
+        2. 同一年级内，上学期在前，下学期在后
+
+        例如：1(2) 班上学期 < 1(2) 班下学期 < 2(2) 班上学期 < 2(2) 班下学期
+
+        Args:
+            semesters: 学期名称列表
+
+        Returns:
+            排序后的学期列表
+        """
+        def semester_sort_key(semester: str) -> Tuple[int, int]:
+            # 提取年级和学期类型
+            # 匹配格式："1(2) 班上学期" 或 "10(1) 班下学期"
+            match = re.search(r'(\d+)\(\d+\)\s*班 ([上下]) 学期', semester)
+            if match:
+                grade = int(match.group(1))  # 年级
+                semester_type = match.group(2)  # '上' or '下'
+                # 上学期=0, 下学期=1，确保上学期在前
+                semester_order = 0 if semester_type == '上' else 1
+                return (grade, semester_order)
+            # 无法解析的返回最大值，排到最后
+            return (999, 999)
+
+        return sorted(semesters, key=semester_sort_key)
+
     def _get_exam_sort_key(self, exam_name: str) -> Tuple[int, int]:
         """
         从考试名称提取排序关键字，支持自然排序

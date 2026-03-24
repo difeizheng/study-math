@@ -321,9 +321,9 @@ analyzer, deep_analyzer, error_tracker, knowledge_graph, ability_portfolio, habi
 # 每次页面加载时刷新录入成绩缓存
 refresh_analyzers()
 
-# 获取所有学期列表（使用标准化后的名称）
+# 获取所有学期列表（使用标准化后的名称并排序）
 SEMESTER_MAP = {analyzer._normalize_semester_name(k): k for k in analyzer.semester_data.keys()}  # 标准化名称 -> 原始名称
-ALL_SEMESTERS = list(SEMESTER_MAP.keys())  # 使用标准化后的学期名称
+ALL_SEMESTERS = analyzer._sort_semesters(list(SEMESTER_MAP.keys()))  # 使用排序后的学期名称
 
 # 标题
 st.title("📊 学生成绩分析系统")
