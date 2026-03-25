@@ -143,3 +143,24 @@
     - 复习效果追踪（艾宾浩斯遗忘曲线、保持率）
     - 学习习惯画像（坚持度、专注度、毅力评分）
 
+## 版本历史
+
+### v6.0.0 (2026-03-25) - 扩展功能完整版
+**新增功能**: 完成全部 10 个扩展功能模块
+- 家校沟通、数据导入导出、教育测量指标、交互体验、学习行为分析
+
+**Bug 修复**:
+- `get_student_id` 方法不存在 → 添加 `get_student_id_by_name()` 辅助函数
+- 字典访问错误 → `.score` 改为 `['score']`
+- DataFrame 列名错误 → `'name'` 改为 `'姓名'`
+- 知识点掌握度数据结构转换 → 提取 `avg_score`
+- Plotly indicator domain 错误 → 移除 `row/col` 属性
+
+**新增文件** (10 个模块):
+- `knowledge_viz.py`, `score_prediction.py`, `class_analysis_ext.py`
+- `practice_recommendation.py`, `exam_analysis.py`
+- `home_school_communication.py`, `data_import_export.py`
+- `educational_metrics.py`, `interactive_viz.py`, `learning_behavior.py`
+
+### v5.6.2 (2026-03-24)
+
