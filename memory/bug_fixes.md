@@ -1,5 +1,62 @@
 # Bug 修复记录
 
+## 2026-03-25 修复 (v6.0.0)
+
+### 1. 家校沟通 AttributeError: 'ScoreAnalyzer' object has no attribute 'get_student_id'
+**问题**: 家校沟通页面选择学生时报错 `get_student_id` 方法不存在
+
+**原因**: `ScoreAnalyzer` 类没有 `get_student_id` 方法，`student_names` 是 `{id: name}` 字典
+
+**修复**:
+- 添加辅助函数 `get_student_id_by_name()` 从姓名反向查找 ID
+- 替换所有 `analyzer.get_student_id()` 调用
+- 修改 `student_names` 遍历方式为 `list(analyzer.student_names.values())`
+
+**文件**: `app.py`
+
+### 2. 字典访问错误 - 'dict' object has no attribute 'score'
+**问题**: 多个页面报错 `ExamScoreDAO.get_scores_by_student` 返回字典不能用 `.score` 访问
+
+**原因**: `ExamScoreDAO.get_scores_by_student()` 返回 `List[Dict]` 而非命名元组
+
+**修复**:
+- 将所有 `s.score` 改为 `s['score']`
+- 将所有 `s.exam_name` 改为 `s['exam_name']`
+- 修复位置：家校沟通、教育测量指标、交互体验等模块
+
+**文件**: `app.py`
+
+### 3. DataFrame 列名错误 - KeyError: 'name'
+**问题**: 家校沟通页面报错 `KeyError: 'name'`
+
+**原因**: `students_df` 的列名是中文 `姓名` 而非 `name`
+
+**修复**:
+- 将所有 `analyzer.students_df['name']` 改为 `analyzer.students_df['姓名']`
+
+**文件**: `app.py`
+
+### 4. 教育测量指标 TypeError: unsupported operand type(s) for +: 'int' and 'dict'
+**问题**: 多维度能力模型计算时报错
+
+**原因**: `deep_analyzer.analyze_knowledge_mastery()` 返回嵌套字典 `{kp_code: {name, avg_score, ...}}`
+
+**修复**:
+- 提取 `avg_score` 值：`{k: v.get('avg_score', 50) for k, v in mastery_data_raw.items()}`
+
+**文件**: `app.py`
+
+### 5. 交互体验 ValueError: Invalid property for indicator domain
+**问题**: Plotly indicator 报错 `Invalid property specified: 'col'`
+
+**原因**: Plotly `go.Indicator` 的 `domain` 不支持 `row/col` 属性
+
+**修复**:
+- 移除 `domain={'row': 0, 'col': 0}` 参数
+- 使用 `add_trace` 的 `row, col` 参数定位
+
+**文件**: `interactive_viz.py`
+
 ## 2026-03-24 修复 (v5.6.2)
 
 ### 8. 学期选择顺序错误 - 学期未按照年级排序
