@@ -58,7 +58,27 @@
       "Bash(curl -s http://localhost:8501)",
       "Bash(dir data:*)",
       "Bash(Stop-Process -Id 20700 -Force)",
-      "Bash(powershell \"Stop-Process -Id 20700 -Force\")"
+      "Bash(powershell \"Stop-Process -Id 20700 -Force\")",
+      "Bash(dir data/uploads)",
+      "Bash(Stop-Process -Id 31848 -Force)",
+      "Bash(/windows/System32/taskkill /F /PID 31848)",
+      "Bash(powershell -Command \"Stop-Process -Id 31848 -Force\")",
+      "Bash(powershell -Command \"Get-Process | Where-Object {$_ProcessName -eq ''python''} | Stop-Process -Force\")",
+      "Bash(powershell -Command \"Get-Process | Where-Object {$_.ProcessName -like '*python*'} | ForEach-Object { Stop-Process -Id $_.Id -Force }\" 2>&1)",
+      "Bash(timeout /t 2 /nobreak)",
+      "Bash(Stop-Process -Id 31976 -Force)",
+      "Bash(/wslpath -w /proc/31976/exe)",
+      "Bash(cmd /c \"taskkill /F /PID 31976\")",
+      "Bash(cmd /c \"taskkill /F /PID 31976 /PID 22776\")",
+      "Bash(xargs -I {} wmic process where ProcessId={} call terminate)",
+      "Bash(powershell -Command \"Stop-Process -Id 11824 -Force\")",
+      "Bash(powershell -Command \"Get-Process | Where-Object {$_.ProcessName -like '*python*'} | Select-Object Id, ProcessName, Path\")",
+      "Bash(powershell -Command \"Stop-Process -Id 33908 -Force\")",
+      "Bash(powershell -Command \"Stop-Process -Name streamlit -Force -ErrorAction SilentlyContinue\")",
+      "Bash(curl -s http://localhost:8503)",
+      "Bash(Get-Content \"D:\\\\project_room\\\\workspace2024\\\\mytest\\\\study-math\\\\logs\\\\study_math_*.log\" -Tail 20)",
+      "Bash(Select-Object -Last 30)",
+      "Bash(curl -s http://localhost:8501 -o nul)"
     ]
   }
 }

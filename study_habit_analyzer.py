@@ -93,6 +93,63 @@ HABIT_DIMENSIONS = {
     }
 }
 
+# 题型分类定义
+QUESTION_TYPES = {
+    "计算题": {
+        "keywords": ["计算", "口算", "笔算", "直接写得数"],
+        "description": "纯计算类题目"
+    },
+    "填空题": {
+        "keywords": ["填空"],
+        "description": "填空题"
+    },
+    "选择题": {
+        "keywords": ["选择"],
+        "description": "选择题"
+    },
+    "判断题": {
+        "keywords": ["判断"],
+        "description": "判断题"
+    },
+    "应用题": {
+        "keywords": ["应用", "解决", "实际问题"],
+        "description": "解决实际问题"
+    },
+    "操作题": {
+        "keywords": ["操作", "画图", "测量"],
+        "description": "动手操作类题目"
+    }
+}
+
+# 学习习惯画像类型
+HABIT_PROFILES = {
+    "粗心大意型": {
+        "description": "知识掌握尚可，但因粗心导致失分较多",
+        "indicators": ["计算粗心", "抄写错误", "审题不清"],
+        "suggestions": ["养成检查习惯", "圈画关键词", "规范草稿"]
+    },
+    "基础薄弱型": {
+        "description": "基础知识掌握不牢固，需加强概念理解",
+        "indicators": ["概念混淆", "知识性错误"],
+        "suggestions": ["回归课本", "建立知识框架", "多做基础题"]
+    },
+    "方法不当型": {
+        "description": "学习方法需要改进，效率不高",
+        "indicators": ["步骤缺失", "方法用错"],
+        "suggestions": ["学习规范解题步骤", "总结解题方法"]
+    },
+    "时间不足型": {
+        "description": "答题速度慢或时间分配不合理",
+        "indicators": ["时间管理", "没做完"],
+        "suggestions": ["限时训练", "先易后难", "提高计算速度"]
+    },
+    "稳步前进型": {
+        "description": "学习习惯良好，各类错误较少",
+        "indicators": [],
+        "suggestions": ["保持现有习惯", "适当挑战更高难度"]
+    }
+}
+
 
 class StudyHabitAnalyzer:
     """学习习惯分析器"""
@@ -450,6 +507,208 @@ class StudyHabitAnalyzer:
         tips.append(encouragement[datetime.now().day % len(encouragement)])
 
         return tips
+
+    def get_question_type_stats(self, student_id: int) -> Dict[str, Dict]:
+        """
+        获取题型正确率统计
+
+        Args:
+            student_id: 学生 ID
+
+        Returns:
+            各题型的统计数据
+        """
+        # 从数据库获取错题记录
+        error_records = ErrorRecordDAO.get_errors_by_student(student_id)
+
+        if not error_records:
+            return {}
+
+        # 按题型统计
+        type_stats = {}
+        for q_type in QUESTION_TYPES.keys():
+            type_stats[q_type] = {
+                "error_count": 0,
+                "errors": []
+            }
+
+        # 根据错题描述分类
+        for record in error_records:
+            description = (record.get("error_description", "") + " " +
+                          record.get("detailed_analysis", "")).lower()
+
+            for q_type, info in QUESTION_TYPES.items():
+                for keyword in info["keywords"]:
+                    if keyword in description:
+                        type_stats[q_type]["error_count"] += 1
+                        type_stats[q_type]["errors"].append(record)
+                        break
+
+        # 计算正确率（假设每次考试每种题型总分 100 分）
+        result = {}
+        for q_type, data in type_stats.items():
+            # 错误越少，正确率越高
+            error_rate = data["error_count"] / max(len(error_records), 1) * 100
+            accuracy = max(0, 100 - error_rate * 10)  # 每个错误最多扣 10 分
+            result[q_type] = {
+                "error_count": data["error_count"],
+                "accuracy": round(accuracy, 1),
+                "description": QUESTION_TYPES[q_type]["description"]
+            }
+
+        return result
+
+    def get_time_distribution_analysis(self, student_id: int) -> Dict:
+        """
+        获取答题时间分布分析（基于考试时间和错题分布）
+
+        Args:
+            student_id: 学生 ID
+
+        Returns:
+            时间分布分析结果
+        """
+        error_records = ErrorRecordDAO.get_errors_by_student(student_id)
+
+        if not error_records:
+            return {"message": "暂无数据"}
+
+        # 按考试日期分组
+        exam_errors = {}
+        for record in error_records:
+            exam_name = record.get("exam_name", "")
+            if exam_name not in exam_errors:
+                exam_errors[exam_name] = []
+            exam_errors[exam_name].append(record)
+
+        # 分析时间相关问题
+        time_related_errors = []
+        for record in error_records:
+            description = (record.get("error_description", "") + " " +
+                          record.get("detailed_analysis", "")).lower()
+            if any(kw in description for kw in ["时间", "没做完", "匆忙", "来不及"]):
+                time_related_errors.append(record)
+
+        # 计算时间管理评分
+        time_score = 100 - (len(time_related_errors) / max(len(error_records), 1) * 100)
+
+        return {
+            "total_exams": len(exam_errors),
+            "time_related_errors": len(time_related_errors),
+            "time_management_score": round(time_score, 1),
+            "exams": list(exam_errors.keys()),
+            "error_counts": [len(errors) for errors in exam_errors.values()]
+        }
+
+    def get_habit_profile(self, student_id: int) -> Dict:
+        """
+        获取学生学习习惯画像
+
+        Args:
+            student_id: 学生 ID
+
+        Returns:
+            画像类型、描述和建议
+        """
+        analysis = self.analyze_student_habits(student_id)
+        error_dist = analysis.error_distribution
+
+        if not error_dist:
+            return {
+                "profile_type": "暂无数据",
+                "description": "需要添加更多错题记录才能生成画像",
+                "suggestions": []
+            }
+
+        # 匹配画像类型
+        max_count = sum(error_dist.values())
+        profile_scores = {}
+
+        for profile_name, profile_info in HABIT_PROFILES.items():
+            if not profile_info["indicators"]:
+                # 稳步前进型：所有错误都很少
+                if max_count <= 3:
+                    profile_scores[profile_name] = 100
+                else:
+                    profile_scores[profile_name] = 0
+            else:
+                # 计算匹配度
+                indicator_count = sum(
+                    error_dist.get(indicator, 0)
+                    for indicator in profile_info["indicators"]
+                )
+                profile_scores[profile_name] = indicator_count / max(max_count, 1) * 100
+
+        # 找出匹配度最高的画像
+        best_profile = max(profile_scores, key=profile_scores.get)
+        match_rate = profile_scores[best_profile]
+
+        profile_info = HABIT_PROFILES.get(best_profile, {})
+
+        return {
+            "profile_type": best_profile,
+            "description": profile_info.get("description", ""),
+            "match_rate": round(match_rate, 1),
+            "suggestions": profile_info.get("suggestions", []),
+            "radar_data": {
+                "categories": list(HABIT_PROFILES.keys()),
+                "values": list(profile_scores.values())
+            }
+        }
+
+    def get_habit_trend_analysis(self, student_id: int) -> Dict:
+        """
+        获取时间序列学习行为分析
+
+        Args:
+            student_id: 学生 ID
+
+        Returns:
+            趋势分析结果
+        """
+        analysis = self.analyze_student_habits(student_id)
+        trends = analysis.trends
+
+        if not any(trends.values()):
+            return {"message": "暂无足够数据进行趋势分析"}
+
+        # 计算每个习惯的趋势斜率
+        trend_analysis = {}
+        for habit, values in trends.items():
+            if len(values) < 2:
+                trend_analysis[habit] = {
+                    "trend": "稳定",
+                    "change": 0,
+                    "values": values
+                }
+            else:
+                # 简单线性趋势
+                change = values[-1] - values[0]
+                if change > 5:
+                    trend = "上升"
+                elif change < -5:
+                    trend = "下降"
+                else:
+                    trend = "稳定"
+
+                trend_analysis[habit] = {
+                    "trend": trend,
+                    "change": round(change, 1),
+                    "values": values,
+                    "avg": round(sum(values) / len(values), 1)
+                }
+
+        return {
+            "trends": trend_analysis,
+            "overall_improvement": sum(
+                1 for h in trend_analysis.values()
+                if h.get("trend") == "上升"
+            ),
+            "overall_decline": sum(
+                1 for h in trend_analysis.values()
+                if h.get("trend") == "下降"
+            )
+        }
 
 
 def main():

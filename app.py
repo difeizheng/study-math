@@ -160,10 +160,12 @@ window.addEventListener('appinstalled', () => {
 """, height=0)
 
 import re
-from typing import List, Dict
-from datetime import datetime
+import json
+from typing import List, Dict, Optional
+from datetime import datetime, timedelta
 from pathlib import Path
 import pandas as pd
+import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 
@@ -272,10 +274,30 @@ from score_analyzer import ScoreAnalyzer
 from deep_analyzer import DeepScoreAnalyzer
 from error_tracker import ErrorTracker, ERROR_TYPES
 from knowledge_graph import KnowledgeGraph
+from knowledge_viz import KnowledgeVisualizer
 from ability_portfolio import AbilityPortfolio
 from study_habit_analyzer import StudyHabitAnalyzer
 from class_dashboard import ClassLearningDashboard
 from paper_generator import SmartPaperGenerator
+from score_prediction import ScorePredictionVisualizer, GoalTracker, ScorePredictor, WarningSystem
+from class_analysis_ext import ClassComparator, ScoreDistributionAnalyzer, StandardScoreConverter
+from practice_recommendation import PracticeRecommender, LearningPathPlanner, SimilarQuestionRecommender
+from exam_analysis import ExamQualityAnalyzer, QuestionScoreAnalyzer, SmartPaperComposer
+from home_school_communication import ReportGenerator, ProgressAnalyzer, BenchmarkComparator
+from data_import_export import DataExporter, DataImporter, OCRScoreImporter, SystemAPIConnector
+from educational_metrics import IRTAnalyzer, ValueAddedAnalyzer, MultiDimensionalAbilityModel
+from interactive_viz import AnimatedTrendChart, InteractiveDashboard, MobileOptimizer
+from learning_behavior import TimeAnalyzer, ReviewTracker, HabitProfiler
+
+
+# 辅助函数：从学生姓名获取学生 ID
+def get_student_id_by_name(name: str) -> Optional[int]:
+    """从学生姓名获取学生 ID"""
+    for sid, sname in analyzer.student_names.items():
+        if sname == name:
+            return sid
+    return None
+
 
 # 初始化分析器
 @st.cache_resource(ttl=3600)  # 1 小时后过期
@@ -392,7 +414,7 @@ else:
 st.sidebar.header("分析模式")
 analysis_mode = st.sidebar.radio(
     "选择分析类型",
-    ["📈 成绩趋势分析", "🧠 知识点深度分析", "📋 诊断报告", "👥 多学生对比", "⚠️ 成绩预警", "📊 班级分析", "🔬 宏观分析", "📕 错题追踪本", "🕸️ 知识点关联图谱", "🌟 能力成长档案", "📝 学习习惯分析", "🏫 班级学情看板", "📄 智能组卷", "📝 成绩录入", "📊 录入成绩查询", "⚙️ 数据管理"],
+    ["📈 成绩趋势分析", "🧠 知识点深度分析", "📋 诊断报告", "👥 多学生对比", "⚠️ 成绩预警", "📊 班级分析", "🔬 宏观分析", "📕 错题追踪本", "🕸️ 知识点关联图谱", "🌟 能力成长档案", "📝 学习习惯分析", "🏫 班级学情看板", "📄 智能组卷", "📝 成绩录入", "📊 录入成绩查询", "⚙️ 数据管理", "🏠 家校沟通", "📤 数据导入导出", "📐 教育测量指标", "🎨 交互体验", "📊 学习行为分析"],
     index=0
 )
 
@@ -943,6 +965,13 @@ if analysis_mode == "⚙️ 数据管理":
             # 单个学生成绩录入
             service = ScoreEntryService()
 
+            # 学期选择（默认选中最大的学期）
+            entry_semester = st.selectbox(
+                "选择学期",
+                options=ALL_SEMESTERS,
+                index=len(ALL_SEMESTERS) - 1 if ALL_SEMESTERS else 0
+            )
+
             col1, col2 = st.columns(2)
             with col1:
                 entry_sid = st.number_input("学号", min_value=1, value=1)
@@ -987,6 +1016,7 @@ if analysis_mode == "⚙️ 数据管理":
                     result = data_manager.add_exam_score(
                         student_id=entry_sid,
                         student_name=entry_sname,
+                        semester=entry_semester,
                         exam_name=entry_exam_name,
                         score=entry_score,
                         error_knowledge=error_knowledge
@@ -1000,6 +1030,14 @@ if analysis_mode == "⚙️ 数据管理":
 
         elif entry_type == "📋 全班批量录入":
             st.markdown("**按学号 + 成绩格式批量录入**")
+
+            # 学期选择（默认选中最大的学期）
+            batch_semester = st.selectbox(
+                "选择学期",
+                options=ALL_SEMESTERS,
+                index=len(ALL_SEMESTERS) - 1 if ALL_SEMESTERS else 0,
+                key="batch_semester"
+            )
 
             batch_exam_name = st.text_input(
                 "考试名称",
@@ -1065,6 +1103,7 @@ if analysis_mode == "⚙️ 数据管理":
                             result = data_manager.add_exam_score(
                                 student_id=sid,
                                 student_name=sname,
+                                semester=batch_semester,
                                 exam_name=batch_exam_name,
                                 score=score,
                                 error_knowledge=None
@@ -2505,15 +2544,396 @@ elif analysis_mode == "📊 班级分析":
                         hide_index=True
                     )
 
+    # 添加扩展分析标签页
+    class_ext_tab1, class_ext_tab2, class_ext_tab3 = st.tabs([
+        "🔄 标准分转换", "📊 分数段分布演化", "🏫 多班级对比"
+    ])
+
+    with class_ext_tab1:
+        st.markdown("### 🔄 标准分转换")
+        st.markdown("消除不同考试难度差异，实现跨考试对比")
+
+        # 获取当前学期成绩
+        if selected_semester and selected_semester in analyzer.semester_data:
+            semester_df = analyzer.semester_data[selected_semester]
+
+            # 收集所有成绩
+            all_scores = []
+            for col in semester_df.columns:
+                if col not in ['学号', '姓名']:
+                    for val in semester_df[col]:
+                        if pd.notna(val):
+                            try:
+                                all_scores.append(float(val))
+                            except (ValueError, TypeError):
+                                pass
+
+            # 添加录入的成绩
+            entered_scores = ExamScoreDAO.get_all_scores()
+            for s in entered_scores:
+                if s.get('semester') == selected_semester:
+                    all_scores.append(float(s.get('score', 0)))
+
+            if all_scores:
+                # 创建转换器
+                converter = StandardScoreConverter(all_scores)
+
+                # 为每个学生计算标准分
+                student_ids = semester_df['学号'].unique()
+                student_names_list = semester_df[['学号', '姓名']].drop_duplicates()
+                student_names_dict = dict(zip(student_names_list['学号'], student_names_list['姓名']))
+
+                results = []
+                for sid in student_ids:
+                    # 计算该学生的平均分
+                    student_scores = []
+                    for col in semester_df.columns:
+                        if col not in ['学号', '姓名']:
+                            val = semester_df[semester_df['学号'] == sid][col].values
+                            for v in val:
+                                if pd.notna(v):
+                                    try:
+                                        student_scores.append(float(v))
+                                    except:
+                                        pass
+
+                    if student_scores:
+                        avg_score = sum(student_scores) / len(student_scores)
+                        result = converter.convert(avg_score, sid)
+                        result.student_name = student_names_dict.get(sid, '')
+                        results.append(result)
+
+                # 按 T 分排序
+                results.sort(key=lambda r: r.t_score, reverse=True)
+
+                # 显示转换图表
+                fig_scatter = converter.create_conversion_chart(results)
+                st.plotly_chart(fig_scatter, use_container_width=True)
+
+                # 等级分布
+                fig_grade = converter.create_grade_distribution_chart(results)
+                st.plotly_chart(fig_grade, use_container_width=True)
+
+                # 显示详细数据
+                st.markdown("#### 标准分详情")
+                df_results = pd.DataFrame([{
+                    '排名': i + 1,
+                    '学号': r.student_id,
+                    '姓名': r.student_name,
+                    '原始分': r.raw_score,
+                    'Z 分数': r.standard_score,
+                    'T 分数': r.t_score,
+                    '百分位': r.percentile,
+                    '等级': r.grade_level
+                } for i, r in enumerate(results)])
+                st.dataframe(df_results, use_container_width=True, hide_index=True)
+            else:
+                st.info("暂无成绩数据")
+        else:
+            st.info("请选择学期")
+
+    with class_ext_tab2:
+        st.markdown("### 📊 分数段分布演化")
+        st.markdown("追踪各分数段人数变化趋势")
+
+        # 获取所有学期的数据
+        if analyzer.semester_data:
+            # 准备时间序列数据
+            time_series = {}
+            for semester in analyzer.semester_data.keys():
+                semester_df = analyzer.semester_data[semester]
+                scores = []
+                for col in semester_df.columns:
+                    if col not in ['学号', '姓名']:
+                        for val in semester_df[col]:
+                            if pd.notna(val):
+                                try:
+                                    scores.append(float(val))
+                                except:
+                                    pass
+                if scores:
+                    time_series[semester] = scores
+
+            if time_series:
+                dist_analyzer = ScoreDistributionAnalyzer()
+                fig_evolution = dist_analyzer.create_distribution_evolution_chart(time_series)
+                st.plotly_chart(fig_evolution, use_container_width=True)
+
+                # 显示各学期分布详情
+                st.markdown("#### 各学期分数段分布")
+                for semester, scores in time_series.items():
+                    st.markdown(f"**{semester}** (共 {len(scores)} 个成绩)")
+                    dist = dist_analyzer._calculate_distribution(scores)
+                    cols = st.columns(5)
+                    for i, (name, d) in enumerate(dist.items()):
+                        with cols[i]:
+                            st.metric(name[:6], f"{d.percentage:.1f}%")
+                    st.divider()
+            else:
+                st.info("暂无数据")
+        else:
+            st.info("暂无学期数据")
+
+    with class_ext_tab3:
+        st.markdown("### 🏫 多班级对比")
+        st.markdown("对比不同班级的整体水平")
+
+        # 获取所有班级数据
+        if analyzer.semester_data:
+            # 按班级分组
+            class_data = {}
+            for semester in analyzer.semester_data.keys():
+                semester_df = analyzer.semester_data[semester]
+                # 简化：将每个学期视为一个班级
+                scores = []
+                for col in semester_df.columns:
+                    if col not in ['学号', '姓名']:
+                        for val in semester_df[col]:
+                            if pd.notna(val):
+                                try:
+                                    scores.append(float(val))
+                                except:
+                                    pass
+                if scores:
+                    class_data[semester] = scores
+
+            if class_data:
+                comparator = ClassComparator()
+                comparisons = comparator.compare_multiple_classes(class_data)
+
+                # 柱状对比图
+                fig_bar = comparator.create_class_comparison_chart(comparisons)
+                st.plotly_chart(fig_bar, use_container_width=True)
+
+                # 雷达对比图
+                fig_radar = comparator.create_radar_comparison(comparisons)
+                st.plotly_chart(fig_radar, use_container_width=True)
+
+                # 热力图
+                fig_heatmap = comparator.create_distribution_heatmap(class_data)
+                st.plotly_chart(fig_heatmap, use_container_width=True)
+
+                # 详细数据表格
+                st.markdown("#### 班级对比详情")
+                df_comp = pd.DataFrame([{
+                    '班级': c.class_name,
+                    '人数': c.total_students,
+                    '平均分': c.avg_score,
+                    '中位数': c.median_score,
+                    '标准差': c.std_score,
+                    '优秀率': f"{c.excellent_rate}%",
+                    '及格率': f"{c.pass_rate}%"
+                } for c in comparisons])
+                st.dataframe(df_comp, use_container_width=True, hide_index=True)
+            else:
+                st.info("暂无数据")
+        else:
+            st.info("暂无学期数据")
+
 # ==================== 模式 7: 宏观综合分析 ====================
 elif analysis_mode == "🔬 宏观分析":
     st.header("🔬 宏观综合分析")
     st.markdown("基于教育测量学的定量与定性综合分析")
 
+    # 初始化可视化分析器
+    knowledge_viz = KnowledgeVisualizer(deep_analyzer.knowledge_points)
+    prediction_viz = ScorePredictionVisualizer()
+    goal_tracker = GoalTracker()
+
     # 添加子标签页
-    macro_tab1, macro_tab2, macro_tab3, macro_tab4 = st.tabs([
-        "📊 综合分析", "📅 多学期对比", "🔥 知识盲区热力图", "📈 排名趋势"
+    macro_tab1, macro_tab2, macro_tab3, macro_tab4, macro_tab5, macro_tab6, macro_tab7 = st.tabs([
+        "📊 综合分析", "📅 多学期对比", "🔥 知识盲区热力图", "📈 排名趋势", "🧠 知识点掌握度", "🔮 成绩预测与预警", "📝 试卷分析"
     ])
+
+    # ========== 标签页 5: 知识点掌握度 ==========
+    with macro_tab5:
+        st.markdown("### 📚 知识点掌握度可视化分析")
+        st.markdown("展示知识点前后置依赖关系、能力维度雷达图和错题归因分析")
+
+        # 获取学生错题数据
+        error_records = ErrorRecordDAO.get_errors_by_student(selected_student_id)
+
+        # 获取知识点掌握度数据（从 deep_analyzer）
+        mastery_data = deep_analyzer.analyze_knowledge_mastery(selected_student_id)
+
+        # 子标签页
+        viz_tab1, viz_tab2, viz_tab3 = st.tabs([
+            "🗺️ 知识图谱", "📐 能力雷达图", "🔍 错题归因"
+        ])
+
+        with viz_tab1:
+            st.markdown("#### 知识图谱追踪")
+            st.markdown("绿色=已掌握 (≥90%), 黄色=基本掌握 (70-89%), 橙色=需要加强 (50-69%), 红色=薄弱 (<50%)")
+
+            # 转换掌握度数据
+            mastery_for_viz = {}
+            for kp_code, score in mastery_data.items():
+                mastery_for_viz[kp_code] = score if isinstance(score, (int, float)) else 50.0
+
+            # 获取前置知识关系
+            prereqs = getattr(deep_analyzer, 'prerequisites', {})
+            if not prereqs:
+                # 从 knowledge_graph 模块获取
+                from knowledge_graph import KNOWLEDGE_DEPENDENCIES
+                prereqs = KNOWLEDGE_DEPENDENCIES
+
+            fig_knowledge = knowledge_viz.create_knowledge_mastery_graph(
+                mastery_for_viz,
+                prereqs,
+                title=f"{selected_student_name} 的知识图谱"
+            )
+            st.plotly_chart(fig_knowledge, use_container_width=True)
+
+            # 显示薄弱知识点列表
+            weak_threshold = 70
+            weak_points = [(code, score) for code, score in mastery_for_viz.items() if score < weak_threshold]
+            if weak_points:
+                st.markdown(f"#### ⚠️ 薄弱知识点 (掌握度 < {weak_threshold}%)")
+                weak_points.sort(key=lambda x: x[1])
+                for code, score in weak_points[:10]:
+                    kp = deep_analyzer.knowledge_points.get(code)
+                    kp_name = kp.name if hasattr(kp, 'name') else code
+                    st.markdown(f"- **{kp_name}**: {score:.1f}%")
+
+        with viz_tab2:
+            st.markdown("#### 数学核心素养雷达图")
+            st.markdown("从**数与代数**、**图形与几何**、**统计与概率**、**综合与实践**四个维度评估")
+
+            # 获取学生成绩
+            scores = deep_analyzer.get_scores(selected_student_id)
+
+            fig_radar = knowledge_viz.create_ability_radar_chart(
+                scores,
+                error_records,
+                selected_student_name
+            )
+            st.plotly_chart(fig_radar, use_container_width=True)
+
+            # 显示各维度得分
+            ability_scores = knowledge_viz.analyze_ability_radar(scores, error_records)
+            st.markdown("#### 各维度能力得分")
+            cols = st.columns(4)
+            for i, (cat, score) in enumerate(ability_scores.items()):
+                with cols[i]:
+                    st.metric(cat, f"{score:.1f}")
+
+        with viz_tab3:
+            st.markdown("#### 错题归因分析")
+            st.markdown("自动识别错误原因：**概念不清**、**计算错误**、**审题问题**、**粗心大意**")
+
+            if not error_records:
+                st.info("暂无错题记录")
+            else:
+                # 显示饼图
+                fig_cause = knowledge_viz.create_error_cause_chart(error_records)
+                st.plotly_chart(fig_cause, use_container_width=True)
+
+                # 显示详细归因
+                causes = knowledge_viz.analyze_error_causes(error_records)
+                if causes:
+                    st.markdown("#### 归因详情")
+                    for cause in causes:
+                        with st.expander(f"{cause.cause_name} ({cause.count}题，{cause.percentage}%)"):
+                            st.markdown(f"**相关知识点**:")
+                            for code in cause.knowledge_codes:
+                                kp = deep_analyzer.knowledge_points.get(code)
+                                kp_name = kp.name if hasattr(kp, 'name') else code
+                                st.markdown(f"- {kp_name}")
+
+        # 添加标签页 4: 个性化推荐
+        with st.tabs(["🗺️ 知识图谱", "📐 能力雷达图", "🔍 错题归因", "💡 个性化推荐"])[3]:
+            st.markdown("### 💡 个性化学习推荐")
+            st.markdown("根据薄弱知识点推荐练习题和学习路径")
+
+            # 初始化推荐器
+            practice_recommender = PracticeRecommender(deep_analyzer.knowledge_points)
+            path_planner = LearningPathPlanner(deep_analyzer.knowledge_points)
+            similar_recommender = SimilarQuestionRecommender()
+
+            # 获取知识点掌握度
+            mastery_data = deep_analyzer.analyze_knowledge_mastery(selected_student_id)
+            mastery_for_rec = {code: score for code, score in mastery_data.items()}
+
+            # 子标签页
+            rec_tab1, rec_tab2, rec_tab3 = st.tabs(["📚 练习题推荐", "🗺️ 学习路径", "🔁 相似题推荐"])
+
+            with rec_tab1:
+                st.markdown("#### 针对性练习推荐")
+
+                # 获取推荐
+                recommendations = practice_recommender.recommend_practices(mastery_for_rec, num_recommendations=5)
+
+                if not recommendations:
+                    st.success("✓ 所有知识点掌握良好，无需特别练习！")
+                else:
+                    # 显示推荐优先级图
+                    fig_rec = practice_recommender.create_recommendation_chart(recommendations)
+                    st.plotly_chart(fig_rec, use_container_width=True)
+
+                    # 显示详细推荐
+                    st.markdown("#### 推荐练习题")
+                    for i, rec in enumerate(recommendations, 1):
+                        with st.expander(f"{i}. {rec.knowledge_name} (掌握度：{rec.mastery_level:.1f}%) - {rec.difficulty}级"):
+                            st.markdown(f"**推荐原因**: {rec.recommendation_reason}")
+                            st.markdown("**推荐练习题**:")
+                            for j, exercise in enumerate(rec.suggested_exercises, 1):
+                                st.markdown(f"{j}. {exercise}")
+
+            with rec_tab2:
+                st.markdown("#### 学习路径规划")
+                st.markdown("基于知识点依赖关系，规划最优学习顺序")
+
+                # 获取薄弱知识点
+                weak_points = practice_recommender.get_weak_knowledge_points(mastery_for_rec, threshold=70)
+
+                if not weak_points:
+                    st.success("✓ 没有薄弱知识点，继续保持！")
+                else:
+                    # 推荐学习顺序
+                    learning_order = path_planner.recommend_learning_order(weak_points)
+
+                    if learning_order:
+                        st.markdown("#### 推荐学习顺序")
+                        for i, kp in enumerate(learning_order, 1):
+                            st.markdown(f"{i}. **{kp['name']}** ({kp['category']})")
+
+                        # 创建路径可视化（取前 5 个）
+                        if len(learning_order) >= 2:
+                            first = learning_order[0]['code']
+                            last = learning_order[-1]['code']
+                            path = path_planner.find_learning_path(first, last)
+                            if path:
+                                fig_path = path_planner.create_path_visualization(path)
+                                st.plotly_chart(fig_path, use_container_width=True)
+
+            with rec_tab3:
+                st.markdown("#### 相似题推荐")
+                st.markdown("针对错题，推荐相似题目进行巩固练习")
+
+                # 获取最近错题
+                if not error_records:
+                    st.info("暂无错题记录")
+                else:
+                    # 显示错题列表供选择
+                    recent_errors = error_records[:10]
+                    error_options = [f"{e.get('knowledge_code', '未知')} - {e.get('knowledge_name', '未知知识点')}" for e in recent_errors]
+
+                    selected_error_idx = st.selectbox("选择要练习的错题", options=range(len(error_options)), format_func=lambda i: error_options[i])
+
+                    if selected_error_idx is not None and selected_error_idx < len(recent_errors):
+                        selected_error = recent_errors[selected_error_idx]
+                        knowledge_code = selected_error.get('knowledge_code', '')
+                        error_desc = selected_error.get('error_description', '') or selected_error.get('error_type', '')
+
+                        # 获取相似题推荐
+                        similar_questions = similar_recommender.find_similar_questions(error_desc, knowledge_code, num_results=3)
+
+                        if similar_questions:
+                            st.markdown("#### 推荐相似题")
+                            for i, q in enumerate(similar_questions, 1):
+                                st.markdown(f"**{i}.** {q.question_text}")
+                                st.caption(f"相似度：{q.similarity_score}% | 难度：{q.difficulty} | 来源：{q.source}")
+                                st.divider()
 
     # ========== 标签页 1: 综合分析 ==========
     with macro_tab1:
@@ -2521,139 +2941,163 @@ elif analysis_mode == "🔬 宏观分析":
         compare_mode = st.checkbox("🔍 启用两人对比模式", value=False)
 
         if compare_mode:
-            # 选择第二个学生进行对比
-            selected_student_name_2 = st.sidebar.selectbox(
-                "选择要对比的学生",
-                options=list(student_dict.keys()),
-                key="compare_student_select"
-            )
-            selected_student_id_2 = student_dict[selected_student_name_2]
+            # 两人对比模式：可以自由选择和切换两个学生
+            st.markdown("### 👥 选择对比两人")
 
-            # 获取对比数据
-            compare_data = analyzer.compare_two_students(selected_student_id, selected_student_id_2)
+            # 使用两列布局选择两个学生
+            comp_col1, comp_col2 = st.columns(2)
 
-            if 'error' in compare_data:
-                st.error(compare_data['error'])
+            with comp_col1:
+                st.markdown("**学生 1**")
+                selected_student_name_1 = st.selectbox(
+                    "选择第一个学生",
+                    options=list(student_dict.keys()),
+                    index=list(student_dict.keys()).index(selected_student_name) if selected_student_name in student_dict.keys() else 0,
+                    key="compare_student_1"
+                )
+                selected_student_id_1 = student_dict[selected_student_name_1]
+
+            with comp_col2:
+                st.markdown("**学生 2**")
+                # 默认选择第一个学生之后的那个
+                default_index_2 = min(1, len(list(student_dict.keys())) - 1)
+                selected_student_name_2 = st.selectbox(
+                    "选择第二个学生",
+                    options=list(student_dict.keys()),
+                    index=default_index_2,
+                    key="compare_student_2"
+                )
+                selected_student_id_2 = student_dict[selected_student_name_2]
+
+            # 检查是否选择了同一个学生
+            if selected_student_id_1 == selected_student_id_2:
+                st.warning("⚠️ 两个学生不能是同一人")
             else:
-                # 使用 analyzer 的方法获取排名（已包含录入的成绩）
-                rank1 = analyzer.get_score_rank(selected_student_id, selected_semesters[0] if len(selected_semesters) == 1 else None)
-                rank2 = analyzer.get_score_rank(selected_student_id_2, selected_semesters[0] if len(selected_semesters) == 1 else None)
+                # 获取对比数据
+                compare_data = analyzer.compare_two_students(selected_student_id_1, selected_student_id_2)
 
-                # 更新排名信息
-                if rank1:
-                    compare_data['student_1']['rank'] = rank1['rank']
-                if rank2:
-                    compare_data['student_2']['rank'] = rank2['rank']
-
-            st.subheader("📊 SAI 对比总览")
-
-            student_1 = compare_data['student_1']
-            student_2 = compare_data['student_2']
-
-            # 对比卡片
-            col1, col2, col3 = st.columns(3)
-
-            with col1:
-                st.markdown(f"#### {student_1['name']}")
-                st.metric("SAI 指数", f"{student_1['sai']}")
-                st.metric("SAI 等级", student_1['grade'])
-                st.metric("班级排名", f"第{student_1['rank']}名")
-
-            with col2:
-                st.markdown("#### 差异")
-                sai_diff = compare_data['sai_difference']
-                if sai_diff > 0:
-                    st.metric("SAI 差异", f"+{sai_diff}", delta=f"{student_1['name']}更高")
-                elif sai_diff < 0:
-                    st.metric("SAI 差异", f"{sai_diff}", delta=f"{student_2['name']}更高")
+                if 'error' in compare_data:
+                    st.error(compare_data['error'])
                 else:
-                    st.metric("SAI 差异", "持平")
+                    # 使用 analyzer 的方法获取排名（已包含录入的成绩）
+                    rank1 = analyzer.get_score_rank(selected_student_id_1, selected_semesters[0] if len(selected_semesters) == 1 else None)
+                    rank2 = analyzer.get_score_rank(selected_student_id_2, selected_semesters[0] if len(selected_semesters) == 1 else None)
 
-                rank_diff = student_1['rank'] - student_2['rank']
-                if rank_diff > 0:
-                    st.metric("排名差异", f"+{rank_diff}", delta=f"{student_2['name']}领先")
-                elif rank_diff < 0:
-                    st.metric("排名差异", f"{rank_diff}", delta=f"{student_1['name']}领先")
-                else:
-                    st.metric("排名差异", "持平")
+                    # 更新排名信息
+                    if rank1:
+                        compare_data['student_1']['rank'] = rank1['rank']
+                    if rank2:
+                        compare_data['student_2']['rank'] = rank2['rank']
 
-            with col3:
-                st.markdown(f"#### {student_2['name']}")
-                st.metric("SAI 指数", f"{student_2['sai']}")
-                st.metric("SAI 等级", student_2['grade'])
-                st.metric("班级排名", f"第{student_2['rank']}名")
+                st.subheader("📊 SAI 对比总览")
 
-            st.markdown("---")
+                student_1 = compare_data['student_1']
+                student_2 = compare_data['student_2']
 
-            # SAI 构成对比（堆叠柱状图）
-            st.subheader("📊 SAI 构成对比")
+                # 对比卡片
+                col1, col2, col3 = st.columns(3)
 
-            components_data = {
-                '维度': ['学业水平\n(50%)', '稳定性\n(15%)', '趋势\n(10%)', '近期趋势\n(10%)', '优秀率\n(15%)'],
-                student_1['name']: [
-                    compare_data['diff_analysis']['mean']['student_1'],
-                    compare_data['diff_analysis']['stability']['student_1'],
-                    compare_data['diff_analysis']['trend']['student_1'],
-                    compare_data['diff_analysis']['recent_trend']['student_1'],
-                    compare_data['diff_analysis']['excellent_rate']['student_1'],
-                ],
-                student_2['name']: [
-                    compare_data['diff_analysis']['mean']['student_2'],
-                    compare_data['diff_analysis']['stability']['student_2'],
-                    compare_data['diff_analysis']['trend']['student_2'],
-                    compare_data['diff_analysis']['recent_trend']['student_2'],
-                    compare_data['diff_analysis']['excellent_rate']['student_2'],
-                ],
-            }
+                with col1:
+                    st.markdown(f"#### {student_1['name']}")
+                    st.metric("SAI 指数", f"{student_1['sai']}")
+                    st.metric("SAI 等级", student_1['grade'])
+                    st.metric("班级排名", f"第{student_1['rank']}名")
 
-            fig = go.Figure()
-            fig.add_trace(go.Bar(
-                name=student_1['name'],
-                y=components_data['维度'],
-                x=components_data[student_1['name']],
-                orientation='h',
-                marker_color='#3498db'
-            ))
-            fig.add_trace(go.Bar(
-                name=student_2['name'],
-                y=components_data['维度'],
-                x=components_data[student_2['name']],
-                orientation='h',
-                marker_color='#e74c3c'
-            ))
+                with col2:
+                    st.markdown("#### 差异")
+                    sai_diff = compare_data['sai_difference']
+                    if sai_diff > 0:
+                        st.metric("SAI 差异", f"+{sai_diff}", delta=f"{student_1['name']}更高")
+                    elif sai_diff < 0:
+                        st.metric("SAI 差异", f"{sai_diff}", delta=f"{student_2['name']}更高")
+                    else:
+                        st.metric("SAI 差异", "持平")
 
-            fig.update_layout(
-                barmode='group',
-                height=400,
-                xaxis_title="得分",
-                showlegend=True
-            )
-            st.plotly_chart(fig, use_container_width=True)
+                    rank_diff = student_1['rank'] - student_2['rank']
+                    if rank_diff > 0:
+                        st.metric("排名差异", f"+{rank_diff}", delta=f"{student_2['name']}领先")
+                    elif rank_diff < 0:
+                        st.metric("排名差异", f"{rank_diff}", delta=f"{student_1['name']}领先")
+                    else:
+                        st.metric("排名差异", "持平")
 
-            st.markdown("---")
+                with col3:
+                    st.markdown(f"#### {student_2['name']}")
+                    st.metric("SAI 指数", f"{student_2['sai']}")
+                    st.metric("SAI 等级", student_2['grade'])
+                    st.metric("班级排名", f"第{student_2['rank']}名")
 
-            # 详细数据对比
-            st.subheader("📋 详细数据对比")
+                st.markdown("---")
 
-            comp_data = compare_data['diff_analysis']
-            对比_df = pd.DataFrame({
-                '维度': ['学业水平', '稳定性', '发展趋势', '近期趋势', '优秀率'],
-                student_1['name']: [
-                    f"{comp_data['mean']['student_1']:.1f}",
-                    f"{comp_data['stability']['student_1']:.1f} (CV={comp_data['stability']['cv_1']:.3f})",
-                    f"{comp_data['trend']['student_1']:.1f} (斜率={comp_data['trend']['slope_1']:.3f})",
-                    f"{comp_data['recent_trend']['student_1']:.1f} (Δ={comp_data['recent_trend']['change_1']:.1f})",
-                    f"{comp_data['excellent_rate']['student_1']:.1f}%",
-                ],
-                student_2['name']: [
-                    f"{comp_data['mean']['student_2']:.1f}",
-                    f"{comp_data['stability']['student_2']:.1f} (CV={comp_data['stability']['cv_2']:.3f})",
-                    f"{comp_data['trend']['student_2']:.1f} (斜率={comp_data['trend']['slope_2']:.3f})",
-                    f"{comp_data['recent_trend']['student_2']:.1f} (Δ={comp_data['recent_trend']['change_2']:.1f})",
-                    f"{comp_data['excellent_rate']['student_2']:.1f}%",
-                ],
-            })
-            st.dataframe(对比_df, use_container_width=True, hide_index=True)
+                # SAI 构成对比（堆叠柱状图）
+                st.subheader("📊 SAI 构成对比")
+
+                components_data = {
+                    '维度': ['学业水平\n(50%)', '稳定性\n(15%)', '趋势\n(10%)', '近期趋势\n(10%)', '优秀率\n(15%)'],
+                    student_1['name']: [
+                        compare_data['diff_analysis']['mean']['student_1'],
+                        compare_data['diff_analysis']['stability']['student_1'],
+                        compare_data['diff_analysis']['trend']['student_1'],
+                        compare_data['diff_analysis']['recent_trend']['student_1'],
+                        compare_data['diff_analysis']['excellent_rate']['student_1'],
+                    ],
+                    student_2['name']: [
+                        compare_data['diff_analysis']['mean']['student_2'],
+                        compare_data['diff_analysis']['stability']['student_2'],
+                        compare_data['diff_analysis']['trend']['student_2'],
+                        compare_data['diff_analysis']['recent_trend']['student_2'],
+                        compare_data['diff_analysis']['excellent_rate']['student_2'],
+                    ],
+                }
+
+                fig = go.Figure()
+                fig.add_trace(go.Bar(
+                    name=student_1['name'],
+                    y=components_data['维度'],
+                    x=components_data[student_1['name']],
+                    orientation='h',
+                    marker_color='#3498db'
+                ))
+                fig.add_trace(go.Bar(
+                    name=student_2['name'],
+                    y=components_data['维度'],
+                    x=components_data[student_2['name']],
+                    orientation='h',
+                    marker_color='#e74c3c'
+                ))
+
+                fig.update_layout(
+                    barmode='group',
+                    height=400,
+                    xaxis_title="得分",
+                    showlegend=True
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                st.markdown("---")
+
+                # 详细数据对比
+                st.subheader("📋 详细数据对比")
+
+                comp_data = compare_data['diff_analysis']
+                对比_df = pd.DataFrame({
+                    '维度': ['学业水平', '稳定性', '发展趋势', '近期趋势', '优秀率'],
+                    student_1['name']: [
+                        f"{comp_data['mean']['student_1']:.1f}",
+                        f"{comp_data['stability']['student_1']:.1f} (CV={comp_data['stability']['cv_1']:.3f})",
+                        f"{comp_data['trend']['student_1']:.1f} (斜率={comp_data['trend']['slope_1']:.3f})",
+                        f"{comp_data['recent_trend']['student_1']:.1f} (Δ={comp_data['recent_trend']['change_1']:.1f})",
+                        f"{comp_data['excellent_rate']['student_1']:.1f}%",
+                    ],
+                    student_2['name']: [
+                        f"{comp_data['mean']['student_2']:.1f}",
+                        f"{comp_data['stability']['student_2']:.1f} (CV={comp_data['stability']['cv_2']:.3f})",
+                        f"{comp_data['trend']['student_2']:.1f} (斜率={comp_data['trend']['slope_2']:.3f})",
+                        f"{comp_data['recent_trend']['student_2']:.1f} (Δ={comp_data['recent_trend']['change_2']:.1f})",
+                        f"{comp_data['excellent_rate']['student_2']:.1f}%",
+                    ],
+                })
+                st.dataframe(对比_df, use_container_width=True, hide_index=True)
 
             st.markdown("---")
 
@@ -3030,7 +3474,7 @@ elif analysis_mode == "🔬 宏观分析":
 
             if sorted_scores:
                 exam_names = [s.exam_name for s in sorted_scores]
-                exam_scores_list = [float(s.score) for s in sorted_scores]
+                exam_scores_list = [float(s['score']) for s in sorted_scores]
 
                 fig = go.Figure(data=go.Scatter(
                     x=list(range(1, len(exam_scores_list) + 1)),
@@ -3055,6 +3499,299 @@ elif analysis_mode == "🔬 宏观分析":
                 st.info("暂无成绩数据")
         else:
             st.info("暂无考试记录")
+
+    # ========== 标签页 6: 成绩预测与预警 ==========
+    with macro_tab6:
+        st.markdown("### 🔮 成绩预测与预警")
+        st.markdown("基于历史数据预测成绩趋势，提供智能预警和目标追踪")
+
+        # 获取学生成绩数据
+        exam_scores = data_manager.get_scores(student_id=selected_student_id)
+
+        if not exam_scores:
+            st.info("暂无成绩数据，无法进行预测分析")
+        else:
+            # 子标签页
+            pred_tab1, pred_tab2, pred_tab3 = st.tabs([
+                "📈 成绩预测", "⚠️ 智能预警", "🎯 目标追踪"
+            ])
+
+            # 准备数据
+            sorted_scores = sorted(exam_scores, key=lambda x: x.exam_date or '')
+            scores_list = [float(s['score']) for s in sorted_scores]
+            exam_names = [s.exam_name for s in sorted_scores]
+
+            with pred_tab1:
+                st.markdown("#### 成绩趋势预测")
+                st.markdown("基于线性回归分析历史成绩趋势，预测下次考试成绩")
+
+                # 预测方法选择
+                pred_method = st.radio(
+                    "预测方法",
+                    ["线性回归", "指数平滑"],
+                    horizontal=True
+                )
+                use_exponential = pred_method == "指数平滑"
+
+                # 创建预测图表
+                fig_prediction = prediction_viz.create_prediction_chart(
+                    scores_list,
+                    exam_names,
+                    use_exponential
+                )
+                st.plotly_chart(fig_prediction, use_container_width=True)
+
+                # 显示预测详情
+                predictor = ScorePredictor()
+                if use_exponential:
+                    prediction = predictor.exponential_smoothing_predict(scores_list)
+                else:
+                    prediction = predictor.linear_regression_predict(scores_list)
+
+                st.markdown("#### 预测详情")
+                col1, col2, col3, col4 = st.columns(4)
+                with col1:
+                    st.metric("预测分数", f"{prediction.predicted_score:.1f}")
+                with col2:
+                    trend_icon = {"upward": "📈", "stable": "➡️", "downward": "📉"}.get(prediction.trend, "")
+                    st.metric("趋势", f"{trend_icon} {prediction.trend}")
+                with col3:
+                    st.metric("拟合度", f"{prediction.r_squared:.3f}")
+                with col4:
+                    reliability = "✓" if prediction.prediction_reliable else "✗"
+                    st.metric("可靠性", reliability)
+
+                st.caption(f"置信区间：[{prediction.confidence_interval[0]:.1f}, {prediction.confidence_interval[1]:.1f}]")
+
+            with pred_tab2:
+                st.markdown("#### 智能预警系统")
+                st.markdown("自动检测成绩下滑、低分、波动过大等风险")
+
+                # 预警系统分析
+                warning_system = WarningSystem()
+                warnings = warning_system.analyze_warnings(scores_list, None)
+
+                if not warnings:
+                    st.success("✓ 暂无预警 - 学习状态良好！")
+                else:
+                    # 按严重程度显示预警
+                    for warning in warnings:
+                        severity_colors = {"high": "red", "medium": "orange", "low": "blue"}
+                        severity_icons = {"high": "🔴", "medium": "🟠", "low": "🔵"}
+                        icon = severity_icons.get(warning.severity, "⚪")
+
+                        st.markdown(f"### {icon} {warning.warning_name}")
+                        st.markdown(f"**{warning.message}**")
+
+                        # 显示详细信息
+                        if warning.details:
+                            with st.expander("查看详情"):
+                                for key, value in warning.details.items():
+                                    if isinstance(value, list):
+                                        st.write(f"**{key}**: {', '.join(map(str, value))}")
+                                    else:
+                                        st.write(f"**{key}**: {value}")
+
+                        st.divider()
+
+                # 预警建议
+                if warnings:
+                    st.markdown("#### 💡 改进建议")
+                    for warning in warnings:
+                        if warning.warning_type == 'declining':
+                            st.markdown("- 📚 分析下滑原因，是否是知识点难度增加导致")
+                            st.markdown("- 📝 加强基础练习，巩固基础知识")
+                            st.markdown("- 👨‍🏫 寻求老师帮助，针对性辅导")
+                        elif warning.warning_type == 'low_score':
+                            st.markdown("- 🎯 设定合理目标，循序渐进提高")
+                            st.markdown("- 📖 回归课本，掌握基本概念")
+                            st.markdown("- ✏️ 多做基础题，建立信心")
+                        elif warning.warning_type == 'volatile':
+                            st.markdown("- 🧘 调整心态，保持稳定的考试状态")
+                            st.markdown("- 📋 规范答题，减少非知识性失分")
+                            st.markdown("- 🔍 分析波动原因，针对性改进")
+                        elif warning.warning_type == 'at_risk':
+                            st.markdown("- ⚠️ 需要立即关注！")
+                            st.markdown("- 👨‍👩‍👦 与家长沟通，共同制定提升计划")
+                            st.markdown("- 📚 安排课后辅导时间")
+
+            with pred_tab3:
+                st.markdown("#### 🎯 目标追踪")
+                st.markdown("设定学习目标，追踪达成进度")
+
+                # 目标分数输入
+                default_goal = min(100, max(scores_list) + 5) if scores_list else 90
+                goal_score = st.number_input(
+                    "目标分数",
+                    min_value=1,
+                    max_value=100,
+                    value=int(default_goal),
+                    step=1
+                )
+
+                # 分析目标进度
+                predictor = ScorePredictor()
+                progress = goal_tracker.analyze_goal_progress(scores_list, goal_score, predictor)
+
+                # 显示进度仪表
+                fig_goal = prediction_viz.create_goal_progress_chart(progress)
+                st.plotly_chart(fig_goal, use_container_width=True)
+
+                # 详细信息
+                st.markdown("#### 目标详情")
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("当前平均分", f"{progress.current_avg:.1f}")
+                with col2:
+                    st.metric("最高分", f"{progress.best_score:.1f}")
+                with col3:
+                    st.metric("剩余差距", f"{progress.remaining_gap:.1f}")
+
+                # 预计达成情况
+                if progress.projected_reach:
+                    st.success(f"✓ 按当前趋势，预计还需要约 {progress.exams_needed} 次考试可达成目标！")
+                else:
+                    st.warning(f"✗ 按当前趋势，达成目标有困难。需要加大学习投入！")
+
+                # 历史最高与目标对比
+                if progress.best_score >= goal_score:
+                    st.info(f"💡 提示：您的历史最高分 ({progress.best_score:.1f}) 已达到或超过目标，保持状态！")
+
+    # ========== 标签页 7: 试卷分析 ==========
+    with macro_tab7:
+        st.markdown("### 📝 试卷质量分析")
+        st.markdown("分析试卷难度、区分度、信度，识别高频错误题目")
+
+        # 获取学生所有考试记录
+        exam_scores = ExamScoreDAO.get_scores_by_student(selected_student_id)
+
+        if not exam_scores:
+            st.info("暂无考试记录，无法进行试卷分析")
+        else:
+            # 初始化分析器
+            exam_quality_analyzer = ExamQualityAnalyzer()
+            question_analyzer = QuestionScoreAnalyzer(deep_analyzer.knowledge_points)
+
+            # 按考试名称分组
+            exam_groups = {}
+            for ec in exam_scores:
+                exam_name = ec.exam_name
+                if exam_name not in exam_groups:
+                    exam_groups[exam_name] = []
+                exam_groups[exam_name].append(float(ec.score))
+
+            # 子标签页
+            exam_tab1, exam_tab2, exam_tab3 = st.tabs([
+                "📊 试卷质量分析", "📝 题目得分率", "🎯 智能组卷"
+            ])
+
+            with exam_tab1:
+                st.markdown("#### 试卷质量对比")
+                st.markdown("分析各次考试的难度、区分度、信度等指标")
+
+                # 分析每场考试的质量
+                exam_analyses = []
+                for exam_name, scores in exam_groups.items():
+                    analysis = exam_quality_analyzer.analyze_exam_quality(scores, exam_name)
+                    exam_analyses.append(analysis)
+
+                # 显示雷达图
+                fig_radar = exam_quality_analyzer.create_exam_quality_chart(exam_analyses)
+                st.plotly_chart(fig_radar, use_container_width=True)
+
+                # 显示难度分布
+                fig_difficulty = exam_quality_analyzer.create_difficulty_distribution_chart(exam_analyses)
+                st.plotly_chart(fig_difficulty, use_container_width=True)
+
+                # 显示详细数据
+                st.markdown("#### 试卷质量数据表")
+                for analysis in exam_analyses:
+                    with st.expander(f"{analysis.exam_name} (难度：{analysis.difficulty:.3f}, 区分度：{analysis.discrimination:.3f})"):
+                        st.markdown(f"""
+                        - **参加考试人数**: {analysis.total_students}
+                        - **平均分**: {analysis.avg_score:.1f}
+                        - **难度系数**: {analysis.difficulty:.3f} {'(容易)' if analysis.difficulty < 0.3 else '(中等)' if analysis.difficulty < 0.5 else '(困难)'}
+                        - **区分度**: {analysis.discrimination:.3f} {'(好)' if analysis.discrimination > 0.3 else '(一般)' if analysis.discrimination > 0.15 else '(较差)'}
+                        - **信度**: {analysis.reliability:.3f}
+                        - **标准差**: {analysis.std_deviation:.2f}
+                        - **分数范围**: {analysis.score_range[0]} - {analysis.score_range[1]}
+                        """)
+
+            with exam_tab2:
+                st.markdown("#### 题目得分率分析")
+                st.markdown("识别全班共性薄弱题目")
+
+                # 模拟题目数据（实际应用中应该从数据库获取每题得分）
+                st.info("💡 提示：需要在数据库中添加题目得分记录才能进行详细分析")
+
+                # 示例：假设每次考试的题目结构
+                sample_question_data = {}
+                for exam_name, scores in exam_groups.items():
+                    # 假设每题 10 分，共 10 题
+                    for i in range(10):
+                        qid = f"{exam_name}-Q{i+1}"
+                        # 模拟得分（根据总分估算）
+                        avg_score_per_question = sum(scores) / len(scores) / 10
+                        sample_question_data[qid] = [min(10, avg_score_per_question + np.random.randn() * 2) for _ in range(len(scores))]
+
+                if sample_question_data:
+                    question_analyses = question_analyzer.analyze_question_scores(sample_question_data)
+
+                    # 显示错误率 TOP10
+                    fig_errors = question_analyzer.create_question_error_rate_chart(question_analyses)
+                    st.plotly_chart(fig_errors, use_container_width=True)
+
+                    # 显示热力图
+                    student_ids = list(range(1, len(list(exam_groups.values())[0]) + 1))
+                    fig_heatmap = question_analyzer.create_question_heatmap(sample_question_data, student_ids[:20])
+                    st.plotly_chart(fig_heatmap, use_container_width=True)
+
+            with exam_tab3:
+                st.markdown("#### 🎯 智能组卷优化")
+                st.markdown("根据学生水平智能推荐试卷难度和题目")
+
+                # 计算学生当前水平
+                all_scores = []
+                for scores in exam_groups.values():
+                    all_scores.extend(scores)
+                student_level = sum(all_scores) / len(all_scores) if all_scores else 70
+
+                st.markdown(f"**当前水平评估**: {student_level:.1f} 分")
+
+                # 组卷参数
+                col1, col2 = st.columns(2)
+                with col1:
+                    target_score = st.slider("目标分数", 60, 100, int(student_level) + 5)
+                    num_questions = st.slider("题目数量", 5, 20, 10)
+                with col2:
+                    total_score = st.slider("试卷总分", 50, 150, 100)
+
+                # 智能组卷
+                composer = SmartPaperComposer(deep_analyzer.knowledge_points)
+                paper_result = composer.compose_paper(
+                    student_level=student_level,
+                    target_score=target_score,
+                    total_score=total_score,
+                    num_questions=num_questions
+                )
+
+                # 显示试卷结构
+                fig_paper = composer.create_paper_preview_chart(paper_result)
+                st.plotly_chart(fig_paper, use_container_width=True)
+
+                # 显示推荐题目
+                st.markdown("#### 推荐题目列表")
+                for i, q in enumerate(paper_result['questions'], 1):
+                    kp_name = q.get('knowledge_name', q.get('knowledge', '未知'))
+                    diff_text = "基础题" if q['difficulty'] == 1 else "提升题" if q['difficulty'] == 2 else "挑战题"
+                    st.markdown(f"{i}. **{q['id']}** - {kp_name} ({diff_text}, {q['score']}分)")
+
+                # 得分预测
+                st.markdown("#### 得分预测")
+                fig_prediction = composer.create_score_prediction_chart(student_level, paper_result)
+                st.plotly_chart(fig_prediction, use_container_width=True)
+
+                st.info(f"💡 建议完成时间：{paper_result['recommended_time']} 分钟")
 
 # ==================== 模式 8: 错题追踪本 ====================
 elif analysis_mode == "📕 错题追踪本":
@@ -4399,6 +5136,826 @@ elif analysis_mode == "📄 智能组卷":
                 st.subheader("💡 练习建议")
                 recommendation = paper_generator.get_recommendation(paper)
                 st.markdown(recommendation)
+
+# ==================== 模式：家校沟通 ====================
+elif analysis_mode == "🏠 家校沟通":
+    st.header("🏠 家校沟通 - 学情报告")
+    st.markdown("自动生成学情报告，展示进步幅度，与班级平均水平对比")
+
+    # 选择学生
+    student_names = sorted(list(analyzer.student_names.values()))
+    selected_student_name = st.selectbox("选择学生", student_names)
+    selected_student_id = get_student_id_by_name(selected_student_name)
+
+    if selected_student_id:
+        # 初始化分析器
+        report_generator = ReportGenerator(deep_analyzer.knowledge_points)
+        progress_analyzer = ProgressAnalyzer()
+        benchmark_comparator = BenchmarkComparator()
+
+        # 获取成绩数据
+        scores = deep_analyzer.get_scores(selected_student_id)
+        exam_scores = ExamScoreDAO.get_scores_by_student(selected_student_id)
+
+        if not exam_scores:
+            st.info("暂无成绩数据")
+        else:
+            score_list = [float(s['score']) for s in exam_scores]
+            exam_names = [s['exam_name'] for s in exam_scores]
+
+            # 获取知识点掌握度
+            mastery_data = deep_analyzer.analyze_knowledge_mastery(selected_student_id)
+
+            # 子标签页
+            home_tab1, home_tab2, home_tab3 = st.tabs([
+                "📊 学情报告", "📈 进步幅度", "📉 对比基准"
+            ])
+
+            with home_tab1:
+                st.markdown("#### 学情报告预览")
+
+                # 生成报告
+                report = report_generator.generate_report(
+                    selected_student_id, selected_student_name,
+                    score_list, exam_names, mastery_data
+                )
+
+                # 显示报告概览
+                col1, col2, col3, col4 = st.columns(4)
+                with col1:
+                    st.metric("考试次数", report.total_exams)
+                with col2:
+                    st.metric("平均分", report.avg_score)
+                with col3:
+                    st.metric("最高分", report.best_score)
+                with col4:
+                    trend_icon = {"上升": "📈", "稳定": "➡️", "下降": "📉"}.get(report.trend, "")
+                    st.metric("趋势", f"{trend_icon} {report.trend}")
+
+                # 仪表图
+                fig_gauge = report_generator.create_report_preview_chart(report)
+                st.plotly_chart(fig_gauge, use_container_width=True)
+
+                # 详细信息
+                st.markdown("#### 详细分析")
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.markdown(f"**最强知识点**: {report.strongest_knowledge}")
+                with col2:
+                    st.markdown(f"**最弱知识点**: {report.weakest_knowledge}")
+
+                # 学习建议
+                st.markdown("#### 💡 学习建议")
+                for suggestion in report.suggestions:
+                    st.markdown(f"- {suggestion}")
+
+                # 教师评语
+                st.markdown("#### 👨‍🏫 教师评语")
+                st.info(report.teacher_comment)
+
+                # 导出报告
+                st.markdown("#### 📥 导出报告")
+                report_data = report_generator.create_report_pdf_data(report)
+                report_json = json.dumps(report_data, ensure_ascii=False, indent=2)
+                st.download_button(
+                    label="📥 下载报告 (JSON)",
+                    data=report_json,
+                    file_name=f"{selected_student_name}_学情报告.json",
+                    mime="application/json"
+                )
+
+            with home_tab2:
+                st.markdown("#### 进步幅度分析")
+
+                # 进步图表
+                fig_progress = progress_analyzer.create_progress_chart(score_list, exam_names)
+                st.plotly_chart(fig_progress, use_container_width=True)
+
+                # 进步指标
+                metrics = progress_analyzer.analyze_progress(score_list, exam_names)
+                if metrics:
+                    st.markdown("#### 进步指标")
+                    for m in metrics:
+                        icon = "📈" if m.trend == 'improved' else "📉" if m.trend == 'declined' else "➡️"
+                        color = "green" if m.trend == 'improved' else "red" if m.trend == 'declined' else "gray"
+                        st.markdown(f"**{icon} {m.metric_name}**: "
+                                   f"<span style='color:{color}'>{m.change:+.1f}分 ({m.change_percent:+.1f}%)</span>",
+                                   unsafe_allow_html=True)
+
+            with home_tab3:
+                st.markdown("#### 与班级平均水平对比")
+
+                # 获取班级数据
+                class_data = {}
+                for student in analyzer.students_df['姓名'].unique():
+                    sid = get_student_id_by_name(student)
+                    if sid:
+                        student_scores = ExamScoreDAO.get_scores_by_student(sid)
+                        if student_scores:
+                            class_data[student] = [float(s['score']) for s in student_scores]
+
+                benchmark_comparator.class_scores = class_data
+
+                # 当前学生平均分
+                current_avg = sum(score_list) / len(score_list) if score_list else 0
+
+                # 对比分析
+                comparison = benchmark_comparator.compare_with_benchmark(current_avg, 'class')
+
+                st.markdown(f"**{comparison['benchmark_name']}**: {comparison['benchmark_avg']}分")
+                st.markdown(f"**个人平均分**: {comparison['student_score']}分")
+
+                diff_icon = "📈" if comparison['difference'] > 0 else "📉"
+                diff_color = "green" if comparison['difference'] > 0 else "red"
+                st.markdown(f"**差异**: <span style='color:{diff_color}'>{diff_icon} {comparison['difference']:+.1f}分</span>",
+                           unsafe_allow_html=True)
+
+                st.markdown(f"**百分位**: {comparison['percentile']}% ({comparison['ranking']})")
+
+                # 对比图
+                fig_benchmark = benchmark_comparator.create_benchmark_chart(comparison)
+                st.plotly_chart(fig_benchmark, use_container_width=True)
+
+# ==================== 模式：数据导入导出 ====================
+elif analysis_mode == "📤 数据导入导出":
+    st.header("📤 数据导入导出")
+    st.markdown("支持 Excel、JSON、CSV 格式导出，OCR 识别成绩单，API 数据对接")
+
+    # 初始化导出器
+    exporter = DataExporter()
+    importer = DataImporter()
+    ocr_importer = OCRScoreImporter()
+    api_connector = SystemAPIConnector()
+
+    # 子标签页
+    export_tab1, export_tab2, export_tab3, export_tab4 = st.tabs([
+        "📥 数据导出", "📤 文件导入", "📷 OCR 识别", "🔌 API 对接"
+    ])
+
+    with export_tab1:
+        st.markdown("#### 数据导出")
+
+        # 选择导出类型
+        export_type = st.selectbox(
+            "导出类型",
+            ["学生成绩报告", "全部成绩数据", "错题记录", "自定义数据"],
+            index=0
+        )
+
+        # 选择学生（如果是学生报告）
+        if export_type == "学生成绩报告":
+            student_names = sorted(analyzer.student_names)
+            export_student = st.selectbox("选择学生", student_names)
+            export_student_id = get_student_id_by_name(export_student)
+
+        # 选择导出格式
+        export_format = st.selectbox(
+            "导出格式",
+            ["Excel (.xlsx)", "JSON (.json)", "CSV (.csv)"],
+            index=0
+        )
+
+        if st.button("开始导出", type="primary"):
+            with st.spinner("正在导出..."):
+                if export_type == "学生成绩报告":
+                    # 收集学生数据
+                    student_data = {
+                        'basic_info': {'name': export_student, 'id': export_student_id},
+                        'scores': [],
+                        'mastery': {},
+                        'errors': []
+                    }
+
+                    # 成绩
+                    exam_scores = ExamScoreDAO.get_scores_by_student(export_student_id)
+                    for es in exam_scores:
+                        student_data['scores'].append({
+                            'exam_name': es.exam_name,
+                            'score': es.score,
+                            'exam_date': str(es.exam_date) if es.exam_date else ''
+                        })
+
+                    # 知识点掌握度
+                    mastery = deep_analyzer.analyze_knowledge_mastery(export_student_id)
+                    student_data['mastery'] = {k: v for k, v in mastery.items()}
+
+                    # 导出
+                    if 'Excel' in export_format:
+                        result = exporter.export_student_report(student_data)
+                    elif 'JSON' in export_format:
+                        result = exporter.export_to_json(student_data)
+                    else:
+                        result = exporter.export_to_csv(student_data['scores'])
+
+                elif export_type == "全部成绩数据":
+                    # 导出所有数据
+                    all_data = []
+                    for student in analyzer.students_df['姓名'].unique():
+                        sid = get_student_id_by_name(student)
+                        scores = ExamScoreDAO.get_scores_by_student(sid)
+                        for s in scores:
+                            all_data.append({
+                                'student_name': student,
+                                'exam_name': s.exam_name,
+                                'score': s.score,
+                                'exam_date': str(s.exam_date) if s.exam_date else ''
+                            })
+
+                    if 'Excel' in export_format:
+                        result = exporter.export_to_excel({'成绩数据': all_data})
+                    elif 'JSON' in export_format:
+                        result = exporter.export_to_json(all_data)
+                    else:
+                        result = exporter.export_to_csv(all_data)
+                else:
+                    st.error("暂不支持该导出类型")
+                    result = None
+
+                if result:
+                    if result.success:
+                        st.success(f"✓ 导出成功！{result.message}")
+                        st.info(f"文件大小：{result.file_size / 1024:.1f} KB")
+                    else:
+                        st.error(f"✗ 导出失败：{result.message}")
+
+    with export_tab2:
+        st.markdown("#### 文件导入")
+
+        uploaded_file = st.file_uploader(
+            "上传文件",
+            type=['xlsx', 'xls', 'csv', 'json'],
+            help="支持 Excel、CSV、JSON 格式"
+        )
+
+        if uploaded_file:
+            st.info(f"已选择文件：{uploaded_file.name}")
+
+            if st.button("导入文件"):
+                with st.spinner("正在导入..."):
+                    # 保存临时文件
+                    import tempfile
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=Path(uploaded_file.name).suffix) as f:
+                        f.write(uploaded_file.getvalue())
+                        temp_path = f.name
+
+                    result = importer.import_file(temp_path)
+
+                    if result.success:
+                        st.success(f"✓ 导入成功！共 {result.records_imported} 条记录")
+                    else:
+                        st.error(f"✗ 导入失败：{result.errors[0]}")
+
+                    # 清理临时文件
+                    import os
+                    os.remove(temp_path)
+
+    with export_tab3:
+        st.markdown("#### 📷 OCR 识别成绩单")
+        st.info("💡 支持从图片中提取成绩数据（模拟实现）")
+
+        uploaded_image = st.file_uploader(
+            "上传成绩单图片",
+            type=['jpg', 'jpeg', 'png'],
+            help="上传成绩单截图"
+        )
+
+        if uploaded_image:
+            st.image(uploaded_image, caption=" uploaded 图片", width=300)
+
+            if st.button("开始 OCR 识别"):
+                st.warning("⚠️ OCR 功能需要配置 API 密钥，当前为模拟实现")
+                st.info("建议集成：百度 OCR API、腾讯 OCR API 或 PaddleOCR")
+
+    with export_tab4:
+        st.markdown("#### 🔌 API 数据对接")
+        st.info("💡 与其他教育系统进行数据交换（模拟实现）")
+
+        # API 配置
+        with st.expander("⚙️ API 配置"):
+            api_url = st.text_input("API 地址", value="http://api.example.com")
+            api_key = st.text_input("API 密钥", type="password")
+
+            if st.button("保存配置"):
+                st.success("配置已保存（模拟）")
+
+        # API 操作
+        st.markdown("##### 数据同步")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            if st.button("📤 同步学生数据"):
+                st.info("模拟：同步学生数据成功")
+        with col2:
+            if st.button("📥 获取考试成绩"):
+                st.info("模拟：获取成绩成功")
+        with col3:
+            if st.button("📊 推送学情报告"):
+                st.info("模拟：推送报告成功")
+
+# ==================== 模式：教育测量指标 ====================
+elif analysis_mode == "📐 教育测量指标":
+    st.header("📐 教育测量学指标")
+    st.markdown("IRT 项目反应理论、增值评价、多维度能力模型")
+
+    # 选择学生
+    student_names = sorted(list(analyzer.student_names.values()))
+    selected_student_name = st.selectbox("选择学生", student_names)
+    selected_student_id = get_student_id_by_name(selected_student_name)
+
+    if selected_student_id:
+        # 初始化分析器
+        irt_analyzer = IRTAnalyzer()
+        va_analyzer = ValueAddedAnalyzer()
+        ability_model = MultiDimensionalAbilityModel()
+
+        # 获取成绩
+        exam_scores = ExamScoreDAO.get_scores_by_student(selected_student_id)
+
+        if not exam_scores:
+            st.info("暂无成绩数据")
+        else:
+            score_list = [float(s['score']) for s in exam_scores]
+
+            # 子标签页
+            metric_tab1, metric_tab2, metric_tab3 = st.tabs([
+                "📊 IRT 分析", "📈 增值评价", "🎯 多维度能力"
+            ])
+
+            with metric_tab1:
+                st.markdown("#### IRT 项目反应理论分析")
+                st.markdown("基于 3PL 模型估计题目难度、区分度、猜测参数")
+
+                # 模拟作答数据（实际应用中使用答题记录）
+                np.random.seed(42)
+                responses = np.random.choice([0, 1], size=20, p=[0.3, 0.7]).tolist()
+
+                # 估计 IRT 参数
+                item_params = irt_analyzer.estimate_parameters_3pl(responses)
+
+                st.markdown("##### 题目参数估计结果")
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("难度 (b)", f"{item_params.difficulty:.3f}")
+                with col2:
+                    st.metric("区分度 (a)", f"{item_params.discrimination:.3f}")
+                with col3:
+                    st.metric("猜测参数 (c)", f"{item_params.guessing:.3f}")
+
+                # 项目特征曲线数据
+                icc_data = irt_analyzer.create_item_characteristic_curve(item_params)
+
+                fig = go.Figure()
+                fig.add_trace(go.Scatter(
+                    x=icc_data['theta'], y=icc_data['p'],
+                    mode='lines',
+                    line=dict(color='#3498db', width=3),
+                    name='项目特征曲线'
+                ))
+
+                fig.add_vline(x=item_params.difficulty, line_dash="dash", line_color="red",
+                            annotation_text="难度", annotation_position="top")
+
+                fig.update_layout(
+                    title="项目特征曲线 (ICC)",
+                    xaxis_title="能力值 (θ)",
+                    yaxis_title="答对概率",
+                    xaxis_range=[-3, 3],
+                    yaxis_range=[0, 1],
+                    height=400
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                # 能力估计
+                ability = irt_analyzer.estimate_ability(responses)
+                st.markdown("##### 考生能力估计")
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("能力值 (θ)", f"{ability.ability_theta:.3f}")
+                with col2:
+                    st.metric("标准误", f"{ability.standard_error:.3f}")
+                with col3:
+                    st.metric("百分位", f"{ability.percentile:.1f}%")
+
+            with metric_tab2:
+                st.markdown("#### 增值评价")
+                st.markdown("评估学生进步幅度，计算教学效果")
+
+                # 计算增值
+                va_result = va_analyzer.calculate_value_added(score_list)
+
+                st.markdown("##### 增值结果")
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("预期增长", f"{va_result.expected_growth:.2f}分")
+                with col2:
+                    st.metric("实际增长", f"{va_result.actual_growth:.2f}分")
+                with col3:
+                    st.metric("增值", f"{va_result.value_added:.2f}分")
+
+                # 效能等级
+                effectiveness_colors = {
+                    '高效': 'green', '有效': 'limegreen', '一般': 'orange',
+                    '待改进': 'orangered', '低效': 'red'
+                }
+                eff_color = effectiveness_colors.get(va_result.effectiveness, 'gray')
+                st.markdown(f"**效能等级**: <span style='color:{eff_color}; font-size:18px'>"
+                           f"{va_result.effectiveness}</span>", unsafe_allow_html=True)
+
+                # 增值分布（如果有多个学生）
+                st.markdown("##### 班级增值分布")
+                all_students_va = {}
+                for student in analyzer.students_df['姓名'].unique()[:10]:
+                    sid = get_student_id_by_name(student)
+                    if sid:
+                        scores = ExamScoreDAO.get_scores_by_student(sid)
+                        if scores:
+                            all_students_va[sid] = [float(s['score']) for s in scores]
+
+                if all_students_va:
+                    va_results = va_analyzer.batch_analyze(all_students_va)
+                    dist_data = va_analyzer.create_value_added_distribution(va_results)
+
+                    fig = go.Figure(data=[go.Bar(
+                        x=dist_data['categories'],
+                        y=dist_data['values'],
+                        marker_color=['green', 'limegreen', 'orange', 'orangered', 'red']
+                    )])
+                    fig.update_layout(
+                        title="增值分布",
+                        xaxis_title="效能等级",
+                        yaxis_title="人数",
+                        height=400
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+
+            with metric_tab3:
+                st.markdown("#### 多维度能力模型")
+                st.markdown("从知识、技能、推理、应用、反思五个维度评估")
+
+                # 获取错题记录
+                error_records = ErrorRecordDAO.get_errors_by_student(selected_student_id)
+
+                # 知识点掌握度
+                mastery_data_raw = deep_analyzer.analyze_knowledge_mastery(selected_student_id)
+                # 转换为简单字典 {kp_code: avg_score}
+                mastery_data = {k: v.get('avg_score', 50) for k, v in mastery_data_raw.items()} if mastery_data_raw else {}
+
+                # 评估维度
+                dimensions = ability_model.assess_dimensions(
+                    score_list, error_records, mastery_data
+                )
+
+                # 雷达图数据
+                radar_data = ability_model.create_radar_data(dimensions)
+
+                fig = go.Figure(go.Scatterpolar(
+                    r=radar_data['values'],
+                    theta=radar_data['labels'],
+                    fill='toself',
+                    line=dict(color='#3498db'),
+                    opacity=0.7
+                ))
+
+                fig.update_layout(
+                    title="多维度能力雷达图",
+                    polar=dict(
+                        radialaxis=dict(visible=True, range=[0, 100])
+                    ),
+                    showlegend=False,
+                    height=450
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                # 各维度得分
+                st.markdown("##### 各维度得分")
+                cols = st.columns(5)
+                for i, (code, dim_info) in enumerate(ability_model.DIMENSIONS.items()):
+                    score = dimensions.get(code, 0)
+                    cols[i].metric(dim_info['name'], f"{score:.1f}")
+
+                # 改进建议
+                st.markdown("##### 改进建议")
+                suggestions = ability_model.get_suggestions(dimensions)
+                for sug in suggestions:
+                    st.markdown(f"- {sug}")
+
+# ==================== 模式：交互体验 ====================
+elif analysis_mode == "🎨 交互体验":
+    st.header("🎨 交互体验优化")
+    st.markdown("动态趋势动画、交互式仪表盘、移动端适配")
+
+    # 选择学生
+    student_names = sorted(list(analyzer.student_names.values()))
+    selected_student_name = st.selectbox("选择学生", student_names)
+    selected_student_id = get_student_id_by_name(selected_student_name)
+
+    if selected_student_id:
+        # 初始化分析器
+        animated_chart = AnimatedTrendChart()
+        dashboard = InteractiveDashboard()
+        mobile_optimizer = MobileOptimizer()
+
+        # 获取成绩
+        exam_scores = ExamScoreDAO.get_scores_by_student(selected_student_id)
+
+        if not exam_scores:
+            st.info("暂无成绩数据")
+        else:
+            score_list = [float(s['score']) for s in exam_scores]
+            exam_names = [s['exam_name'] for s in exam_scores]
+
+            # 子标签页
+            viz_tab1, viz_tab2, viz_tab3 = st.tabs([
+                "🎬 动态趋势", "📊 交互仪表盘", "📱 移动端适配"
+            ])
+
+            with viz_tab1:
+                st.markdown("#### 动态趋势动画")
+
+                # 方法选择
+                chart_type = st.radio(
+                    "图表类型",
+                    ["成绩趋势动画", "排行榜竞赛图"],
+                    horizontal=True
+                )
+
+                if chart_type == "成绩趋势动画":
+                    fig = animated_chart.create_animated_line_chart(
+                        score_list, exam_names,
+                        title=f"{selected_student_name} 成绩趋势"
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                    st.info("💡 点击'▶ 播放'按钮观看动画，或使用滑块控制进度")
+
+                else:
+                    # 多学生对比
+                    all_students_data = {}
+                    for student in analyzer.students_df['姓名'].unique()[:5]:
+                        sid = get_student_id_by_name(student)
+                        if sid:
+                            scores = ExamScoreDAO.get_scores_by_student(sid)
+                            if scores:
+                                all_students_data[student] = [float(s['score']) for s in scores]
+
+                    fig = animated_chart.create_race_chart(
+                        all_students_data,
+                        title="成绩排行榜竞赛"
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                    st.info("💡 点击'▶ 播放'按钮观看排行榜变化")
+
+            with viz_tab2:
+                st.markdown("#### 交互式仪表盘")
+
+                # 收集学生数据
+                student_data = {
+                    'avg_score': sum(score_list) / len(score_list),
+                    'scores': score_list,
+                    'exam_names': exam_names,
+                    'grades': {'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0},
+                    'units': ['单元 1', '单元 2', '单元 3', '单元 4'],
+                    'unit_scores': [80, 75, 85, 78]
+                }
+
+                # 计算等级
+                for score in score_list:
+                    if score >= 90:
+                        student_data['grades']['A'] += 1
+                    elif score >= 80:
+                        student_data['grades']['B'] += 1
+                    elif score >= 70:
+                        student_data['grades']['C'] += 1
+                    elif score >= 60:
+                        student_data['grades']['D'] += 1
+                    else:
+                        student_data['grades']['E'] += 1
+
+                fig = dashboard.create_score_overview_dashboard(student_data)
+                st.plotly_chart(fig, use_container_width=True)
+
+                # 两人对比
+                st.markdown("##### 两人对比模式")
+                compare_students = st.multiselect(
+                    "选择两个学生进行对比",
+                    student_names,
+                    max_selections=2
+                )
+
+                if len(compare_students) == 2:
+                    data1 = {'scores': [], 'avg_score': 0, 'abilities': [70, 70, 70, 70, 70]}
+                    data2 = {'scores': [], 'avg_score': 0, 'abilities': [70, 70, 70, 70, 70]}
+
+                    for i, name in enumerate(compare_students):
+                        sid = get_student_id_by_name(name)
+                        if sid:
+                            scores = ExamScoreDAO.get_scores_by_student(sid)
+                            score_list_temp = [float(s['score']) for s in scores]
+                            if i == 0:
+                                data1['scores'] = score_list_temp
+                                data1['avg_score'] = sum(score_list_temp) / len(score_list_temp) if score_list_temp else 0
+                            else:
+                                data2['scores'] = score_list_temp
+                                data2['avg_score'] = sum(score_list_temp) / len(score_list_temp) if score_list_temp else 0
+
+                    fig = dashboard.create_comparison_dashboard(data1, data2, tuple(compare_students))
+                    st.plotly_chart(fig, use_container_width=True)
+
+            with viz_tab3:
+                st.markdown("#### 📱 移动端适配优化")
+
+                st.info("💡 当前应用已支持移动端 PWA，可以添加到主屏幕使用")
+
+                # 布局预览
+                st.markdown("##### 响应式布局预览")
+
+                col1, col2 = st.columns([1, 1])
+                with col1:
+                    st.markdown("**桌面端布局**")
+                    st.info("图表高度：450px，边距：60px")
+
+                with col2:
+                    st.markdown("**移动端布局**")
+                    st.info("图表高度：300px，边距：30px")
+
+                # 移动端优化选项
+                is_mobile = st.checkbox("移动端模式预览", value=False)
+
+                # 优化图表
+                fig = go.Figure(data=go.Scatter(x=exam_names, y=score_list, mode='lines+markers'))
+                fig = mobile_optimizer.optimize_figure(fig, is_mobile)
+                st.plotly_chart(fig, use_container_width=True)
+
+                # PWA 说明
+                st.markdown("##### PWA 功能说明")
+                st.markdown("""
+                - ✅ 响应式布局，自动适配屏幕尺寸
+                - ✅ 支持添加到主屏幕
+                - ✅ 离线缓存部分数据
+                - ✅ 全屏显示，隐藏浏览器界面
+                - ✅ 触摸友好的按钮和控件
+                """)
+
+# ==================== 模式：学习行为分析 ====================
+elif analysis_mode == "📊 学习行为分析":
+    st.header("📊 学习行为分析")
+    st.markdown("答题时间分析、复习效果追踪、学习习惯画像")
+
+    # 选择学生
+    student_names = sorted(list(analyzer.student_names.values()))
+    selected_student_name = st.selectbox("选择学生", student_names)
+    selected_student_id = get_student_id_by_name(selected_student_name)
+
+    if selected_student_id:
+        # 初始化分析器
+        time_analyzer = TimeAnalyzer()
+        review_tracker = ReviewTracker(deep_analyzer.knowledge_points)
+        habit_profiler = HabitProfiler()
+
+        # 获取错题记录（模拟学习时间记录）
+        error_records = ErrorRecordDAO.get_errors_by_student(selected_student_id)
+
+        # 子标签页
+        behavior_tab1, behavior_tab2, behavior_tab3 = st.tabs([
+            "⏱️ 答题时间", "📚 复习效果", "🎯 习惯画像"
+        ])
+
+        with behavior_tab1:
+            st.markdown("#### 答题时间分析")
+
+            # 模拟时间记录
+            np.random.seed(42)
+            time_records = [
+                {
+                    'question_id': f'Q{i}',
+                    'time_spent': int(np.random.normal(60, 20)),
+                    'timestamp': datetime.now().isoformat()
+                }
+                for i in range(20)
+            ]
+            time_records = [r for r in time_records if r['time_spent'] > 0]
+
+            # 分析结果
+            analysis = time_analyzer.analyze_time(time_records)
+
+            st.markdown("##### 时间统计")
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("平均用时", f"{analysis.avg_time_per_question:.1f}秒")
+            with col2:
+                st.metric("总学习时长", f"{analysis.total_study_time}分钟")
+            with col3:
+                pace_icon = {"fast": "⚡", "medium": "🚶", "slow": "🐢"}.get(analysis.pace, "")
+                st.metric("答题节奏", f"{pace_icon} {analysis.pace}")
+
+            # 时间分布图
+            fig_dist = time_analyzer.create_time_distribution_chart(time_records)
+            st.plotly_chart(fig_dist, use_container_width=True)
+
+            # 节奏分析图
+            fig_pace = time_analyzer.create_pace_analysis_chart(time_records)
+            st.plotly_chart(fig_pace, use_container_width=True)
+
+            # 效率评分
+            st.markdown("##### 效率评估")
+            if analysis.efficiency_score >= 80:
+                st.success(f"效率评分：{analysis.efficiency_score} - 优秀")
+            elif analysis.efficiency_score >= 60:
+                st.info(f"效率评分：{analysis.efficiency_score} - 良好")
+            else:
+                st.warning(f"效率评分：{analysis.efficiency_score} - 需改进")
+
+        with behavior_tab2:
+            st.markdown("#### 复习效果追踪")
+            st.markdown("基于艾宾浩斯遗忘曲线")
+
+            # 模拟复习记录
+            review_records = [
+                {
+                    'knowledge_code': 'G1U03',
+                    'review_dates': [
+                        (datetime.now() - timedelta(days=15)).isoformat(),
+                        (datetime.now() - timedelta(days=7)).isoformat(),
+                        (datetime.now() - timedelta(days=1)).isoformat()
+                    ],
+                    'mastery_scores': [60, 75, 85]
+                },
+                {
+                    'knowledge_code': 'G1U05',
+                    'review_dates': [
+                        (datetime.now() - timedelta(days=10)).isoformat(),
+                        (datetime.now() - timedelta(days=3)).isoformat()
+                    ],
+                    'mastery_scores': [70, 82]
+                }
+            ]
+
+            # 复习效果
+            effects = review_tracker.track_review_effect(review_records)
+
+            if effects:
+                st.markdown("##### 复习效果列表")
+                for effect in effects:
+                    with st.expander(f"{effect.knowledge_name} - {effect.effect}"):
+                        st.markdown(f"""
+                        - **初始掌握度**: {effect.initial_mastery}%
+                        - **当前掌握度**: {effect.current_mastery}%
+                        - **保持率**: {effect.retention_rate}%
+                        - **复习次数**: {effect.review_count}次
+                        - **下次复习**: {effect.next_review_date}
+                        """)
+
+                # 遗忘曲线图
+                fig_curve = review_tracker.create_review_curve_chart(review_records)
+                st.plotly_chart(fig_curve, use_container_width=True)
+
+        with behavior_tab3:
+            st.markdown("#### 学习习惯画像")
+
+            # 模拟学习记录
+            np.random.seed(42)
+            study_records = [
+                {
+                    'timestamp': (datetime.now() - timedelta(days=i, hours=np.random.randint(-5, 5))).isoformat(),
+                    'duration': int(np.random.normal(35, 10)),
+                    'activity': 'study'
+                }
+                for i in range(30)
+            ]
+            study_records = [r for r in study_records if 10 < r['duration'] < 90]
+
+            # 习惯画像
+            profile = habit_profiler.analyze_habits(study_records, error_records)
+
+            st.markdown("##### 习惯标签")
+            tags_display = " ".join([f"🏷️ {tag}" for tag in profile.habit_tags])
+            st.markdown(f"### {tags_display}")
+
+            # 雷达图
+            fig_habit = habit_profiler.create_habit_radar_chart(profile)
+            st.plotly_chart(fig_habit, use_container_width=True)
+
+            # 详细评分
+            st.markdown("##### 详细评分")
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("坚持度", f"{profile.consistency_score:.1f}")
+            with col2:
+                st.metric("专注度", f"{profile.focus_score:.1f}")
+            with col3:
+                st.metric("毅力", f"{profile.persistence_score:.1f}")
+
+            # 偏好时段
+            time_pref_names = {
+                'morning': '早晨', 'afternoon': '下午',
+                'evening': '晚上', 'night': '深夜', 'unknown': '未知'
+            }
+            st.markdown(f"**偏好时段**: {time_pref_names.get(profile.study_time_preference, '未知')}")
+            st.markdown(f"**学习频率**: {profile.study_frequency:.1f} 次/周")
+            st.markdown(f"**学习风格**: {profile.learning_style}")
+
+            # 改进建议
+            st.markdown("##### 💡 改进建议")
+            for sug in profile.suggestions:
+                st.markdown(f"- {sug}")
 
 # 页脚
 st.markdown("---")

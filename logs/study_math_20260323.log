@@ -1,0 +1,2217 @@
+2026-03-23 09:57:28 - study_math - ERROR - 测试上下文 - 错误：ValueError: 测试错误
+NoneType: None
+2026-03-23 09:57:28 - study_math - INFO - 测试信息
+2026-03-23 09:57:28 - study_math - WARNING - 测试警告
+2026-03-23 09:57:28 - study_math - ERROR - 函数 error_func 执行失败（耗时0.000秒）: 测试错误
+2026-03-23 09:57:28 - pdf_exporter - INFO - 注册中文字体：C:\Windows\Fonts\simhei.ttf
+2026-03-23 09:57:28 - pdf_exporter - INFO - 能力报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpcn48d0g3\test_ability_report.pdf
+2026-03-23 09:57:28 - pdf_exporter - INFO - 错题报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpcn48d0g3\test_error_report.pdf
+2026-03-23 09:57:28 - pdf_exporter - INFO - 综合报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpcn48d0g3\test_summary_report.pdf
+2026-03-23 10:39:30 - study_math - INFO - ==================================================
+2026-03-23 10:39:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 10:39:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 10:39:30 - study_math - INFO - ==================================================
+2026-03-23 10:42:37 - study_math - INFO - ==================================================
+2026-03-23 10:42:37 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 10:42:37 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 10:42:37 - study_math - INFO - ==================================================
+2026-03-23 10:42:38 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 10:44:21 - study_math - INFO - ==================================================
+2026-03-23 10:44:21 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 10:44:21 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 10:44:21 - study_math - INFO - ==================================================
+2026-03-23 10:44:22 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 10:44:22 - app - INFO - 初始化分析器...
+2026-03-23 10:44:22 - app - INFO - 分析器初始化完成
+2026-03-23 10:56:13 - study_math - INFO - ==================================================
+2026-03-23 10:56:13 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 10:56:13 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 10:56:13 - study_math - INFO - ==================================================
+2026-03-23 10:56:13 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 10:57:01 - study_math - INFO - ==================================================
+2026-03-23 10:57:01 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 10:57:01 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 10:57:01 - study_math - INFO - ==================================================
+2026-03-23 10:57:01 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 10:57:02 - study_math - INFO - ==================================================
+2026-03-23 10:57:02 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 10:57:02 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 10:57:02 - study_math - INFO - ==================================================
+2026-03-23 10:57:02 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:03:46 - study_math - INFO - ==================================================
+2026-03-23 11:03:46 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:03:46 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:03:46 - study_math - INFO - ==================================================
+2026-03-23 11:03:46 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:11 - study_math - INFO - ==================================================
+2026-03-23 11:07:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:11 - study_math - INFO - ==================================================
+2026-03-23 11:07:11 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:12 - study_math - INFO - ==================================================
+2026-03-23 11:07:12 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:12 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:12 - study_math - INFO - ==================================================
+2026-03-23 11:07:12 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:12 - study_math - INFO - ==================================================
+2026-03-23 11:07:12 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:12 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:12 - study_math - INFO - ==================================================
+2026-03-23 11:07:12 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:15 - study_math - INFO - ==================================================
+2026-03-23 11:07:15 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:15 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:15 - study_math - INFO - ==================================================
+2026-03-23 11:07:15 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:19 - study_math - INFO - ==================================================
+2026-03-23 11:07:19 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:19 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:19 - study_math - INFO - ==================================================
+2026-03-23 11:07:19 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:25 - study_math - INFO - ==================================================
+2026-03-23 11:07:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:25 - study_math - INFO - ==================================================
+2026-03-23 11:07:25 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:27 - study_math - INFO - ==================================================
+2026-03-23 11:07:27 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:27 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:27 - study_math - INFO - ==================================================
+2026-03-23 11:07:27 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:28 - study_math - INFO - ==================================================
+2026-03-23 11:07:28 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:28 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:28 - study_math - INFO - ==================================================
+2026-03-23 11:07:28 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:29 - study_math - INFO - ==================================================
+2026-03-23 11:07:29 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:29 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:29 - study_math - INFO - ==================================================
+2026-03-23 11:07:29 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:30 - study_math - INFO - ==================================================
+2026-03-23 11:07:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:30 - study_math - INFO - ==================================================
+2026-03-23 11:07:30 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:32 - study_math - INFO - ==================================================
+2026-03-23 11:07:32 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:32 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:32 - study_math - INFO - ==================================================
+2026-03-23 11:07:32 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:33 - study_math - INFO - ==================================================
+2026-03-23 11:07:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:33 - study_math - INFO - ==================================================
+2026-03-23 11:07:33 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:33 - study_math - INFO - ==================================================
+2026-03-23 11:07:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:33 - study_math - INFO - ==================================================
+2026-03-23 11:07:33 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:35 - study_math - INFO - ==================================================
+2026-03-23 11:07:35 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:35 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:35 - study_math - INFO - ==================================================
+2026-03-23 11:07:35 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:51 - study_math - INFO - ==================================================
+2026-03-23 11:07:51 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:51 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:51 - study_math - INFO - ==================================================
+2026-03-23 11:07:51 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:52 - study_math - INFO - ==================================================
+2026-03-23 11:07:52 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:52 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:52 - study_math - INFO - ==================================================
+2026-03-23 11:07:52 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:53 - study_math - INFO - ==================================================
+2026-03-23 11:07:53 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:53 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:53 - study_math - INFO - ==================================================
+2026-03-23 11:07:53 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:54 - study_math - INFO - ==================================================
+2026-03-23 11:07:54 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:54 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:54 - study_math - INFO - ==================================================
+2026-03-23 11:07:54 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:56 - study_math - INFO - ==================================================
+2026-03-23 11:07:56 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:56 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:56 - study_math - INFO - ==================================================
+2026-03-23 11:07:56 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:57 - study_math - INFO - ==================================================
+2026-03-23 11:07:57 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:57 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:57 - study_math - INFO - ==================================================
+2026-03-23 11:07:57 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:57 - app - ERROR - 数据总览加载失败：name 'data_manager' is not defined
+2026-03-23 11:07:57 - study_math - INFO - ==================================================
+2026-03-23 11:07:57 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:57 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:57 - study_math - INFO - ==================================================
+2026-03-23 11:07:57 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:07:58 - study_math - INFO - ==================================================
+2026-03-23 11:07:58 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:07:58 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:07:58 - study_math - INFO - ==================================================
+2026-03-23 11:07:58 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:08:02 - study_math - INFO - ==================================================
+2026-03-23 11:08:02 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:08:02 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:08:02 - study_math - INFO - ==================================================
+2026-03-23 11:08:02 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:08:03 - study_math - INFO - ==================================================
+2026-03-23 11:08:03 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:08:03 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:08:03 - study_math - INFO - ==================================================
+2026-03-23 11:08:03 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:08:04 - study_math - INFO - ==================================================
+2026-03-23 11:08:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:08:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:08:04 - study_math - INFO - ==================================================
+2026-03-23 11:08:04 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:08:05 - study_math - INFO - ==================================================
+2026-03-23 11:08:05 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:08:05 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:08:05 - study_math - INFO - ==================================================
+2026-03-23 11:08:05 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:08:05 - app - ERROR - 数据总览加载失败：name 'data_manager' is not defined
+2026-03-23 11:08:05 - study_math - INFO - ==================================================
+2026-03-23 11:08:05 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:08:05 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:08:05 - study_math - INFO - ==================================================
+2026-03-23 11:08:05 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:08:06 - study_math - INFO - ==================================================
+2026-03-23 11:08:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:08:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:08:06 - study_math - INFO - ==================================================
+2026-03-23 11:08:06 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:08:07 - study_math - INFO - ==================================================
+2026-03-23 11:08:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:08:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:08:07 - study_math - INFO - ==================================================
+2026-03-23 11:08:07 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:08:07 - app - ERROR - 数据总览加载失败：name 'data_manager' is not defined
+2026-03-23 11:10:30 - study_math - INFO - ==================================================
+2026-03-23 11:10:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:10:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:10:30 - study_math - INFO - ==================================================
+2026-03-23 11:10:30 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:10:30 - app - INFO - 初始化分析器...
+2026-03-23 11:10:30 - app - INFO - 分析器初始化完成
+2026-03-23 11:10:30 - app - ERROR - 数据总览加载失败：name 'self' is not defined
+2026-03-23 11:14:41 - study_math - INFO - ==================================================
+2026-03-23 11:14:41 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:14:41 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:14:41 - study_math - INFO - ==================================================
+2026-03-23 11:14:42 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:14:42 - app - INFO - 初始化分析器...
+2026-03-23 11:14:42 - app - INFO - 分析器初始化完成
+2026-03-23 11:16:45 - study_math - INFO - ==================================================
+2026-03-23 11:16:45 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:16:45 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:16:45 - study_math - INFO - ==================================================
+2026-03-23 11:16:45 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:16:48 - study_math - INFO - ==================================================
+2026-03-23 11:16:48 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:16:48 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:16:48 - study_math - INFO - ==================================================
+2026-03-23 11:16:48 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:16:49 - study_math - INFO - ==================================================
+2026-03-23 11:16:49 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:16:49 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:16:49 - study_math - INFO - ==================================================
+2026-03-23 11:16:49 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:16:53 - study_math - INFO - ==================================================
+2026-03-23 11:16:53 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:16:53 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:16:53 - study_math - INFO - ==================================================
+2026-03-23 11:16:53 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:17:16 - study_math - INFO - ==================================================
+2026-03-23 11:17:16 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:17:16 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:17:16 - study_math - INFO - ==================================================
+2026-03-23 11:17:16 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:17:21 - study_math - INFO - ==================================================
+2026-03-23 11:17:21 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:17:21 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:17:21 - study_math - INFO - ==================================================
+2026-03-23 11:17:21 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:17:24 - study_math - INFO - ==================================================
+2026-03-23 11:17:24 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:17:24 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:17:24 - study_math - INFO - ==================================================
+2026-03-23 11:17:24 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:17:25 - study_math - INFO - ==================================================
+2026-03-23 11:17:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:17:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:17:25 - study_math - INFO - ==================================================
+2026-03-23 11:17:25 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:17:27 - study_math - INFO - ==================================================
+2026-03-23 11:17:27 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:17:27 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:17:27 - study_math - INFO - ==================================================
+2026-03-23 11:17:27 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:49:24 - study_math - INFO - ==================================================
+2026-03-23 11:49:24 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 11:49:24 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 11:49:24 - study_math - INFO - ==================================================
+2026-03-23 11:49:24 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 11:49:24 - app - INFO - 初始化分析器...
+2026-03-23 11:49:24 - app - INFO - 分析器初始化完成
+2026-03-23 12:33:09 - study_math - INFO - ==================================================
+2026-03-23 12:33:09 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:33:09 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:33:09 - study_math - INFO - ==================================================
+2026-03-23 12:33:09 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:33:48 - study_math - INFO - ==================================================
+2026-03-23 12:33:48 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:33:48 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:33:48 - study_math - INFO - ==================================================
+2026-03-23 12:33:48 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:33:59 - study_math - INFO - ==================================================
+2026-03-23 12:33:59 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:33:59 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:33:59 - study_math - INFO - ==================================================
+2026-03-23 12:33:59 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:34:02 - study_math - INFO - ==================================================
+2026-03-23 12:34:02 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:34:02 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:34:02 - study_math - INFO - ==================================================
+2026-03-23 12:34:02 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:34:06 - study_math - INFO - ==================================================
+2026-03-23 12:34:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:34:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:34:06 - study_math - INFO - ==================================================
+2026-03-23 12:34:06 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:34:11 - study_math - INFO - ==================================================
+2026-03-23 12:34:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:34:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:34:11 - study_math - INFO - ==================================================
+2026-03-23 12:34:11 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:34:18 - study_math - INFO - ==================================================
+2026-03-23 12:34:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:34:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:34:18 - study_math - INFO - ==================================================
+2026-03-23 12:34:18 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:34:25 - study_math - INFO - ==================================================
+2026-03-23 12:34:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:34:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:34:25 - study_math - INFO - ==================================================
+2026-03-23 12:34:25 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:34:46 - study_math - INFO - ==================================================
+2026-03-23 12:34:46 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:34:46 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:34:46 - study_math - INFO - ==================================================
+2026-03-23 12:34:46 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:34:55 - study_math - INFO - ==================================================
+2026-03-23 12:34:55 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:34:55 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:34:55 - study_math - INFO - ==================================================
+2026-03-23 12:34:55 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:35:01 - study_math - INFO - ==================================================
+2026-03-23 12:35:01 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:35:01 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:35:01 - study_math - INFO - ==================================================
+2026-03-23 12:35:01 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:35:07 - study_math - INFO - ==================================================
+2026-03-23 12:35:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:35:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:35:07 - study_math - INFO - ==================================================
+2026-03-23 12:35:07 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:35:16 - study_math - INFO - ==================================================
+2026-03-23 12:35:16 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:35:16 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:35:16 - study_math - INFO - ==================================================
+2026-03-23 12:35:16 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:35:24 - study_math - INFO - ==================================================
+2026-03-23 12:35:24 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:35:24 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:35:24 - study_math - INFO - ==================================================
+2026-03-23 12:35:24 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:35:34 - study_math - INFO - ==================================================
+2026-03-23 12:35:34 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:35:34 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:35:34 - study_math - INFO - ==================================================
+2026-03-23 12:35:34 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:35:39 - study_math - INFO - ==================================================
+2026-03-23 12:35:39 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:35:39 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:35:39 - study_math - INFO - ==================================================
+2026-03-23 12:35:39 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:35:42 - study_math - INFO - ==================================================
+2026-03-23 12:35:42 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:35:42 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:35:42 - study_math - INFO - ==================================================
+2026-03-23 12:35:42 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:35:45 - study_math - INFO - ==================================================
+2026-03-23 12:35:45 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:35:45 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:35:45 - study_math - INFO - ==================================================
+2026-03-23 12:35:45 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:35:56 - study_math - INFO - ==================================================
+2026-03-23 12:35:56 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:35:56 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:35:56 - study_math - INFO - ==================================================
+2026-03-23 12:35:56 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:53:57 - study_math - ERROR - 测试上下文 - 错误：ValueError: 测试错误
+NoneType: None
+2026-03-23 12:53:57 - study_math - INFO - 测试信息
+2026-03-23 12:53:57 - study_math - WARNING - 测试警告
+2026-03-23 12:53:57 - study_math - ERROR - 函数 error_func 执行失败（耗时0.000秒）: 测试错误
+2026-03-23 12:53:57 - pdf_exporter - INFO - 注册中文字体：C:\Windows\Fonts\simhei.ttf
+2026-03-23 12:53:57 - pdf_exporter - INFO - 能力报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpxjaktsmy\test_ability_report.pdf
+2026-03-23 12:53:57 - pdf_exporter - INFO - 错题报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpxjaktsmy\test_error_report.pdf
+2026-03-23 12:53:57 - pdf_exporter - INFO - 综合报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpxjaktsmy\test_summary_report.pdf
+2026-03-23 12:58:07 - study_math - INFO - ==================================================
+2026-03-23 12:58:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 12:58:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 12:58:07 - study_math - INFO - ==================================================
+2026-03-23 12:58:07 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 12:58:07 - app - INFO - 初始化分析器...
+2026-03-23 12:58:07 - app - INFO - 分析器初始化完成
+2026-03-23 14:48:13 - study_math - INFO - ==================================================
+2026-03-23 14:48:13 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:48:13 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:48:13 - study_math - INFO - ==================================================
+2026-03-23 14:48:13 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:48:13 - app - INFO - 初始化分析器...
+2026-03-23 14:48:13 - app - INFO - 分析器初始化完成
+2026-03-23 14:54:39 - study_math - INFO - ==================================================
+2026-03-23 14:54:39 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:54:39 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:54:39 - study_math - INFO - ==================================================
+2026-03-23 14:54:39 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:54:40 - study_math - INFO - ==================================================
+2026-03-23 14:54:40 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:54:40 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:54:40 - study_math - INFO - ==================================================
+2026-03-23 14:54:40 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:54:41 - study_math - INFO - ==================================================
+2026-03-23 14:54:41 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:54:41 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:54:41 - study_math - INFO - ==================================================
+2026-03-23 14:54:41 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:54:42 - study_math - INFO - ==================================================
+2026-03-23 14:54:42 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:54:42 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:54:42 - study_math - INFO - ==================================================
+2026-03-23 14:54:42 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:54:44 - study_math - INFO - ==================================================
+2026-03-23 14:54:44 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:54:44 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:54:44 - study_math - INFO - ==================================================
+2026-03-23 14:54:44 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:54:47 - study_math - INFO - ==================================================
+2026-03-23 14:54:47 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:54:47 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:54:47 - study_math - INFO - ==================================================
+2026-03-23 14:54:47 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:55:04 - study_math - INFO - ==================================================
+2026-03-23 14:55:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:04 - study_math - INFO - ==================================================
+2026-03-23 14:55:04 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:55:06 - study_math - INFO - ==================================================
+2026-03-23 14:55:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:06 - study_math - INFO - ==================================================
+2026-03-23 14:55:06 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:55:08 - study_math - INFO - ==================================================
+2026-03-23 14:55:08 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:08 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:08 - study_math - INFO - ==================================================
+2026-03-23 14:55:08 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:55:10 - study_math - INFO - ==================================================
+2026-03-23 14:55:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:10 - study_math - INFO - ==================================================
+2026-03-23 14:55:10 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:55:14 - study_math - INFO - ==================================================
+2026-03-23 14:55:14 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:14 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:14 - study_math - INFO - ==================================================
+2026-03-23 14:55:14 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:55:15 - study_math - INFO - ==================================================
+2026-03-23 14:55:15 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:15 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:15 - study_math - INFO - ==================================================
+2026-03-23 14:55:15 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:55:16 - study_math - INFO - ==================================================
+2026-03-23 14:55:16 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:16 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:16 - study_math - INFO - ==================================================
+2026-03-23 14:55:16 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:55:19 - study_math - INFO - ==================================================
+2026-03-23 14:55:19 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:19 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:19 - study_math - INFO - ==================================================
+2026-03-23 14:55:19 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:55:20 - study_math - INFO - ==================================================
+2026-03-23 14:55:20 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:20 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:20 - study_math - INFO - ==================================================
+2026-03-23 14:55:20 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:55:24 - study_math - INFO - ==================================================
+2026-03-23 14:55:24 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:24 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:24 - study_math - INFO - ==================================================
+2026-03-23 14:55:24 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:55:24 - study_math - INFO - 用户清理了所有录入成绩
+2026-03-23 14:55:27 - study_math - INFO - ==================================================
+2026-03-23 14:55:27 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:27 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:27 - study_math - INFO - ==================================================
+2026-03-23 14:55:27 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 14:55:27 - study_math - INFO - 用户清理了所有数据
+2026-03-23 14:55:32 - study_math - INFO - ==================================================
+2026-03-23 14:55:32 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:32 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:32 - study_math - INFO - ==================================================
+2026-03-23 14:55:36 - study_math - INFO - ==================================================
+2026-03-23 14:55:36 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:36 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:36 - study_math - INFO - ==================================================
+2026-03-23 14:55:36 - study_math - INFO - ==================================================
+2026-03-23 14:55:36 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:36 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:36 - study_math - INFO - ==================================================
+2026-03-23 14:55:36 - app - INFO - 初始化分析器...
+2026-03-23 14:55:36 - app - INFO - 分析器初始化完成
+2026-03-23 14:55:38 - study_math - INFO - ==================================================
+2026-03-23 14:55:38 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:38 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:38 - study_math - INFO - ==================================================
+2026-03-23 14:55:43 - study_math - INFO - ==================================================
+2026-03-23 14:55:43 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:43 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:43 - study_math - INFO - ==================================================
+2026-03-23 14:55:46 - study_math - INFO - ==================================================
+2026-03-23 14:55:46 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:46 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:46 - study_math - INFO - ==================================================
+2026-03-23 14:55:51 - study_math - INFO - ==================================================
+2026-03-23 14:55:51 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:51 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:51 - study_math - INFO - ==================================================
+2026-03-23 14:55:53 - study_math - INFO - ==================================================
+2026-03-23 14:55:53 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:55:53 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:55:53 - study_math - INFO - ==================================================
+2026-03-23 14:56:14 - study_math - INFO - ==================================================
+2026-03-23 14:56:14 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:56:14 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:56:14 - study_math - INFO - ==================================================
+2026-03-23 14:56:23 - study_math - INFO - ==================================================
+2026-03-23 14:56:23 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:56:23 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:56:23 - study_math - INFO - ==================================================
+2026-03-23 14:56:23 - study_math - INFO - ==================================================
+2026-03-23 14:56:23 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:56:23 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:56:23 - study_math - INFO - ==================================================
+2026-03-23 14:56:23 - app - INFO - 初始化分析器...
+2026-03-23 14:56:23 - app - INFO - 分析器初始化完成
+2026-03-23 14:56:28 - study_math - INFO - ==================================================
+2026-03-23 14:56:28 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:56:28 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:56:28 - study_math - INFO - ==================================================
+2026-03-23 14:56:29 - study_math - INFO - ==================================================
+2026-03-23 14:56:29 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:56:29 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:56:29 - study_math - INFO - ==================================================
+2026-03-23 14:56:30 - study_math - INFO - ==================================================
+2026-03-23 14:56:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:56:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:56:30 - study_math - INFO - ==================================================
+2026-03-23 14:56:34 - study_math - INFO - ==================================================
+2026-03-23 14:56:34 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:56:34 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:56:34 - study_math - INFO - ==================================================
+2026-03-23 14:56:35 - study_math - INFO - ==================================================
+2026-03-23 14:56:35 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:56:35 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:56:35 - study_math - INFO - ==================================================
+2026-03-23 14:56:36 - study_math - INFO - ==================================================
+2026-03-23 14:56:36 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:56:36 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:56:36 - study_math - INFO - ==================================================
+2026-03-23 14:56:37 - study_math - INFO - ==================================================
+2026-03-23 14:56:37 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:56:37 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:56:37 - study_math - INFO - ==================================================
+2026-03-23 14:56:43 - study_math - INFO - ==================================================
+2026-03-23 14:56:43 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:56:43 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:56:43 - study_math - INFO - ==================================================
+2026-03-23 14:56:47 - study_math - INFO - ==================================================
+2026-03-23 14:56:47 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 14:56:47 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 14:56:47 - study_math - INFO - ==================================================
+2026-03-23 15:11:51 - study_math - INFO - ==================================================
+2026-03-23 15:11:51 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:11:51 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:11:51 - study_math - INFO - ==================================================
+2026-03-23 15:12:12 - study_math - INFO - ==================================================
+2026-03-23 15:12:12 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:12:12 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:12:12 - study_math - INFO - ==================================================
+2026-03-23 15:12:25 - study_math - INFO - ==================================================
+2026-03-23 15:12:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:12:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:12:25 - study_math - INFO - ==================================================
+2026-03-23 15:12:27 - study_math - INFO - ==================================================
+2026-03-23 15:12:27 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:12:27 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:12:27 - study_math - INFO - ==================================================
+2026-03-23 15:12:30 - study_math - INFO - ==================================================
+2026-03-23 15:12:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:12:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:12:30 - study_math - INFO - ==================================================
+2026-03-23 15:27:54 - study_math - INFO - ==================================================
+2026-03-23 15:27:54 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:27:54 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:27:54 - study_math - INFO - ==================================================
+2026-03-23 15:27:55 - app - INFO - 初始化分析器...
+2026-03-23 15:27:55 - app - INFO - 分析器初始化完成
+2026-03-23 15:43:05 - study_math - INFO - ==================================================
+2026-03-23 15:43:05 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:43:05 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:43:05 - study_math - INFO - ==================================================
+2026-03-23 15:53:46 - study_math - INFO - ==================================================
+2026-03-23 15:53:46 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:53:46 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:53:46 - study_math - INFO - ==================================================
+2026-03-23 15:53:46 - app - INFO - 初始化分析器...
+2026-03-23 15:53:46 - app - INFO - 分析器初始化完成
+2026-03-23 15:56:14 - study_math - INFO - ==================================================
+2026-03-23 15:56:14 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:56:14 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:56:14 - study_math - INFO - ==================================================
+2026-03-23 15:56:16 - study_math - INFO - ==================================================
+2026-03-23 15:56:16 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:56:16 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:56:16 - study_math - INFO - ==================================================
+2026-03-23 15:56:18 - study_math - INFO - ==================================================
+2026-03-23 15:56:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:56:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:56:18 - study_math - INFO - ==================================================
+2026-03-23 15:56:18 - study_math - INFO - ==================================================
+2026-03-23 15:56:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:56:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:56:18 - study_math - INFO - ==================================================
+2026-03-23 15:56:20 - study_math - INFO - ==================================================
+2026-03-23 15:56:20 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:56:20 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:56:20 - study_math - INFO - ==================================================
+2026-03-23 15:56:20 - study_math - INFO - ==================================================
+2026-03-23 15:56:20 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:56:20 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:56:20 - study_math - INFO - ==================================================
+2026-03-23 15:56:20 - app - INFO - 初始化分析器...
+2026-03-23 15:56:20 - app - INFO - 分析器初始化完成
+2026-03-23 15:58:53 - study_math - INFO - ==================================================
+2026-03-23 15:58:53 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:58:53 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:58:53 - study_math - INFO - ==================================================
+2026-03-23 15:58:58 - study_math - INFO - ==================================================
+2026-03-23 15:58:58 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:58:58 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:58:58 - study_math - INFO - ==================================================
+2026-03-23 15:59:01 - study_math - INFO - ==================================================
+2026-03-23 15:59:01 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:59:01 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:59:01 - study_math - INFO - ==================================================
+2026-03-23 15:59:03 - study_math - INFO - ==================================================
+2026-03-23 15:59:03 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 15:59:03 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 15:59:03 - study_math - INFO - ==================================================
+2026-03-23 15:59:08 - study_math - ERROR - 清理所有数据失败 - 错误：OperationalError: database is locked
+Traceback (most recent call last):
+  File "D:\project_room\workspace2024\mytest\study-math\app.py", line 756, in <module>
+    cursor.execute("DELETE FROM exam_scores")
+sqlite3.OperationalError: database is locked
+2026-03-23 16:10:39 - study_math - INFO - ==================================================
+2026-03-23 16:10:39 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:10:39 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:10:39 - study_math - INFO - ==================================================
+2026-03-23 16:10:47 - study_math - INFO - ==================================================
+2026-03-23 16:10:47 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:10:47 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:10:47 - study_math - INFO - ==================================================
+2026-03-23 16:10:49 - study_math - INFO - ==================================================
+2026-03-23 16:10:49 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:10:49 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:10:49 - study_math - INFO - ==================================================
+2026-03-23 16:10:50 - study_math - INFO - ==================================================
+2026-03-23 16:10:50 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:10:50 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:10:50 - study_math - INFO - ==================================================
+2026-03-23 16:10:51 - study_math - ERROR - 清理所有数据失败 - 错误：OperationalError: database is locked
+Traceback (most recent call last):
+  File "D:\project_room\workspace2024\mytest\study-math\app.py", line 775, in <module>
+    cursor.execute("PRAGMA journal_mode=WAL")
+sqlite3.OperationalError: database is locked
+2026-03-23 16:15:36 - study_math - INFO - ==================================================
+2026-03-23 16:15:36 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:15:36 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:15:36 - study_math - INFO - ==================================================
+2026-03-23 16:15:36 - app - INFO - 初始化分析器...
+2026-03-23 16:15:36 - app - INFO - 分析器初始化完成
+2026-03-23 16:16:44 - study_math - INFO - ==================================================
+2026-03-23 16:16:44 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:16:44 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:16:44 - study_math - INFO - ==================================================
+2026-03-23 16:16:48 - study_math - INFO - ==================================================
+2026-03-23 16:16:48 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:16:48 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:16:48 - study_math - INFO - ==================================================
+2026-03-23 16:16:49 - study_math - INFO - ==================================================
+2026-03-23 16:16:49 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:16:49 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:16:49 - study_math - INFO - ==================================================
+2026-03-23 16:16:50 - study_math - INFO - ==================================================
+2026-03-23 16:16:50 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:16:50 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:16:50 - study_math - INFO - ==================================================
+2026-03-23 16:16:53 - study_math - INFO - ==================================================
+2026-03-23 16:16:53 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:16:53 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:16:53 - study_math - INFO - ==================================================
+2026-03-23 16:17:00 - study_math - INFO - ==================================================
+2026-03-23 16:17:00 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:00 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:00 - study_math - INFO - ==================================================
+2026-03-23 16:17:07 - study_math - INFO - ==================================================
+2026-03-23 16:17:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:07 - study_math - INFO - ==================================================
+2026-03-23 16:17:11 - study_math - INFO - ==================================================
+2026-03-23 16:17:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:11 - study_math - INFO - ==================================================
+2026-03-23 16:17:11 - study_math - INFO - ==================================================
+2026-03-23 16:17:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:11 - study_math - INFO - ==================================================
+2026-03-23 16:17:11 - app - INFO - 初始化分析器...
+2026-03-23 16:17:11 - app - INFO - 分析器初始化完成
+2026-03-23 16:17:15 - study_math - INFO - ==================================================
+2026-03-23 16:17:15 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:15 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:15 - study_math - INFO - ==================================================
+2026-03-23 16:17:19 - study_math - INFO - ==================================================
+2026-03-23 16:17:19 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:19 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:19 - study_math - INFO - ==================================================
+2026-03-23 16:17:20 - study_math - INFO - ==================================================
+2026-03-23 16:17:20 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:20 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:20 - study_math - INFO - ==================================================
+2026-03-23 16:17:21 - study_math - INFO - ==================================================
+2026-03-23 16:17:21 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:21 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:21 - study_math - INFO - ==================================================
+2026-03-23 16:17:22 - study_math - INFO - ==================================================
+2026-03-23 16:17:22 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:22 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:22 - study_math - INFO - ==================================================
+2026-03-23 16:17:23 - study_math - INFO - ==================================================
+2026-03-23 16:17:23 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:23 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:23 - study_math - INFO - ==================================================
+2026-03-23 16:17:23 - study_math - INFO - 已备份数据库到：data/study_math_backup_20260323_161723.db
+2026-03-23 16:17:23 - study_math - INFO - 用户清理了所有数据（重建数据库）
+2026-03-23 16:17:24 - study_math - INFO - ==================================================
+2026-03-23 16:17:24 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:24 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:24 - study_math - INFO - ==================================================
+2026-03-23 16:17:27 - study_math - INFO - ==================================================
+2026-03-23 16:17:27 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:27 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:27 - study_math - INFO - ==================================================
+2026-03-23 16:17:28 - study_math - INFO - ==================================================
+2026-03-23 16:17:28 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:28 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:28 - study_math - INFO - ==================================================
+2026-03-23 16:17:28 - app - INFO - 初始化分析器...
+2026-03-23 16:17:28 - app - INFO - 分析器初始化完成
+2026-03-23 16:17:29 - study_math - INFO - ==================================================
+2026-03-23 16:17:29 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:29 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:29 - study_math - INFO - ==================================================
+2026-03-23 16:17:29 - study_math - INFO - ==================================================
+2026-03-23 16:17:29 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:29 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:29 - study_math - INFO - ==================================================
+2026-03-23 16:17:29 - app - INFO - 初始化分析器...
+2026-03-23 16:17:29 - app - INFO - 分析器初始化完成
+2026-03-23 16:17:35 - study_math - INFO - ==================================================
+2026-03-23 16:17:35 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:35 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:35 - study_math - INFO - ==================================================
+2026-03-23 16:17:38 - study_math - INFO - ==================================================
+2026-03-23 16:17:38 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:38 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:38 - study_math - INFO - ==================================================
+2026-03-23 16:17:41 - study_math - INFO - ==================================================
+2026-03-23 16:17:41 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:41 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:41 - study_math - INFO - ==================================================
+2026-03-23 16:17:44 - study_math - INFO - ==================================================
+2026-03-23 16:17:44 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:44 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:44 - study_math - INFO - ==================================================
+2026-03-23 16:17:45 - study_math - INFO - ==================================================
+2026-03-23 16:17:45 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:45 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:45 - study_math - INFO - ==================================================
+2026-03-23 16:17:46 - study_math - INFO - ==================================================
+2026-03-23 16:17:46 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:46 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:46 - study_math - INFO - ==================================================
+2026-03-23 16:17:47 - study_math - INFO - ==================================================
+2026-03-23 16:17:47 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:47 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:47 - study_math - INFO - ==================================================
+2026-03-23 16:17:51 - study_math - INFO - ==================================================
+2026-03-23 16:17:51 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:51 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:51 - study_math - INFO - ==================================================
+2026-03-23 16:17:51 - study_math - INFO - 已备份数据库到：data/study_math_backup_20260323_161751.db
+2026-03-23 16:17:51 - study_math - INFO - 用户清理了所有数据（重建数据库）
+2026-03-23 16:17:52 - study_math - INFO - ==================================================
+2026-03-23 16:17:52 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:52 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:52 - study_math - INFO - ==================================================
+2026-03-23 16:17:56 - study_math - INFO - ==================================================
+2026-03-23 16:17:56 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:56 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:56 - study_math - INFO - ==================================================
+2026-03-23 16:17:57 - study_math - INFO - ==================================================
+2026-03-23 16:17:57 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:17:57 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:17:57 - study_math - INFO - ==================================================
+2026-03-23 16:17:57 - app - INFO - 初始化分析器...
+2026-03-23 16:17:57 - app - INFO - 分析器初始化完成
+2026-03-23 16:18:04 - study_math - INFO - ==================================================
+2026-03-23 16:18:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:04 - study_math - INFO - ==================================================
+2026-03-23 16:18:04 - study_math - INFO - ==================================================
+2026-03-23 16:18:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:04 - study_math - INFO - ==================================================
+2026-03-23 16:18:04 - study_math - INFO - ==================================================
+2026-03-23 16:18:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:04 - study_math - INFO - ==================================================
+2026-03-23 16:18:06 - study_math - INFO - ==================================================
+2026-03-23 16:18:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:06 - study_math - INFO - ==================================================
+2026-03-23 16:18:10 - study_math - INFO - ==================================================
+2026-03-23 16:18:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:10 - study_math - INFO - ==================================================
+2026-03-23 16:18:10 - study_math - INFO - 已备份数据库到：data/study_math_backup_20260323_161810.db
+2026-03-23 16:18:10 - study_math - INFO - 用户清理了所有数据（重建数据库）
+2026-03-23 16:18:11 - study_math - INFO - ==================================================
+2026-03-23 16:18:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:11 - study_math - INFO - ==================================================
+2026-03-23 16:18:14 - study_math - INFO - ==================================================
+2026-03-23 16:18:14 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:14 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:14 - study_math - INFO - ==================================================
+2026-03-23 16:18:17 - study_math - INFO - ==================================================
+2026-03-23 16:18:17 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:17 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:17 - study_math - INFO - ==================================================
+2026-03-23 16:18:18 - study_math - INFO - ==================================================
+2026-03-23 16:18:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:18 - study_math - INFO - ==================================================
+2026-03-23 16:18:19 - study_math - INFO - ==================================================
+2026-03-23 16:18:19 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:19 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:19 - study_math - INFO - ==================================================
+2026-03-23 16:18:22 - study_math - INFO - ==================================================
+2026-03-23 16:18:22 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:22 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:22 - study_math - INFO - ==================================================
+2026-03-23 16:18:24 - study_math - INFO - ==================================================
+2026-03-23 16:18:24 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:24 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:24 - study_math - INFO - ==================================================
+2026-03-23 16:18:25 - study_math - INFO - ==================================================
+2026-03-23 16:18:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:25 - study_math - INFO - ==================================================
+2026-03-23 16:18:26 - study_math - INFO - ==================================================
+2026-03-23 16:18:26 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:26 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:26 - study_math - INFO - ==================================================
+2026-03-23 16:18:26 - study_math - INFO - ==================================================
+2026-03-23 16:18:26 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:26 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:26 - study_math - INFO - ==================================================
+2026-03-23 16:18:27 - study_math - INFO - ==================================================
+2026-03-23 16:18:27 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:27 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:27 - study_math - INFO - ==================================================
+2026-03-23 16:18:30 - study_math - INFO - ==================================================
+2026-03-23 16:18:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:30 - study_math - INFO - ==================================================
+2026-03-23 16:18:31 - study_math - INFO - ==================================================
+2026-03-23 16:18:31 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:31 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:31 - study_math - INFO - ==================================================
+2026-03-23 16:18:32 - study_math - INFO - ==================================================
+2026-03-23 16:18:32 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:32 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:32 - study_math - INFO - ==================================================
+2026-03-23 16:18:34 - study_math - INFO - ==================================================
+2026-03-23 16:18:34 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:34 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:34 - study_math - INFO - ==================================================
+2026-03-23 16:18:34 - study_math - INFO - ==================================================
+2026-03-23 16:18:34 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:34 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:34 - study_math - INFO - ==================================================
+2026-03-23 16:18:36 - study_math - INFO - ==================================================
+2026-03-23 16:18:36 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:36 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:36 - study_math - INFO - ==================================================
+2026-03-23 16:18:37 - study_math - INFO - ==================================================
+2026-03-23 16:18:37 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:37 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:37 - study_math - INFO - ==================================================
+2026-03-23 16:18:41 - study_math - INFO - ==================================================
+2026-03-23 16:18:41 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:41 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:41 - study_math - INFO - ==================================================
+2026-03-23 16:18:41 - study_math - INFO - ==================================================
+2026-03-23 16:18:41 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:41 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:41 - study_math - INFO - ==================================================
+2026-03-23 16:18:41 - app - INFO - 初始化分析器...
+2026-03-23 16:18:41 - app - INFO - 分析器初始化完成
+2026-03-23 16:18:45 - study_math - INFO - ==================================================
+2026-03-23 16:18:45 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:45 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:45 - study_math - INFO - ==================================================
+2026-03-23 16:18:45 - study_math - INFO - ==================================================
+2026-03-23 16:18:45 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:45 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:45 - study_math - INFO - ==================================================
+2026-03-23 16:18:47 - study_math - INFO - ==================================================
+2026-03-23 16:18:47 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:18:47 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:18:47 - study_math - INFO - ==================================================
+2026-03-23 16:19:00 - study_math - INFO - ==================================================
+2026-03-23 16:19:00 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:19:00 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:19:00 - study_math - INFO - ==================================================
+2026-03-23 16:20:39 - study_math - INFO - ==================================================
+2026-03-23 16:20:39 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:20:39 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:20:39 - study_math - INFO - ==================================================
+2026-03-23 16:34:03 - study_math - INFO - ==================================================
+2026-03-23 16:34:03 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:34:03 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:34:03 - study_math - INFO - ==================================================
+2026-03-23 16:34:08 - study_math - INFO - ==================================================
+2026-03-23 16:34:08 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:34:08 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:34:08 - study_math - INFO - ==================================================
+2026-03-23 16:34:10 - study_math - INFO - ==================================================
+2026-03-23 16:34:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:34:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:34:10 - study_math - INFO - ==================================================
+2026-03-23 16:34:12 - study_math - INFO - ==================================================
+2026-03-23 16:34:12 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:34:12 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:34:12 - study_math - INFO - ==================================================
+2026-03-23 16:34:12 - study_math - INFO - 已备份数据库到：data/study_math_backup_20260323_163412.db
+2026-03-23 16:34:12 - study_math - INFO - 用户清理了所有数据（重建数据库）
+2026-03-23 16:34:13 - study_math - INFO - ==================================================
+2026-03-23 16:34:13 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:34:13 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:34:13 - study_math - INFO - ==================================================
+2026-03-23 16:34:15 - study_math - INFO - ==================================================
+2026-03-23 16:34:15 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:34:15 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:34:15 - study_math - INFO - ==================================================
+2026-03-23 16:34:15 - study_math - INFO - ==================================================
+2026-03-23 16:34:15 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:34:15 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:34:15 - study_math - INFO - ==================================================
+2026-03-23 16:34:15 - app - INFO - 初始化分析器...
+2026-03-23 16:34:15 - app - INFO - 分析器初始化完成
+2026-03-23 16:34:22 - study_math - INFO - ==================================================
+2026-03-23 16:34:22 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:34:22 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:34:22 - study_math - INFO - ==================================================
+2026-03-23 16:34:23 - study_math - INFO - ==================================================
+2026-03-23 16:34:23 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:34:23 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:34:23 - study_math - INFO - ==================================================
+2026-03-23 16:34:26 - study_math - INFO - ==================================================
+2026-03-23 16:34:26 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:34:26 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:34:26 - study_math - INFO - ==================================================
+2026-03-23 16:34:27 - study_math - INFO - ==================================================
+2026-03-23 16:34:27 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:34:27 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:34:27 - study_math - INFO - ==================================================
+2026-03-23 16:34:27 - study_math - INFO - 已备份数据库到：data/study_math_backup_20260323_163427.db
+2026-03-23 16:34:27 - study_math - INFO - 用户清理了所有数据（重建数据库）
+2026-03-23 16:34:28 - study_math - INFO - ==================================================
+2026-03-23 16:34:28 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:34:28 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:34:28 - study_math - INFO - ==================================================
+2026-03-23 16:35:05 - study_math - INFO - ==================================================
+2026-03-23 16:35:05 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:05 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:05 - study_math - INFO - ==================================================
+2026-03-23 16:35:05 - study_math - INFO - 已备份数据库到：data/study_math_backup_20260323_163505.db
+2026-03-23 16:35:05 - study_math - INFO - 用户清理了所有数据（重建数据库）
+2026-03-23 16:35:06 - study_math - INFO - ==================================================
+2026-03-23 16:35:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:06 - study_math - INFO - ==================================================
+2026-03-23 16:35:07 - study_math - INFO - ==================================================
+2026-03-23 16:35:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:07 - study_math - INFO - ==================================================
+2026-03-23 16:35:07 - study_math - INFO - ==================================================
+2026-03-23 16:35:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:07 - study_math - INFO - ==================================================
+2026-03-23 16:35:07 - app - INFO - 初始化分析器...
+2026-03-23 16:35:07 - app - INFO - 分析器初始化完成
+2026-03-23 16:35:22 - study_math - INFO - ==================================================
+2026-03-23 16:35:22 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:22 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:22 - study_math - INFO - ==================================================
+2026-03-23 16:35:22 - study_math - INFO - ==================================================
+2026-03-23 16:35:22 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:22 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:22 - study_math - INFO - ==================================================
+2026-03-23 16:35:22 - app - INFO - 初始化分析器...
+2026-03-23 16:35:22 - app - INFO - 分析器初始化完成
+2026-03-23 16:35:24 - study_math - INFO - ==================================================
+2026-03-23 16:35:24 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:24 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:24 - study_math - INFO - ==================================================
+2026-03-23 16:35:26 - study_math - INFO - ==================================================
+2026-03-23 16:35:26 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:26 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:26 - study_math - INFO - ==================================================
+2026-03-23 16:35:28 - study_math - INFO - ==================================================
+2026-03-23 16:35:28 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:28 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:28 - study_math - INFO - ==================================================
+2026-03-23 16:35:29 - study_math - INFO - ==================================================
+2026-03-23 16:35:29 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:29 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:29 - study_math - INFO - ==================================================
+2026-03-23 16:35:30 - study_math - INFO - ==================================================
+2026-03-23 16:35:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:30 - study_math - INFO - ==================================================
+2026-03-23 16:35:30 - study_math - INFO - ==================================================
+2026-03-23 16:35:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:30 - study_math - INFO - ==================================================
+2026-03-23 16:35:32 - study_math - INFO - ==================================================
+2026-03-23 16:35:32 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:32 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:32 - study_math - INFO - ==================================================
+2026-03-23 16:35:33 - study_math - INFO - ==================================================
+2026-03-23 16:35:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:33 - study_math - INFO - ==================================================
+2026-03-23 16:35:34 - study_math - INFO - ==================================================
+2026-03-23 16:35:34 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:34 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:34 - study_math - INFO - ==================================================
+2026-03-23 16:35:37 - study_math - INFO - ==================================================
+2026-03-23 16:35:37 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:37 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:37 - study_math - INFO - ==================================================
+2026-03-23 16:35:37 - study_math - INFO - ==================================================
+2026-03-23 16:35:37 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:37 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:37 - study_math - INFO - ==================================================
+2026-03-23 16:35:38 - study_math - INFO - ==================================================
+2026-03-23 16:35:38 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:38 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:38 - study_math - INFO - ==================================================
+2026-03-23 16:35:39 - study_math - INFO - ==================================================
+2026-03-23 16:35:39 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:39 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:39 - study_math - INFO - ==================================================
+2026-03-23 16:35:40 - study_math - INFO - ==================================================
+2026-03-23 16:35:40 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:40 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:40 - study_math - INFO - ==================================================
+2026-03-23 16:35:41 - study_math - INFO - ==================================================
+2026-03-23 16:35:41 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:41 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:41 - study_math - INFO - ==================================================
+2026-03-23 16:35:42 - study_math - INFO - ==================================================
+2026-03-23 16:35:42 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:42 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:42 - study_math - INFO - ==================================================
+2026-03-23 16:35:43 - study_math - INFO - ==================================================
+2026-03-23 16:35:43 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:43 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:43 - study_math - INFO - ==================================================
+2026-03-23 16:35:43 - study_math - INFO - ==================================================
+2026-03-23 16:35:43 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:43 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:43 - study_math - INFO - ==================================================
+2026-03-23 16:35:51 - study_math - INFO - ==================================================
+2026-03-23 16:35:51 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:51 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:51 - study_math - INFO - ==================================================
+2026-03-23 16:35:52 - study_math - INFO - ==================================================
+2026-03-23 16:35:52 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:52 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:52 - study_math - INFO - ==================================================
+2026-03-23 16:35:53 - study_math - INFO - ==================================================
+2026-03-23 16:35:53 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:53 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:53 - study_math - INFO - ==================================================
+2026-03-23 16:35:54 - study_math - INFO - ==================================================
+2026-03-23 16:35:54 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:35:54 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:35:54 - study_math - INFO - ==================================================
+2026-03-23 16:36:23 - study_math - INFO - ==================================================
+2026-03-23 16:36:23 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:36:23 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:36:23 - study_math - INFO - ==================================================
+2026-03-23 16:36:50 - study_math - INFO - ==================================================
+2026-03-23 16:36:50 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:36:50 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:36:50 - study_math - INFO - ==================================================
+2026-03-23 16:36:50 - study_math - INFO - Excel 导入成功：10032-1(2)班上学期数学考试分数-math_scores.xlsx, 错题数：0
+2026-03-23 16:36:58 - study_math - INFO - ==================================================
+2026-03-23 16:36:58 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:36:58 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:36:58 - study_math - INFO - ==================================================
+2026-03-23 16:36:59 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 16:37:03 - study_math - INFO - ==================================================
+2026-03-23 16:37:03 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:37:03 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:37:03 - study_math - INFO - ==================================================
+2026-03-23 16:37:03 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 16:37:03 - study_math - INFO - ==================================================
+2026-03-23 16:37:03 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:37:03 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:37:03 - study_math - INFO - ==================================================
+2026-03-23 16:37:03 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 16:37:04 - study_math - INFO - ==================================================
+2026-03-23 16:37:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:37:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:37:04 - study_math - INFO - ==================================================
+2026-03-23 16:37:04 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 16:37:05 - study_math - INFO - ==================================================
+2026-03-23 16:37:05 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:37:05 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:37:05 - study_math - INFO - ==================================================
+2026-03-23 16:37:05 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 16:37:09 - study_math - INFO - ==================================================
+2026-03-23 16:37:09 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:37:09 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:37:09 - study_math - INFO - ==================================================
+2026-03-23 16:37:09 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 16:37:10 - study_math - INFO - ==================================================
+2026-03-23 16:37:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:37:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:37:10 - study_math - INFO - ==================================================
+2026-03-23 16:37:10 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 16:37:10 - study_math - INFO - ==================================================
+2026-03-23 16:37:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:37:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:37:10 - study_math - INFO - ==================================================
+2026-03-23 16:37:10 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 16:37:11 - study_math - INFO - ==================================================
+2026-03-23 16:37:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:37:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:37:11 - study_math - INFO - ==================================================
+2026-03-23 16:37:11 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 16:37:11 - study_math - INFO - ==================================================
+2026-03-23 16:37:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:37:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:37:11 - study_math - INFO - ==================================================
+2026-03-23 16:37:12 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 16:37:12 - study_math - INFO - ==================================================
+2026-03-23 16:37:12 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:37:12 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:37:12 - study_math - INFO - ==================================================
+2026-03-23 16:37:12 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 16:37:13 - study_math - INFO - ==================================================
+2026-03-23 16:37:13 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:37:13 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:37:13 - study_math - INFO - ==================================================
+2026-03-23 16:37:13 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 16:37:18 - study_math - INFO - ==================================================
+2026-03-23 16:37:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:37:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:37:18 - study_math - INFO - ==================================================
+2026-03-23 16:37:18 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 16:37:18 - study_math - INFO - Excel 导入成功：10033-1(2)班下学期数学考试分数-math_scores.xlsx, 错题数：0
+2026-03-23 16:37:33 - study_math - INFO - ==================================================
+2026-03-23 16:37:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:37:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:37:33 - study_math - INFO - ==================================================
+2026-03-23 16:37:33 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:12 - study_math - INFO - ==================================================
+2026-03-23 16:38:12 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:12 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:12 - study_math - INFO - ==================================================
+2026-03-23 16:38:12 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:14 - study_math - INFO - ==================================================
+2026-03-23 16:38:14 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:14 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:14 - study_math - INFO - ==================================================
+2026-03-23 16:38:14 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:15 - study_math - INFO - ==================================================
+2026-03-23 16:38:15 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:15 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:15 - study_math - INFO - ==================================================
+2026-03-23 16:38:15 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:20 - study_math - INFO - ==================================================
+2026-03-23 16:38:20 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:20 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:20 - study_math - INFO - ==================================================
+2026-03-23 16:38:20 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:24 - study_math - INFO - ==================================================
+2026-03-23 16:38:24 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:24 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:24 - study_math - INFO - ==================================================
+2026-03-23 16:38:24 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:25 - study_math - INFO - ==================================================
+2026-03-23 16:38:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:25 - study_math - INFO - ==================================================
+2026-03-23 16:38:25 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:27 - study_math - INFO - ==================================================
+2026-03-23 16:38:27 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:27 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:27 - study_math - INFO - ==================================================
+2026-03-23 16:38:27 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:35 - study_math - INFO - ==================================================
+2026-03-23 16:38:35 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:35 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:35 - study_math - INFO - ==================================================
+2026-03-23 16:38:35 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:39 - study_math - INFO - ==================================================
+2026-03-23 16:38:39 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:39 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:39 - study_math - INFO - ==================================================
+2026-03-23 16:38:39 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:43 - study_math - INFO - ==================================================
+2026-03-23 16:38:43 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:43 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:43 - study_math - INFO - ==================================================
+2026-03-23 16:38:43 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:46 - study_math - INFO - ==================================================
+2026-03-23 16:38:46 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:46 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:46 - study_math - INFO - ==================================================
+2026-03-23 16:38:46 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:46 - study_math - INFO - Excel 导入成功：10033-1(2)班下学期数学考试分数-math_scores.xlsx, 错题数：0
+2026-03-23 16:38:51 - study_math - INFO - ==================================================
+2026-03-23 16:38:51 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:51 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:51 - study_math - INFO - ==================================================
+2026-03-23 16:38:51 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:54 - study_math - INFO - ==================================================
+2026-03-23 16:38:54 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:54 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:54 - study_math - INFO - ==================================================
+2026-03-23 16:38:54 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:55 - study_math - INFO - ==================================================
+2026-03-23 16:38:55 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:55 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:55 - study_math - INFO - ==================================================
+2026-03-23 16:38:55 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:57 - study_math - INFO - ==================================================
+2026-03-23 16:38:57 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:57 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:57 - study_math - INFO - ==================================================
+2026-03-23 16:38:57 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:38:58 - study_math - INFO - ==================================================
+2026-03-23 16:38:58 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:38:58 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:38:58 - study_math - INFO - ==================================================
+2026-03-23 16:38:58 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:39:03 - study_math - INFO - ==================================================
+2026-03-23 16:39:03 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:39:03 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:39:03 - study_math - INFO - ==================================================
+2026-03-23 16:39:03 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 16:39:03 - study_math - INFO - Excel 导入成功：10034-2(2)班上学期数学考试分数-math_scores.xlsx, 错题数：0
+2026-03-23 16:39:08 - study_math - INFO - ==================================================
+2026-03-23 16:39:08 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:39:08 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:39:08 - study_math - INFO - ==================================================
+2026-03-23 16:39:08 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:39:12 - study_math - INFO - ==================================================
+2026-03-23 16:39:12 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:39:12 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:39:12 - study_math - INFO - ==================================================
+2026-03-23 16:39:12 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:39:13 - study_math - INFO - ==================================================
+2026-03-23 16:39:13 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:39:13 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:39:13 - study_math - INFO - ==================================================
+2026-03-23 16:39:13 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:39:15 - study_math - INFO - ==================================================
+2026-03-23 16:39:15 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:39:15 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:39:15 - study_math - INFO - ==================================================
+2026-03-23 16:39:15 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:39:15 - study_math - INFO - ==================================================
+2026-03-23 16:39:15 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:39:15 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:39:15 - study_math - INFO - ==================================================
+2026-03-23 16:39:15 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:39:15 - app - INFO - 初始化分析器...
+2026-03-23 16:39:15 - app - INFO - 分析器初始化完成
+2026-03-23 16:39:41 - study_math - INFO - ==================================================
+2026-03-23 16:39:41 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:39:41 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:39:41 - study_math - INFO - ==================================================
+2026-03-23 16:39:41 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:39:42 - study_math - INFO - ==================================================
+2026-03-23 16:39:42 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:39:42 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:39:42 - study_math - INFO - ==================================================
+2026-03-23 16:39:42 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:39:47 - study_math - INFO - ==================================================
+2026-03-23 16:39:47 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:39:47 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:39:47 - study_math - INFO - ==================================================
+2026-03-23 16:39:47 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:39:50 - study_math - INFO - ==================================================
+2026-03-23 16:39:50 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:39:50 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:39:50 - study_math - INFO - ==================================================
+2026-03-23 16:39:50 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:39:52 - study_math - INFO - ==================================================
+2026-03-23 16:39:52 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:39:52 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:39:52 - study_math - INFO - ==================================================
+2026-03-23 16:39:52 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:39:56 - study_math - INFO - ==================================================
+2026-03-23 16:39:56 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:39:56 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:39:56 - study_math - INFO - ==================================================
+2026-03-23 16:39:56 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:39:58 - study_math - INFO - ==================================================
+2026-03-23 16:39:58 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:39:58 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:39:58 - study_math - INFO - ==================================================
+2026-03-23 16:39:58 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:40:02 - study_math - INFO - ==================================================
+2026-03-23 16:40:02 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:02 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:02 - study_math - INFO - ==================================================
+2026-03-23 16:40:02 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:40:03 - study_math - INFO - ==================================================
+2026-03-23 16:40:03 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:03 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:03 - study_math - INFO - ==================================================
+2026-03-23 16:40:03 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:40:04 - study_math - INFO - ==================================================
+2026-03-23 16:40:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:04 - study_math - INFO - ==================================================
+2026-03-23 16:40:04 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:40:04 - study_math - INFO - ==================================================
+2026-03-23 16:40:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:04 - study_math - INFO - ==================================================
+2026-03-23 16:40:04 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:40:06 - study_math - INFO - ==================================================
+2026-03-23 16:40:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:06 - study_math - INFO - ==================================================
+2026-03-23 16:40:07 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:40:08 - study_math - INFO - ==================================================
+2026-03-23 16:40:08 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:08 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:08 - study_math - INFO - ==================================================
+2026-03-23 16:40:08 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:40:09 - study_math - INFO - ==================================================
+2026-03-23 16:40:09 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:09 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:09 - study_math - INFO - ==================================================
+2026-03-23 16:40:09 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:40:10 - study_math - INFO - ==================================================
+2026-03-23 16:40:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:10 - study_math - INFO - ==================================================
+2026-03-23 16:40:10 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:40:13 - study_math - INFO - ==================================================
+2026-03-23 16:40:13 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:13 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:13 - study_math - INFO - ==================================================
+2026-03-23 16:40:13 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:40:15 - study_math - INFO - ==================================================
+2026-03-23 16:40:15 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:15 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:15 - study_math - INFO - ==================================================
+2026-03-23 16:40:15 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:40:20 - study_math - INFO - ==================================================
+2026-03-23 16:40:20 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:20 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:20 - study_math - INFO - ==================================================
+2026-03-23 16:40:21 - app - INFO - 从 Excel 导入 2349 条成绩到数据库
+2026-03-23 16:40:21 - study_math - INFO - 已备份数据库到：data/study_math_backup_20260323_164021.db
+2026-03-23 16:40:21 - study_math - INFO - 用户清理了所有数据（重建数据库）
+2026-03-23 16:40:22 - study_math - INFO - ==================================================
+2026-03-23 16:40:22 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:22 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:22 - study_math - INFO - ==================================================
+2026-03-23 16:40:25 - study_math - INFO - ==================================================
+2026-03-23 16:40:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:25 - study_math - INFO - ==================================================
+2026-03-23 16:40:25 - study_math - INFO - ==================================================
+2026-03-23 16:40:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:25 - study_math - INFO - ==================================================
+2026-03-23 16:40:25 - app - INFO - 初始化分析器...
+2026-03-23 16:40:25 - app - INFO - 分析器初始化完成
+2026-03-23 16:40:31 - study_math - INFO - ==================================================
+2026-03-23 16:40:31 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:31 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:31 - study_math - INFO - ==================================================
+2026-03-23 16:40:36 - study_math - INFO - ==================================================
+2026-03-23 16:40:36 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:36 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:36 - study_math - INFO - ==================================================
+2026-03-23 16:40:51 - study_math - INFO - ==================================================
+2026-03-23 16:40:51 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:40:51 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:40:51 - study_math - INFO - ==================================================
+2026-03-23 16:41:00 - study_math - INFO - ==================================================
+2026-03-23 16:41:00 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:00 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:00 - study_math - INFO - ==================================================
+2026-03-23 16:41:02 - study_math - INFO - ==================================================
+2026-03-23 16:41:02 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:02 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:02 - study_math - INFO - ==================================================
+2026-03-23 16:41:05 - study_math - INFO - ==================================================
+2026-03-23 16:41:05 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:05 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:05 - study_math - INFO - ==================================================
+2026-03-23 16:41:09 - study_math - INFO - ==================================================
+2026-03-23 16:41:09 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:09 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:09 - study_math - INFO - ==================================================
+2026-03-23 16:41:10 - study_math - INFO - ==================================================
+2026-03-23 16:41:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:10 - study_math - INFO - ==================================================
+2026-03-23 16:41:13 - study_math - INFO - ==================================================
+2026-03-23 16:41:13 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:13 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:13 - study_math - INFO - ==================================================
+2026-03-23 16:41:18 - study_math - INFO - ==================================================
+2026-03-23 16:41:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:18 - study_math - INFO - ==================================================
+2026-03-23 16:41:24 - study_math - INFO - ==================================================
+2026-03-23 16:41:24 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:24 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:24 - study_math - INFO - ==================================================
+2026-03-23 16:41:25 - study_math - INFO - ==================================================
+2026-03-23 16:41:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:25 - study_math - INFO - ==================================================
+2026-03-23 16:41:28 - study_math - INFO - ==================================================
+2026-03-23 16:41:28 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:29 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:29 - study_math - INFO - ==================================================
+2026-03-23 16:41:29 - study_math - INFO - Excel 导入成功：10035-2(2)班下学期数学考试分数-math_scores.xlsx, 错题数：0
+2026-03-23 16:41:33 - study_math - INFO - ==================================================
+2026-03-23 16:41:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:33 - study_math - INFO - ==================================================
+2026-03-23 16:41:33 - study_math - INFO - ==================================================
+2026-03-23 16:41:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:33 - study_math - INFO - ==================================================
+2026-03-23 16:41:33 - app - INFO - 从 Excel 导入 3057 条成绩到数据库
+2026-03-23 16:41:34 - study_math - INFO - Excel 导入成功：10036-3(2)班上学期数学考试分数-math_scores.xlsx, 错题数：0
+2026-03-23 16:41:37 - study_math - INFO - ==================================================
+2026-03-23 16:41:37 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:37 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:37 - study_math - INFO - ==================================================
+2026-03-23 16:41:37 - study_math - INFO - ==================================================
+2026-03-23 16:41:37 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:37 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:37 - study_math - INFO - ==================================================
+2026-03-23 16:41:37 - app - INFO - 从 Excel 导入 3858 条成绩到数据库
+2026-03-23 16:41:37 - study_math - INFO - Excel 导入成功：10037-3(2)班下学期数学考试分数-math_scores.xlsx, 错题数：0
+2026-03-23 16:41:48 - study_math - INFO - ==================================================
+2026-03-23 16:41:48 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:48 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:48 - study_math - INFO - ==================================================
+2026-03-23 16:41:48 - app - INFO - 从 Excel 导入 3900 条成绩到数据库
+2026-03-23 16:41:50 - study_math - INFO - ==================================================
+2026-03-23 16:41:50 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:50 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:50 - study_math - INFO - ==================================================
+2026-03-23 16:41:50 - app - INFO - 从 Excel 导入 3900 条成绩到数据库
+2026-03-23 16:41:50 - study_math - INFO - 已备份数据库到：data/study_math_backup_20260323_164150.db
+2026-03-23 16:41:50 - study_math - INFO - 用户清理了所有数据（重建数据库）
+2026-03-23 16:41:51 - study_math - INFO - ==================================================
+2026-03-23 16:41:51 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:51 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:51 - study_math - INFO - ==================================================
+2026-03-23 16:41:51 - app - INFO - 从 Excel 导入 3900 条成绩到数据库
+2026-03-23 16:41:53 - study_math - INFO - ==================================================
+2026-03-23 16:41:53 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:53 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:53 - study_math - INFO - ==================================================
+2026-03-23 16:41:53 - app - INFO - 从 Excel 导入 3900 条成绩到数据库
+2026-03-23 16:41:58 - study_math - INFO - ==================================================
+2026-03-23 16:41:58 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:41:58 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:41:58 - study_math - INFO - ==================================================
+2026-03-23 16:41:58 - app - INFO - 从 Excel 导入 3900 条成绩到数据库
+2026-03-23 16:42:00 - study_math - INFO - ==================================================
+2026-03-23 16:42:00 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:42:00 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:42:00 - study_math - INFO - ==================================================
+2026-03-23 16:42:00 - app - INFO - 从 Excel 导入 3900 条成绩到数据库
+2026-03-23 16:42:02 - study_math - INFO - ==================================================
+2026-03-23 16:42:02 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:42:02 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:42:02 - study_math - INFO - ==================================================
+2026-03-23 16:42:03 - app - INFO - 从 Excel 导入 3900 条成绩到数据库
+2026-03-23 16:42:03 - study_math - INFO - 已备份数据库到：data/study_math_backup_20260323_164203.db
+2026-03-23 16:42:03 - study_math - INFO - 用户清理了所有数据（重建数据库）
+2026-03-23 16:42:04 - study_math - INFO - ==================================================
+2026-03-23 16:42:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:42:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:42:04 - study_math - INFO - ==================================================
+2026-03-23 16:42:04 - app - INFO - 从 Excel 导入 3900 条成绩到数据库
+2026-03-23 16:42:21 - study_math - INFO - ==================================================
+2026-03-23 16:42:21 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:42:21 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:42:21 - study_math - INFO - ==================================================
+2026-03-23 16:42:22 - app - INFO - 从 Excel 导入 3900 条成绩到数据库
+2026-03-23 16:42:28 - study_math - INFO - ==================================================
+2026-03-23 16:42:28 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:42:28 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:42:28 - study_math - INFO - ==================================================
+2026-03-23 16:42:28 - app - INFO - 从 Excel 导入 3900 条成绩到数据库
+2026-03-23 16:42:32 - study_math - INFO - ==================================================
+2026-03-23 16:42:32 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:42:32 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:42:32 - study_math - INFO - ==================================================
+2026-03-23 16:42:33 - app - INFO - 从 Excel 导入 3900 条成绩到数据库
+2026-03-23 16:42:44 - study_math - INFO - ==================================================
+2026-03-23 16:42:44 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:42:44 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:42:44 - study_math - INFO - ==================================================
+2026-03-23 16:42:44 - app - INFO - 从 Excel 导入 3900 条成绩到数据库
+2026-03-23 16:42:44 - study_math - INFO - 已备份数据库到：data/study_math_backup_20260323_164244.db
+2026-03-23 16:42:44 - study_math - INFO - 用户清理了所有数据（重建数据库）
+2026-03-23 16:42:45 - study_math - INFO - ==================================================
+2026-03-23 16:42:45 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:42:45 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:42:45 - study_math - INFO - ==================================================
+2026-03-23 16:42:46 - app - INFO - 从 Excel 导入 3900 条成绩到数据库
+2026-03-23 16:42:47 - study_math - INFO - ==================================================
+2026-03-23 16:42:47 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:42:47 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:42:47 - study_math - INFO - ==================================================
+2026-03-23 16:42:48 - app - INFO - 从 Excel 导入 3900 条成绩到数据库
+2026-03-23 16:42:48 - study_math - INFO - 用户移除了 6 个 Excel 文件到备份目录
+2026-03-23 16:43:05 - study_math - INFO - ==================================================
+2026-03-23 16:43:05 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:05 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:05 - study_math - INFO - ==================================================
+2026-03-23 16:43:05 - study_math - INFO - ==================================================
+2026-03-23 16:43:05 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:05 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:05 - study_math - INFO - ==================================================
+2026-03-23 16:43:05 - app - INFO - 初始化分析器...
+2026-03-23 16:43:05 - app - INFO - 分析器初始化完成
+2026-03-23 16:43:08 - study_math - INFO - ==================================================
+2026-03-23 16:43:08 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:08 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:08 - study_math - INFO - ==================================================
+2026-03-23 16:43:11 - study_math - INFO - ==================================================
+2026-03-23 16:43:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:11 - study_math - INFO - ==================================================
+2026-03-23 16:43:14 - study_math - INFO - ==================================================
+2026-03-23 16:43:14 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:14 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:14 - study_math - INFO - ==================================================
+2026-03-23 16:43:16 - study_math - INFO - ==================================================
+2026-03-23 16:43:16 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:16 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:16 - study_math - INFO - ==================================================
+2026-03-23 16:43:19 - study_math - INFO - ==================================================
+2026-03-23 16:43:19 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:19 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:19 - study_math - INFO - ==================================================
+2026-03-23 16:43:20 - study_math - INFO - ==================================================
+2026-03-23 16:43:20 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:20 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:20 - study_math - INFO - ==================================================
+2026-03-23 16:43:23 - study_math - INFO - ==================================================
+2026-03-23 16:43:23 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:23 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:23 - study_math - INFO - ==================================================
+2026-03-23 16:43:25 - study_math - INFO - ==================================================
+2026-03-23 16:43:25 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:25 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:25 - study_math - INFO - ==================================================
+2026-03-23 16:43:34 - study_math - INFO - ==================================================
+2026-03-23 16:43:34 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:34 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:34 - study_math - INFO - ==================================================
+2026-03-23 16:43:34 - study_math - INFO - 用户清理了所有录入成绩
+2026-03-23 16:43:41 - study_math - INFO - ==================================================
+2026-03-23 16:43:41 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:41 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:41 - study_math - INFO - ==================================================
+2026-03-23 16:43:41 - app - INFO - 初始化分析器...
+2026-03-23 16:43:41 - app - INFO - 分析器初始化完成
+2026-03-23 16:43:46 - study_math - INFO - ==================================================
+2026-03-23 16:43:46 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:46 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:46 - study_math - INFO - ==================================================
+2026-03-23 16:43:48 - study_math - INFO - ==================================================
+2026-03-23 16:43:48 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:48 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:48 - study_math - INFO - ==================================================
+2026-03-23 16:43:52 - study_math - INFO - ==================================================
+2026-03-23 16:43:52 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:52 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:52 - study_math - INFO - ==================================================
+2026-03-23 16:43:55 - study_math - INFO - ==================================================
+2026-03-23 16:43:55 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:55 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:55 - study_math - INFO - ==================================================
+2026-03-23 16:43:57 - study_math - INFO - ==================================================
+2026-03-23 16:43:57 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:57 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:57 - study_math - INFO - ==================================================
+2026-03-23 16:43:59 - study_math - INFO - ==================================================
+2026-03-23 16:43:59 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:43:59 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:43:59 - study_math - INFO - ==================================================
+2026-03-23 16:44:01 - study_math - INFO - ==================================================
+2026-03-23 16:44:01 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:01 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:01 - study_math - INFO - ==================================================
+2026-03-23 16:44:03 - study_math - INFO - ==================================================
+2026-03-23 16:44:03 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:03 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:03 - study_math - INFO - ==================================================
+2026-03-23 16:44:07 - study_math - INFO - ==================================================
+2026-03-23 16:44:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:07 - study_math - INFO - ==================================================
+2026-03-23 16:44:07 - study_math - INFO - 已备份数据库到：data/study_math_backup_20260323_164407.db
+2026-03-23 16:44:07 - study_math - INFO - 用户清理了所有数据（重建数据库）
+2026-03-23 16:44:09 - study_math - INFO - ==================================================
+2026-03-23 16:44:09 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:09 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:09 - study_math - INFO - ==================================================
+2026-03-23 16:44:14 - study_math - INFO - ==================================================
+2026-03-23 16:44:14 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:14 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:14 - study_math - INFO - ==================================================
+2026-03-23 16:44:17 - study_math - INFO - ==================================================
+2026-03-23 16:44:17 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:17 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:17 - study_math - INFO - ==================================================
+2026-03-23 16:44:18 - study_math - INFO - ==================================================
+2026-03-23 16:44:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:18 - study_math - INFO - ==================================================
+2026-03-23 16:44:18 - study_math - INFO - ==================================================
+2026-03-23 16:44:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:18 - study_math - INFO - ==================================================
+2026-03-23 16:44:19 - study_math - INFO - ==================================================
+2026-03-23 16:44:19 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:19 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:19 - study_math - INFO - ==================================================
+2026-03-23 16:44:20 - study_math - INFO - ==================================================
+2026-03-23 16:44:20 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:20 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:20 - study_math - INFO - ==================================================
+2026-03-23 16:44:21 - study_math - INFO - ==================================================
+2026-03-23 16:44:21 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:21 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:21 - study_math - INFO - ==================================================
+2026-03-23 16:44:22 - study_math - INFO - ==================================================
+2026-03-23 16:44:22 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:22 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:22 - study_math - INFO - ==================================================
+2026-03-23 16:44:24 - study_math - INFO - ==================================================
+2026-03-23 16:44:24 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:24 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:24 - study_math - INFO - ==================================================
+2026-03-23 16:44:26 - study_math - INFO - ==================================================
+2026-03-23 16:44:26 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:26 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:26 - study_math - INFO - ==================================================
+2026-03-23 16:44:28 - study_math - INFO - ==================================================
+2026-03-23 16:44:28 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:28 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:28 - study_math - INFO - ==================================================
+2026-03-23 16:44:28 - study_math - INFO - ==================================================
+2026-03-23 16:44:28 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:28 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:28 - study_math - INFO - ==================================================
+2026-03-23 16:44:29 - study_math - INFO - ==================================================
+2026-03-23 16:44:29 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:29 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:29 - study_math - INFO - ==================================================
+2026-03-23 16:44:44 - study_math - INFO - ==================================================
+2026-03-23 16:44:44 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:44 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:44 - study_math - INFO - ==================================================
+2026-03-23 16:44:44 - study_math - INFO - ==================================================
+2026-03-23 16:44:44 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:44 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:44 - study_math - INFO - ==================================================
+2026-03-23 16:44:44 - app - INFO - 初始化分析器...
+2026-03-23 16:44:44 - app - INFO - 分析器初始化完成
+2026-03-23 16:44:50 - study_math - INFO - ==================================================
+2026-03-23 16:44:50 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:44:50 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:44:50 - study_math - INFO - ==================================================
+2026-03-23 16:45:02 - study_math - INFO - ==================================================
+2026-03-23 16:45:02 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:45:02 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:45:02 - study_math - INFO - ==================================================
+2026-03-23 16:45:04 - study_math - INFO - ==================================================
+2026-03-23 16:45:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:45:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:45:04 - study_math - INFO - ==================================================
+2026-03-23 16:45:06 - study_math - INFO - ==================================================
+2026-03-23 16:45:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:45:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:45:06 - study_math - INFO - ==================================================
+2026-03-23 16:51:04 - study_math - INFO - ==================================================
+2026-03-23 16:51:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:04 - study_math - INFO - ==================================================
+2026-03-23 16:51:06 - study_math - INFO - ==================================================
+2026-03-23 16:51:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:06 - study_math - INFO - ==================================================
+2026-03-23 16:51:06 - study_math - INFO - ==================================================
+2026-03-23 16:51:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:06 - study_math - INFO - ==================================================
+2026-03-23 16:51:07 - study_math - INFO - ==================================================
+2026-03-23 16:51:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:07 - study_math - INFO - ==================================================
+2026-03-23 16:51:07 - study_math - INFO - ==================================================
+2026-03-23 16:51:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:07 - study_math - INFO - ==================================================
+2026-03-23 16:51:07 - study_math - INFO - ==================================================
+2026-03-23 16:51:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:07 - study_math - INFO - ==================================================
+2026-03-23 16:51:08 - study_math - INFO - ==================================================
+2026-03-23 16:51:08 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:08 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:08 - study_math - INFO - ==================================================
+2026-03-23 16:51:09 - study_math - INFO - ==================================================
+2026-03-23 16:51:09 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:09 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:09 - study_math - INFO - ==================================================
+2026-03-23 16:51:10 - study_math - INFO - ==================================================
+2026-03-23 16:51:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:10 - study_math - INFO - ==================================================
+2026-03-23 16:51:12 - study_math - INFO - ==================================================
+2026-03-23 16:51:12 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:12 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:12 - study_math - INFO - ==================================================
+2026-03-23 16:51:17 - study_math - INFO - ==================================================
+2026-03-23 16:51:17 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:17 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:17 - study_math - INFO - ==================================================
+2026-03-23 16:51:19 - study_math - INFO - ==================================================
+2026-03-23 16:51:19 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:19 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:19 - study_math - INFO - ==================================================
+2026-03-23 16:51:24 - study_math - INFO - ==================================================
+2026-03-23 16:51:24 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:24 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:24 - study_math - INFO - ==================================================
+2026-03-23 16:51:33 - study_math - INFO - ==================================================
+2026-03-23 16:51:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:33 - study_math - INFO - ==================================================
+2026-03-23 16:51:42 - study_math - INFO - ==================================================
+2026-03-23 16:51:42 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:42 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:42 - study_math - INFO - ==================================================
+2026-03-23 16:51:50 - study_math - INFO - ==================================================
+2026-03-23 16:51:50 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:50 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:50 - study_math - INFO - ==================================================
+2026-03-23 16:51:52 - study_math - INFO - ==================================================
+2026-03-23 16:51:52 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:52 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:52 - study_math - INFO - ==================================================
+2026-03-23 16:51:54 - study_math - INFO - ==================================================
+2026-03-23 16:51:54 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:54 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:54 - study_math - INFO - ==================================================
+2026-03-23 16:51:57 - study_math - INFO - ==================================================
+2026-03-23 16:51:57 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:57 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:57 - study_math - INFO - ==================================================
+2026-03-23 16:51:59 - study_math - INFO - ==================================================
+2026-03-23 16:51:59 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:51:59 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:51:59 - study_math - INFO - ==================================================
+2026-03-23 16:52:01 - study_math - INFO - ==================================================
+2026-03-23 16:52:01 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:52:01 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:52:01 - study_math - INFO - ==================================================
+2026-03-23 16:52:03 - study_math - INFO - ==================================================
+2026-03-23 16:52:03 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:52:03 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:52:03 - study_math - INFO - ==================================================
+2026-03-23 16:52:07 - study_math - INFO - ==================================================
+2026-03-23 16:52:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:52:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:52:07 - study_math - INFO - ==================================================
+2026-03-23 16:52:09 - study_math - INFO - ==================================================
+2026-03-23 16:52:09 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:52:09 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:52:09 - study_math - INFO - ==================================================
+2026-03-23 16:52:17 - study_math - INFO - ==================================================
+2026-03-23 16:52:17 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:52:17 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:52:17 - study_math - INFO - ==================================================
+2026-03-23 16:52:18 - study_math - INFO - ==================================================
+2026-03-23 16:52:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:52:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:52:18 - study_math - INFO - ==================================================
+2026-03-23 16:52:18 - study_math - INFO - ==================================================
+2026-03-23 16:52:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 16:52:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 16:52:18 - study_math - INFO - ==================================================
+2026-03-23 17:31:39 - study_math - INFO - ==================================================
+2026-03-23 17:31:39 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 17:31:39 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 17:31:39 - study_math - INFO - ==================================================
+2026-03-23 17:31:39 - app - INFO - 初始化分析器...
+2026-03-23 17:31:40 - app - INFO - 分析器初始化完成
+2026-03-23 21:46:13 - study_math - INFO - ==================================================
+2026-03-23 21:46:13 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 21:46:13 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 21:46:13 - study_math - INFO - ==================================================
+2026-03-23 21:46:14 - app - INFO - 初始化分析器...
+2026-03-23 21:46:14 - app - INFO - 分析器初始化完成
+2026-03-23 22:00:01 - study_math - INFO - ==================================================
+2026-03-23 22:00:01 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:00:01 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:00:01 - study_math - INFO - ==================================================
+2026-03-23 22:00:07 - study_math - INFO - ==================================================
+2026-03-23 22:00:07 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:00:07 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:00:07 - study_math - INFO - ==================================================
+2026-03-23 22:00:08 - study_math - INFO - ==================================================
+2026-03-23 22:00:08 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:00:08 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:00:08 - study_math - INFO - ==================================================
+2026-03-23 22:00:11 - study_math - INFO - ==================================================
+2026-03-23 22:00:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:00:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:00:11 - study_math - INFO - ==================================================
+2026-03-23 22:00:12 - study_math - INFO - ==================================================
+2026-03-23 22:00:12 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:00:12 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:00:12 - study_math - INFO - ==================================================
+2026-03-23 22:00:20 - study_math - INFO - ==================================================
+2026-03-23 22:00:20 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:00:20 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:00:20 - study_math - INFO - ==================================================
+2026-03-23 22:00:20 - study_math - INFO - ==================================================
+2026-03-23 22:00:20 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:00:20 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:00:20 - study_math - INFO - ==================================================
+2026-03-23 22:01:13 - study_math - INFO - ==================================================
+2026-03-23 22:01:13 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:01:13 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:01:13 - study_math - INFO - ==================================================
+2026-03-23 22:01:20 - study_math - INFO - ==================================================
+2026-03-23 22:01:20 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:01:20 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:01:20 - study_math - INFO - ==================================================
+2026-03-23 22:01:35 - study_math - INFO - ==================================================
+2026-03-23 22:01:35 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:01:35 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:01:35 - study_math - INFO - ==================================================
+2026-03-23 22:01:35 - study_math - INFO - 用户移除了 6 个 Excel 文件到备份目录
+2026-03-23 22:01:57 - study_math - INFO - ==================================================
+2026-03-23 22:01:57 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:01:57 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:01:57 - study_math - INFO - ==================================================
+2026-03-23 22:02:03 - study_math - INFO - ==================================================
+2026-03-23 22:02:03 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:02:03 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:02:03 - study_math - INFO - ==================================================
+2026-03-23 22:02:15 - study_math - INFO - ==================================================
+2026-03-23 22:02:15 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:02:15 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:02:15 - study_math - INFO - ==================================================
+2026-03-23 22:02:16 - study_math - INFO - ==================================================
+2026-03-23 22:02:16 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:02:16 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:02:16 - study_math - INFO - ==================================================
+2026-03-23 22:02:18 - study_math - INFO - ==================================================
+2026-03-23 22:02:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:02:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:02:18 - study_math - INFO - ==================================================
+2026-03-23 22:02:19 - study_math - INFO - ==================================================
+2026-03-23 22:02:19 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:02:19 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:02:19 - study_math - INFO - ==================================================
+2026-03-23 22:02:21 - study_math - INFO - ==================================================
+2026-03-23 22:02:21 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:02:21 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:02:21 - study_math - INFO - ==================================================
+2026-03-23 22:02:21 - study_math - INFO - 已备份数据库到：data/study_math_backup_20260323_220221.db
+2026-03-23 22:02:22 - study_math - INFO - 用户清理了所有数据（重建数据库）
+2026-03-23 22:02:23 - study_math - INFO - ==================================================
+2026-03-23 22:02:23 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:02:23 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:02:23 - study_math - INFO - ==================================================
+2026-03-23 22:02:28 - study_math - INFO - ==================================================
+2026-03-23 22:02:28 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:02:28 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:02:28 - study_math - INFO - ==================================================
+2026-03-23 22:03:52 - study_math - INFO - ==================================================
+2026-03-23 22:03:52 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:03:52 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:03:52 - study_math - INFO - ==================================================
+2026-03-23 22:03:53 - study_math - INFO - ==================================================
+2026-03-23 22:03:53 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:03:53 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:03:53 - study_math - INFO - ==================================================
+2026-03-23 22:03:55 - study_math - INFO - ==================================================
+2026-03-23 22:03:55 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:03:55 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:03:55 - study_math - INFO - ==================================================
+2026-03-23 22:03:55 - study_math - INFO - ==================================================
+2026-03-23 22:03:55 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:03:55 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:03:55 - study_math - INFO - ==================================================
+2026-03-23 22:03:56 - study_math - INFO - ==================================================
+2026-03-23 22:03:56 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:03:56 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:03:56 - study_math - INFO - ==================================================
+2026-03-23 22:03:57 - study_math - INFO - ==================================================
+2026-03-23 22:03:57 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:03:57 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:03:57 - study_math - INFO - ==================================================
+2026-03-23 22:05:57 - study_math - INFO - ==================================================
+2026-03-23 22:05:57 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:05:57 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:05:57 - study_math - INFO - ==================================================
+2026-03-23 22:05:57 - app - INFO - 初始化分析器...
+2026-03-23 22:05:57 - app - INFO - 分析器初始化完成
+2026-03-23 22:19:52 - study_math - INFO - ==================================================
+2026-03-23 22:19:52 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:19:52 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:19:52 - study_math - INFO - ==================================================
+2026-03-23 22:19:57 - study_math - INFO - ==================================================
+2026-03-23 22:19:57 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:19:57 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:19:57 - study_math - INFO - ==================================================
+2026-03-23 22:24:11 - study_math - INFO - ==================================================
+2026-03-23 22:24:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:24:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:24:11 - study_math - INFO - ==================================================
+2026-03-23 22:24:11 - app - INFO - 初始化分析器...
+2026-03-23 22:24:11 - app - INFO - 分析器初始化完成
+2026-03-23 22:28:50 - study_math - INFO - ==================================================
+2026-03-23 22:28:50 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:28:50 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:28:50 - study_math - INFO - ==================================================
+2026-03-23 22:30:58 - study_math - INFO - ==================================================
+2026-03-23 22:30:58 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:30:58 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:30:58 - study_math - INFO - ==================================================
+2026-03-23 22:49:26 - study_math - INFO - ==================================================
+2026-03-23 22:49:26 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:49:26 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:49:26 - study_math - INFO - ==================================================
+2026-03-23 22:49:26 - app - INFO - 初始化分析器...
+2026-03-23 22:49:26 - app - INFO - 分析器初始化完成
+2026-03-23 22:50:54 - study_math - INFO - ==================================================
+2026-03-23 22:50:54 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:50:54 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:50:54 - study_math - INFO - ==================================================
+2026-03-23 22:51:20 - study_math - INFO - ==================================================
+2026-03-23 22:51:20 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:51:20 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:51:20 - study_math - INFO - ==================================================
+2026-03-23 22:51:26 - study_math - INFO - ==================================================
+2026-03-23 22:51:26 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:51:26 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:51:26 - study_math - INFO - ==================================================
+2026-03-23 22:51:27 - study_math - INFO - ==================================================
+2026-03-23 22:51:27 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:51:27 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:51:27 - study_math - INFO - ==================================================
+2026-03-23 22:51:47 - study_math - INFO - ==================================================
+2026-03-23 22:51:47 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:51:47 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:51:47 - study_math - INFO - ==================================================
+2026-03-23 22:51:47 - study_math - INFO - Excel 导入成功：10032-1(2)班上学期数学考试分数-math_scores.xlsx, 错题数：0
+2026-03-23 22:51:56 - study_math - INFO - ==================================================
+2026-03-23 22:51:56 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:51:56 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:51:56 - study_math - INFO - ==================================================
+2026-03-23 22:51:56 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:51:58 - study_math - INFO - ==================================================
+2026-03-23 22:51:58 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:51:58 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:51:58 - study_math - INFO - ==================================================
+2026-03-23 22:51:58 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:51:59 - study_math - INFO - ==================================================
+2026-03-23 22:51:59 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:51:59 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:51:59 - study_math - INFO - ==================================================
+2026-03-23 22:52:00 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:52:04 - study_math - INFO - ==================================================
+2026-03-23 22:52:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:52:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:52:04 - study_math - INFO - ==================================================
+2026-03-23 22:52:04 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:54:05 - study_math - INFO - ==================================================
+2026-03-23 22:54:05 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:54:05 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:54:05 - study_math - INFO - ==================================================
+2026-03-23 22:54:05 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:54:05 - app - INFO - 初始化分析器...
+2026-03-23 22:54:05 - app - INFO - 分析器初始化完成
+2026-03-23 22:56:28 - study_math - INFO - ==================================================
+2026-03-23 22:56:28 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:56:28 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:56:28 - study_math - INFO - ==================================================
+2026-03-23 22:56:29 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:57:51 - study_math - INFO - ==================================================
+2026-03-23 22:57:51 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:57:51 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:57:51 - study_math - INFO - ==================================================
+2026-03-23 22:57:51 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:57:52 - study_math - INFO - ==================================================
+2026-03-23 22:57:52 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:57:52 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:57:52 - study_math - INFO - ==================================================
+2026-03-23 22:57:52 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:57:53 - study_math - INFO - ==================================================
+2026-03-23 22:57:53 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:57:53 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:57:53 - study_math - INFO - ==================================================
+2026-03-23 22:57:53 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:57:54 - study_math - INFO - ==================================================
+2026-03-23 22:57:54 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:57:54 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:57:54 - study_math - INFO - ==================================================
+2026-03-23 22:57:54 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:57:55 - study_math - INFO - ==================================================
+2026-03-23 22:57:55 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:57:55 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:57:55 - study_math - INFO - ==================================================
+2026-03-23 22:57:55 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:58:01 - study_math - INFO - ==================================================
+2026-03-23 22:58:01 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:58:01 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:58:01 - study_math - INFO - ==================================================
+2026-03-23 22:58:01 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:58:18 - study_math - INFO - ==================================================
+2026-03-23 22:58:18 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:58:18 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:58:18 - study_math - INFO - ==================================================
+2026-03-23 22:58:18 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:58:20 - study_math - INFO - ==================================================
+2026-03-23 22:58:20 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:58:20 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:58:20 - study_math - INFO - ==================================================
+2026-03-23 22:58:20 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:58:22 - study_math - INFO - ==================================================
+2026-03-23 22:58:22 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:58:22 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:58:22 - study_math - INFO - ==================================================
+2026-03-23 22:58:22 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:58:24 - study_math - INFO - ==================================================
+2026-03-23 22:58:24 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:58:24 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:58:24 - study_math - INFO - ==================================================
+2026-03-23 22:58:24 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:58:29 - study_math - INFO - ==================================================
+2026-03-23 22:58:29 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:58:29 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:58:29 - study_math - INFO - ==================================================
+2026-03-23 22:58:29 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:58:33 - study_math - INFO - ==================================================
+2026-03-23 22:58:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:58:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:58:33 - study_math - INFO - ==================================================
+2026-03-23 22:58:34 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:58:34 - study_math - INFO - ==================================================
+2026-03-23 22:58:34 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:58:34 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:58:34 - study_math - INFO - ==================================================
+2026-03-23 22:58:34 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:58:37 - study_math - INFO - ==================================================
+2026-03-23 22:58:37 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:58:37 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:58:37 - study_math - INFO - ==================================================
+2026-03-23 22:58:38 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:58:39 - study_math - INFO - ==================================================
+2026-03-23 22:58:39 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:58:39 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:58:39 - study_math - INFO - ==================================================
+2026-03-23 22:58:39 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:59:04 - study_math - INFO - ==================================================
+2026-03-23 22:59:04 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:59:04 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:59:04 - study_math - INFO - ==================================================
+2026-03-23 22:59:04 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:59:06 - study_math - INFO - ==================================================
+2026-03-23 22:59:06 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:59:06 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:59:06 - study_math - INFO - ==================================================
+2026-03-23 22:59:06 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:59:11 - study_math - INFO - ==================================================
+2026-03-23 22:59:11 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:59:11 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:59:11 - study_math - INFO - ==================================================
+2026-03-23 22:59:11 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:59:30 - study_math - INFO - ==================================================
+2026-03-23 22:59:30 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:59:30 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:59:30 - study_math - INFO - ==================================================
+2026-03-23 22:59:30 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:59:33 - study_math - INFO - ==================================================
+2026-03-23 22:59:33 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:59:33 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:59:33 - study_math - INFO - ==================================================
+2026-03-23 22:59:33 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:59:38 - study_math - INFO - ==================================================
+2026-03-23 22:59:38 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:59:38 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:59:38 - study_math - INFO - ==================================================
+2026-03-23 22:59:38 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:59:40 - study_math - INFO - ==================================================
+2026-03-23 22:59:40 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:59:40 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:59:40 - study_math - INFO - ==================================================
+2026-03-23 22:59:40 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:59:43 - study_math - INFO - ==================================================
+2026-03-23 22:59:43 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:59:43 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:59:43 - study_math - INFO - ==================================================
+2026-03-23 22:59:43 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:59:44 - study_math - INFO - ==================================================
+2026-03-23 22:59:44 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:59:44 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:59:44 - study_math - INFO - ==================================================
+2026-03-23 22:59:44 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:59:49 - study_math - INFO - ==================================================
+2026-03-23 22:59:49 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:59:49 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:59:49 - study_math - INFO - ==================================================
+2026-03-23 22:59:49 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:59:53 - study_math - INFO - ==================================================
+2026-03-23 22:59:53 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 22:59:53 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 22:59:53 - study_math - INFO - ==================================================
+2026-03-23 22:59:53 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-23 22:59:53 - study_math - INFO - Excel 导入成功：10033-1(2)班下学期数学考试分数-math_scores.xlsx, 错题数：0
+2026-03-23 23:00:01 - study_math - INFO - ==================================================
+2026-03-23 23:00:01 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 23:00:01 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 23:00:01 - study_math - INFO - ==================================================
+2026-03-23 23:00:01 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 23:00:09 - study_math - INFO - ==================================================
+2026-03-23 23:00:09 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 23:00:09 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 23:00:09 - study_math - INFO - ==================================================
+2026-03-23 23:00:10 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 23:00:10 - study_math - INFO - ==================================================
+2026-03-23 23:00:10 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 23:00:10 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 23:00:10 - study_math - INFO - ==================================================
+2026-03-23 23:00:10 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 23:00:16 - study_math - INFO - ==================================================
+2026-03-23 23:00:16 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 23:00:16 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 23:00:16 - study_math - INFO - ==================================================
+2026-03-23 23:00:16 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 23:00:23 - study_math - INFO - ==================================================
+2026-03-23 23:00:23 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 23:00:23 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 23:00:23 - study_math - INFO - ==================================================
+2026-03-23 23:00:23 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 23:00:26 - study_math - INFO - ==================================================
+2026-03-23 23:00:26 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 23:00:26 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 23:00:26 - study_math - INFO - ==================================================
+2026-03-23 23:00:26 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 23:00:29 - study_math - INFO - ==================================================
+2026-03-23 23:00:29 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 23:00:29 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 23:00:29 - study_math - INFO - ==================================================
+2026-03-23 23:00:29 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 23:00:32 - study_math - INFO - ==================================================
+2026-03-23 23:00:32 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 23:00:32 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 23:00:32 - study_math - INFO - ==================================================
+2026-03-23 23:00:32 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 23:00:35 - study_math - INFO - ==================================================
+2026-03-23 23:00:35 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 23:00:35 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 23:00:35 - study_math - INFO - ==================================================
+2026-03-23 23:00:35 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 23:00:43 - study_math - INFO - ==================================================
+2026-03-23 23:00:43 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 23:00:43 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 23:00:43 - study_math - INFO - ==================================================
+2026-03-23 23:00:43 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 23:00:44 - study_math - INFO - ==================================================
+2026-03-23 23:00:44 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 23:00:44 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 23:00:44 - study_math - INFO - ==================================================
+2026-03-23 23:00:44 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 23:23:42 - study_math - INFO - ==================================================
+2026-03-23 23:23:42 - study_math - INFO - 学习数学分析系统启动
+2026-03-23 23:23:42 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260323.log
+2026-03-23 23:23:42 - study_math - INFO - ==================================================
+2026-03-23 23:23:43 - app - INFO - 从 Excel 导入 1296 条成绩到数据库
+2026-03-23 23:23:43 - app - INFO - 初始化分析器...
+2026-03-23 23:23:43 - app - INFO - 分析器初始化完成

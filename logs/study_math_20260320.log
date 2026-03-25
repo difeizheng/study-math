@@ -1,0 +1,34 @@
+2026-03-20 00:37:32 - study_math - INFO - ==================================================
+2026-03-20 00:37:32 - study_math - INFO - 学习数学分析系统启动
+2026-03-20 00:37:32 - study_math - INFO - 日志文件：D:\project_room\workspace2024\mytest\study-math\logs\study_math_20260320.log
+2026-03-20 00:37:32 - study_math - INFO - ==================================================
+2026-03-20 00:37:32 - app - INFO - 从 Excel 导入 688 条成绩到数据库
+2026-03-20 00:37:33 - app - INFO - 初始化分析器...
+2026-03-20 00:37:33 - app - INFO - 分析器初始化完成
+2026-03-20 11:50:44 - study_math - ERROR - 测试上下文 - 错误：ValueError: 测试错误
+NoneType: None
+2026-03-20 11:50:44 - study_math - INFO - 测试信息
+2026-03-20 11:50:44 - study_math - WARNING - 测试警告
+2026-03-20 11:50:44 - study_math - ERROR - 函数 error_func 执行失败（耗时0.000秒）: 测试错误
+2026-03-20 11:50:44 - pdf_exporter - INFO - 注册中文字体：C:\Windows\Fonts\simhei.ttf
+2026-03-20 11:50:44 - pdf_exporter - INFO - 能力报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpw2yzihee\test_ability_report.pdf
+2026-03-20 11:50:44 - pdf_exporter - INFO - 错题报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpw2yzihee\test_error_report.pdf
+2026-03-20 11:50:44 - pdf_exporter - INFO - 综合报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpw2yzihee\test_summary_report.pdf
+2026-03-20 11:52:07 - study_math - ERROR - 测试上下文 - 错误：ValueError: 测试错误
+NoneType: None
+2026-03-20 11:52:07 - study_math - INFO - 测试信息
+2026-03-20 11:52:07 - study_math - WARNING - 测试警告
+2026-03-20 11:52:07 - study_math - ERROR - 函数 error_func 执行失败（耗时0.000秒）: 测试错误
+2026-03-20 11:52:07 - pdf_exporter - INFO - 注册中文字体：C:\Windows\Fonts\simhei.ttf
+2026-03-20 11:52:07 - pdf_exporter - INFO - 能力报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmp_9756mfn\test_ability_report.pdf
+2026-03-20 11:52:07 - pdf_exporter - INFO - 错题报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmp_9756mfn\test_error_report.pdf
+2026-03-20 11:52:07 - pdf_exporter - INFO - 综合报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmp_9756mfn\test_summary_report.pdf
+2026-03-20 11:52:18 - study_math - ERROR - 测试上下文 - 错误：ValueError: 测试错误
+NoneType: None
+2026-03-20 11:52:18 - study_math - INFO - 测试信息
+2026-03-20 11:52:18 - study_math - WARNING - 测试警告
+2026-03-20 11:52:18 - study_math - ERROR - 函数 error_func 执行失败（耗时0.000秒）: 测试错误
+2026-03-20 11:52:18 - pdf_exporter - INFO - 注册中文字体：C:\Windows\Fonts\simhei.ttf
+2026-03-20 11:52:18 - pdf_exporter - INFO - 能力报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpb900qfow\test_ability_report.pdf
+2026-03-20 11:52:18 - pdf_exporter - INFO - 错题报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpb900qfow\test_error_report.pdf
+2026-03-20 11:52:18 - pdf_exporter - INFO - 综合报告 PDF 已生成：C:\Users\58452\AppData\Local\Temp\tmpb900qfow\test_summary_report.pdf

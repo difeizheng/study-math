@@ -1,6 +1,35 @@
 # Bug 修复记录
 
-## 2026-03-24 修复
+## 2026-03-24 修复 (v5.6.2)
+
+### 8. 学期选择顺序错误 - 学期未按照年级排序
+**问题**: 学期选择下拉框显示顺序混乱，如 `1(2) 班上学期 → 2(2) 班上学期 → 1(2) 班下学期`
+
+**原因**: `ALL_SEMESTERS` 直接从 `semester_data.keys()` 获取，未按年级和学期类型排序
+
+**修复**:
+- `analyzer_base.py` 添加 `_sort_semesters()` 方法
+- 排序规则：先按年级 (1 班→2 班→3 班)，同一年级内上学期在前、下学期在后
+- `app.py` 中 `ALL_SEMESTERS` 使用排序后的列表
+- 现在正确显示：`1(2) 班上学期 → 1(2) 班下学期 → 2(2) 班上学期`
+
+**文件**: `analyzer_base.py`, `app.py`
+
+### 9. 知识点深度分析字典访问错误 - `'dict' object has no attribute 'week'`
+**问题**: 知识点深度分析模块报错 `AttributeError: 'dict' object has no attribute 'week'`
+
+**原因**:
+- `deep_analyzer.py` 中 `get_knowledge_mastery_curve()` 使用对象属性访问 (`score_record.week`)
+- 但 `get_scores()` 返回字典列表，不是 `StudentScore` 对象
+
+**修复**:
+- 改为字典访问：`score_record['week']`, `score_record['score']`, `score_record['exam_name']`
+
+**文件**: `deep_analyzer.py`
+
+---
+
+## 2026-03-24 修复 (v5.6.1)
 
 ### 6. 学期名称解析错误 - UTF-8 编码导致正则匹配失败
 **问题**: 上传多个学期的 Excel 文件后，学期选择下拉框只显示一个学期

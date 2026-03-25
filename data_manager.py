@@ -442,6 +442,7 @@ class DataManager:
         self,
         student_id: int,
         student_name: str,
+        semester: str,
         exam_name: str,
         score: float,
         error_knowledge: Optional[List[str]] = None
@@ -452,6 +453,7 @@ class DataManager:
         Args:
             student_id: 学生 ID
             student_name: 学生姓名
+            semester: 学期
             exam_name: 考试名称
             score: 成绩
             error_knowledge: 错题知识点列表
@@ -484,17 +486,17 @@ class DataManager:
                 # 更新成绩
                 cursor.execute("""
                     UPDATE exam_scores
-                    SET score = ?, exam_date = ?
+                    SET score = ?, exam_date = ?, semester = ?
                     WHERE student_id = ? AND exam_name = ?
-                """, (score, datetime.now().strftime("%Y-%m-%d"),
+                """, (score, datetime.now().strftime("%Y-%m-%d"), semester,
                       student_id, exam_name))
             else:
                 # 插入新成绩
                 cursor.execute("""
                     INSERT INTO exam_scores
-                    (student_id, name, exam_name, score, exam_date)
+                    (student_id, semester, exam_name, score, exam_date)
                     VALUES (?, ?, ?, ?, ?)
-                """, (student_id, student_name, exam_name, score,
+                """, (student_id, semester, exam_name, score,
                       datetime.now().strftime("%Y-%m-%d")))
 
             # 如果有错题知识点，写入 error_records 表
