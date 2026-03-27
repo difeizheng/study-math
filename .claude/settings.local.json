@@ -84,7 +84,8 @@
       "Bash(powershell -Command \"Get-NetTCPConnection -LocalPort 8501 | Select-Object -ExpandProperty OwningProcess\")",
       "Bash(powershell -Command \"Stop-Process -Id 39192 -Force\")",
       "Bash(powershell -Command \"Get-NetTCPConnection -LocalPort 8501 -State Listen | Select-Object -ExpandProperty OwningProcess | ForEach-Object { Stop-Process -Id $_-Force }\")",
-      "Bash(powershell -Command \"Get-NetTCPConnection -LocalPort 8501 -State Listen | Select-Object OwningProcess | ForEach-Object { if \\($_.OwningProcess -gt 0\\) { Stop-Process -Id $_.OwningProcess -Force } }\")"
+      "Bash(powershell -Command \"Get-NetTCPConnection -LocalPort 8501 -State Listen | Select-Object OwningProcess | ForEach-Object { if \\($_.OwningProcess -gt 0\\) { Stop-Process -Id $_.OwningProcess -Force } }\")",
+      "Bash(Stop-Process -Id 3080 -Force)"
     ]
   }
 }
