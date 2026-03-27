@@ -162,6 +162,20 @@
 - `home_school_communication.py`, `data_import_export.py`
 - `educational_metrics.py`, `interactive_viz.py`, `learning_behavior.py`
 
+### v6.0.2 (2026-03-27) - 成绩趋势分析排序修复
+**Bug 修复** (4 个):
+1. 学期 tab 排序错误 → 使用简单字符串匹配提取年级和学期类型
+2. 考试名称 x 轴排序错误 → 按 Excel 列原始顺序排序，按学期分组处理
+3. 多个页面重复选择学生 → 统一使用侧边栏学生选择框
+4. 交互体验页面 NameError → 使用 analyzer.student_names 获取学生列表
+
+**修改文件**:
+- `analyzer_base.py` - 修复 `_sort_semesters` 和 `get_class_stats` 方法
+- `score_analyzer.py` - 修复 `get_score_trend` 和 `get_merged_scores` 排序逻辑
+- `app.py` - 移除 4 个页面的重复学生选择框
+
+**提交**: 62bbf20 | **Tag**: v6.0.2
+
 ### v6.0.1 (2026-03-27) - 宏观分析 Bug 修复版
 **Bug 修复** (7 个):
 1. 知识点掌握度数据结构错误 → 提取 `avg_score`

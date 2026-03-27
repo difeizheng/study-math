@@ -1,4 +1,21 @@
-# 工作记忆 - 数据管理架构重构 v4.0
+# Study-Math 项目记忆索引
+
+## 记忆文件列表
+
+- [MEMORY.md](MEMORY.md) - 项目主记忆，包含版本历史和架构概述
+- [bug_fixes_v6.0.2.md](bug_fixes_v6.0.2.md) - v6.0.2 成绩趋势分析排序修复
+- [bug_fixes_v6.0.1.md](bug_fixes_v6.0.1.md) - v6.0.1 宏观分析 Bug 修复
+- [bug_fixes.md](bug_fixes.md) - v5.6.2 及之前版本 Bug 修复记录
+- [project_history.md](project_history.md) - 项目历史和版本信息
+- [refactoring_v5.6.md](refactoring_v5.6.md) - v5.6 代码架构重构
+- [question_bank_expansion.md](question_bank_expansion.md) - 智能组卷题库扩充
+
+## 当前版本
+- **v6.0.2** - 成绩趋势分析排序修复（2026-03-27）
+
+## 快速链接
+- Git Tag: v6.0.2
+- 提交：62bbf20
 
 ## 当前版本
 - **v4.0** - 数据管理架构重构版（2026-03-18）
