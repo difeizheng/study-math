@@ -389,8 +389,8 @@ class ScoreDistributionAnalyzer:
                 y=percentages,
                 stackgroup='one',
                 fill='tonext',
-                line=dict(width=0.5),
-                color=range_colors[range_name],
+                line=dict(width=0.5, color=range_colors[range_name]),
+                fillcolor=range_colors[range_name],
                 hovertemplate='<b>%{x}</b><br>%{y:.1f}%<extra></extra>'
             ))
 
