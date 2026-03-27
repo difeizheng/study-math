@@ -1394,7 +1394,9 @@ if analysis_mode == "📈 成绩趋势分析":
     class_stats_df = analyzer.get_class_stats(selected_semesters[0] if len(selected_semesters) == 1 else None)
 
     if not trend_df.empty:
-        semesters = trend_df['学期'].unique()
+        # 对学期进行排序（按年级和学期类型）
+        raw_semesters = list(trend_df['学期'].unique())
+        semesters = analyzer._sort_semesters(raw_semesters)
 
         tabs = st.tabs([f"{sem}" for sem in semesters] + ["总体对比"])
 
@@ -5153,12 +5155,12 @@ elif analysis_mode == "🏠 家校沟通":
     st.header("🏠 家校沟通 - 学情报告")
     st.markdown("自动生成学情报告，展示进步幅度，与班级平均水平对比")
 
-    # 选择学生
-    student_names = sorted(list(analyzer.student_names.values()))
-    selected_student_name = st.selectbox("选择学生", student_names)
-    selected_student_id = get_student_id_by_name(selected_student_name)
+    # 使用侧边栏已选择的学生
+    if not selected_student_id:
+        st.warning("请先在侧边栏选择学生")
+    else:
+        st.info(f"当前分析学生：**{student_name}** (学号：{selected_student_id})")
 
-    if selected_student_id:
         # 初始化分析器
         report_generator = ReportGenerator(deep_analyzer.knowledge_points)
         progress_analyzer = ProgressAnalyzer()
@@ -5467,12 +5469,12 @@ elif analysis_mode == "📐 教育测量指标":
     st.header("📐 教育测量学指标")
     st.markdown("IRT 项目反应理论、增值评价、多维度能力模型")
 
-    # 选择学生
-    student_names = sorted(list(analyzer.student_names.values()))
-    selected_student_name = st.selectbox("选择学生", student_names)
-    selected_student_id = get_student_id_by_name(selected_student_name)
+    # 使用侧边栏已选择的学生
+    if not selected_student_id:
+        st.warning("请先在侧边栏选择学生")
+    else:
+        st.info(f"当前分析学生：**{student_name}** (学号：{selected_student_id})")
 
-    if selected_student_id:
         # 初始化分析器
         irt_analyzer = IRTAnalyzer()
         va_analyzer = ValueAddedAnalyzer()
@@ -5654,12 +5656,12 @@ elif analysis_mode == "🎨 交互体验":
     st.header("🎨 交互体验优化")
     st.markdown("动态趋势动画、交互式仪表盘、移动端适配")
 
-    # 选择学生
-    student_names = sorted(list(analyzer.student_names.values()))
-    selected_student_name = st.selectbox("选择学生", student_names)
-    selected_student_id = get_student_id_by_name(selected_student_name)
+    # 使用侧边栏已选择的学生
+    if not selected_student_id:
+        st.warning("请先在侧边栏选择学生")
+    else:
+        st.info(f"当前分析学生：**{student_name}** (学号：{selected_student_id})")
 
-    if selected_student_id:
         # 初始化分析器
         animated_chart = AnimatedTrendChart()
         dashboard = InteractiveDashboard()
@@ -5745,9 +5747,11 @@ elif analysis_mode == "🎨 交互体验":
 
                 # 两人对比
                 st.markdown("##### 两人对比模式")
+                # 从 analyzer 获取学生列表
+                student_names_list = sorted(list(analyzer.student_names.values()))
                 compare_students = st.multiselect(
                     "选择两个学生进行对比",
-                    student_names,
+                    student_names_list,
                     max_selections=2
                 )
 
@@ -5810,12 +5814,12 @@ elif analysis_mode == "📊 学习行为分析":
     st.header("📊 学习行为分析")
     st.markdown("答题时间分析、复习效果追踪、学习习惯画像")
 
-    # 选择学生
-    student_names = sorted(list(analyzer.student_names.values()))
-    selected_student_name = st.selectbox("选择学生", student_names)
-    selected_student_id = get_student_id_by_name(selected_student_name)
+    # 使用侧边栏已选择的学生
+    if not selected_student_id:
+        st.warning("请先在侧边栏选择学生")
+    else:
+        st.info(f"当前分析学生：**{student_name}** (学号：{selected_student_id})")
 
-    if selected_student_id:
         # 初始化分析器
         time_analyzer = TimeAnalyzer()
         review_tracker = ReviewTracker(deep_analyzer.knowledge_points)

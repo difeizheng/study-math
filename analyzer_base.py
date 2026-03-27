@@ -65,14 +65,12 @@ class BaseAnalyzer:
             排序后的学期列表
         """
         def semester_sort_key(semester: str) -> Tuple[int, int]:
-            # 提取年级和学期类型
-            # 匹配格式："1(2) 班上学期" 或 "10(1) 班下学期"
-            match = re.search(r'(\d+)\(\d+\)\s*班 ([上下]) 学期', semester)
+            # 提取年级（第一个数字）
+            match = re.match(r'(\d+)\(', semester)
             if match:
                 grade = int(match.group(1))  # 年级
-                semester_type = match.group(2)  # '上' or '下'
                 # 上学期=0, 下学期=1，确保上学期在前
-                semester_order = 0 if semester_type == '上' else 1
+                semester_order = 0 if '上学期' in semester else 1
                 return (grade, semester_order)
             # 无法解析的返回最大值，排到最后
             return (999, 999)
@@ -154,7 +152,47 @@ class BaseAnalyzer:
                 if self._normalize_semester_name(col.split('_', 1)[0] if '_' in col else col) == normalized_semester
             }
 
-        for col in sorted(exam_cols, key=lambda x: self._get_exam_sort_key(x.split('_', 1)[1] if '_' in x else x)):
+        # 按学期分组，然后在每个学期内按 Excel 列顺序排序
+        semester_groups: Dict[str, List[str]] = {}
+        for col in exam_cols:
+            col_semester = self._normalize_semester_name(col.split('_', 1)[0] if '_' in col else col)
+            if col_semester not in semester_groups:
+                semester_groups[col_semester] = []
+            semester_groups[col_semester].append(col)
+
+        # 对每个学期内的考试进行排序
+        sorted_cols = []
+        for sem_name in self._sort_semesters(list(semester_groups.keys())):
+            sem_cols = semester_groups[sem_name]
+            # 在该学期内，按 Excel 列的顺序排序
+            # 获取该学期在 semester_data 中的原始列顺序
+            original_order = []
+            for raw_sem_name, sem_df in self.semester_data.items():
+                # 检查标准化后的学期名是否匹配
+                if self._normalize_semester_name(raw_sem_name) == sem_name:
+                    # 获取该学期的原始列（去掉学期前缀后的考试名）
+                    original_order = [c for c in sem_df.columns if c not in ['学号', '姓名']]
+                    break
+
+            if original_order:
+                # 按原始顺序排序 - col 的格式是 "学期名_考试名"
+                def col_key(col: str) -> int:
+                    # 在 original_order 中查找完整的列名（带学期前缀）
+                    # original_order 中的列格式也是 "学期名_考试名"
+                    for i, orig_col in enumerate(original_order):
+                        # 提取考试名进行比较
+                        orig_exam = orig_col.split('_', 1)[1] if '_' in orig_col else orig_col
+                        col_exam = col.split('_', 1)[1] if '_' in col else col
+                        if orig_exam == col_exam:
+                            return i
+                    return 9999
+                sem_cols_sorted = sorted(sem_cols, key=col_key)
+            else:
+                sem_cols_sorted = sem_cols
+
+            sorted_cols.extend(sem_cols_sorted)
+
+        for col in sorted_cols:
             exam_name = col.split('_', 1)[1] if '_' in col else col
             sem_name = self._normalize_semester_name(col.split('_', 1)[0] if '_' in col else col)
 

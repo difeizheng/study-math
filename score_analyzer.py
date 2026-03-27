@@ -28,13 +28,26 @@ class ScoreAnalyzer(BaseAnalyzer):
         """获取合并后的成绩（Excel + 录入）"""
         scores = {}
 
-        # 1. 从 Excel 获取成绩
+        # 1. 从 Excel 获取成绩 - 按 exam_order 顺序遍历
         if self.students_df is not None:
             student_data = self.students_df[self.students_df['学号'] == student_id]
             if not student_data.empty:
-                for col in self.students_df.columns:
-                    if col not in ['学号', '姓名']:
+                # 按照 exam_order 的顺序遍历考试列
+                for col in self.exam_order:
+                    if col in self.students_df.columns and col not in ['学号', '姓名']:
                         # 如果指定了学期，只返回该学期的成绩
+                        if semester:
+                            normalized_semester = self._normalize_semester_name(semester)
+                            col_semester = self._normalize_semester_name(col.split('_', 1)[0] if '_' in col else col)
+                            if col_semester != normalized_semester:
+                                continue
+                        value = student_data[col].values[0]
+                        if pd.notna(value):
+                            scores[col] = float(value)
+
+                # 处理不在 exam_order 中的列（如果有）
+                for col in self.students_df.columns:
+                    if col not in ['学号', '姓名'] and col not in self.exam_order and col not in scores:
                         if semester:
                             normalized_semester = self._normalize_semester_name(semester)
                             col_semester = self._normalize_semester_name(col.split('_', 1)[0] if '_' in col else col)
@@ -99,18 +112,34 @@ class ScoreAnalyzer(BaseAnalyzer):
                     raw_sem, exam = parts[0], parts[1]
                     # 使用标准化后的学期名称，确保与前端传入的 semester 参数一致
                     sem = self._normalize_semester_name(raw_sem)
+                    # 使用 Excel 列的原始顺序作为排序索引
+                    # 对于不在 exam_order 中的列，使用学期 + 考试名称的组合来排序
+                    if col in self.exam_order:
+                        exam_index = self.exam_order.index(col)
+                    else:
+                        # 对于其他学期的列，在该学期的 exam_order 中查找
+                        # 遍历所有学期数据，找到该列在原始 Excel 中的位置
+                        exam_index = len(self.exam_order)  # 默认排到后面
+                        for sem_name, sem_df in self.semester_data.items():
+                            if raw_sem in sem_name or sem_name in raw_sem:
+                                # 在该学期的列中查找
+                                exam_cols = [c for c in sem_df.columns if c not in ['学号', '姓名']]
+                                if exam in exam_cols:
+                                    exam_index = exam_cols.index(exam)
+                                    break
                     trends.append({
                         '学期': sem,
                         '考试': exam,
                         '分数': value,
-                        '_sort_key': self._get_exam_sort_key(exam)  # 用于排序
+                        '_exam_index': exam_index,
+                        '_semester_order': self._sort_semesters([sem]).index(sem) if sem in self._sort_semesters([sem]) else 999  # 学期排序
                     })
 
         df = pd.DataFrame(trends)
 
-        # 按考试顺序排序
+        # 按学期顺序和考试顺序排序
         if not df.empty:
-            df = df.sort_values('_sort_key').drop('_sort_key', axis=1).reset_index(drop=True)
+            df = df.sort_values(['_semester_order', '_exam_index']).drop(['_semester_order', '_exam_index'], axis=1).reset_index(drop=True)
 
         return df
 
