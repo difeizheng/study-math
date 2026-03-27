@@ -162,5 +162,20 @@
 - `home_school_communication.py`, `data_import_export.py`
 - `educational_metrics.py`, `interactive_viz.py`, `learning_behavior.py`
 
+### v6.0.1 (2026-03-27) - 宏观分析 Bug 修复版
+**Bug 修复** (7 个):
+1. 知识点掌握度数据结构错误 → 提取 `avg_score`
+2. StudentScore 对象访问错误 → 使用 `getattr()` 防御性访问
+3. QuestionScoreAnalyzer 初始化参数错误 → 移除参数
+4. ExamScoreDAO 返回字典 → 改用 `['score']` 访问
+5. Plotly Scatterpolar `fillopacity` → 改为 `opacity`
+6. Plotly `go.Area` 不存在 → 改为 `go.Scatter` + `stackgroup`
+7. Plotly Scatter `color` 属性 → 改为 `line.color` + `fillcolor`
+
+**新增功能**:
+- 调试模式开关：侧边栏"🔧 调试模式"复选框，控制调试信息显示/隐藏
+
+**提交**: d64fa89 | **Tag**: v6.0.1
+
 ### v5.6.2 (2026-03-24)
 
