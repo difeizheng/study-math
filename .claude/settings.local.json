@@ -78,7 +78,13 @@
       "Bash(curl -s http://localhost:8503)",
       "Bash(Get-Content \"D:\\\\project_room\\\\workspace2024\\\\mytest\\\\study-math\\\\logs\\\\study_math_*.log\" -Tail 20)",
       "Bash(Select-Object -Last 30)",
-      "Bash(curl -s http://localhost:8501 -o nul)"
+      "Bash(curl -s http://localhost:8501 -o nul)",
+      "Bash(cmd.exe /c \"taskkill /PID 39192 /F\")",
+      "Bash(cmd.exe /c \"netstat -ano | findstr :8501 | findstr LISTENING\")",
+      "Bash(powershell -Command \"Get-NetTCPConnection -LocalPort 8501 | Select-Object -ExpandProperty OwningProcess\")",
+      "Bash(powershell -Command \"Stop-Process -Id 39192 -Force\")",
+      "Bash(powershell -Command \"Get-NetTCPConnection -LocalPort 8501 -State Listen | Select-Object -ExpandProperty OwningProcess | ForEach-Object { Stop-Process -Id $_-Force }\")",
+      "Bash(powershell -Command \"Get-NetTCPConnection -LocalPort 8501 -State Listen | Select-Object OwningProcess | ForEach-Object { if \\($_.OwningProcess -gt 0\\) { Stop-Process -Id $_.OwningProcess -Force } }\")"
     ]
   }
 }

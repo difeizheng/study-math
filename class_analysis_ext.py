@@ -383,11 +383,12 @@ class ScoreDistributionAnalyzer:
                 pct = count / len(scores) * 100 if scores else 0
                 percentages.append(pct)
 
-            fig.add_trace(go.Area(
+            fig.add_trace(go.Scatter(
                 name=range_name,
                 x=time_points,
                 y=percentages,
                 stackgroup='one',
+                fill='tonext',
                 line=dict(width=0.5),
                 color=range_colors[range_name],
                 hovertemplate='<b>%{x}</b><br>%{y:.1f}%<extra></extra>'
@@ -399,8 +400,7 @@ class ScoreDistributionAnalyzer:
             yaxis_title="百分比 (%)",
             yaxis_range=[0, 100],
             height=450,
-            showlegend=True,
-            area_groupnorm='percent'
+            showlegend=True
         )
 
         return fig

@@ -421,10 +421,7 @@ analysis_mode = st.sidebar.radio(
 st.sidebar.markdown("---")
 
 # 调试模式开关
-if st.sidebar.checkbox("🔧 调试模式", value=False, key="debug_mode"):
-    st.session_state.debug_mode = True
-else:
-    st.session_state.debug_mode = False
+st.sidebar.checkbox("🔧 调试模式", value=False, key="debug_mode")
 
 # PWA 移动端安装说明
 with st.sidebar.expander("📱 手机访问指南"):
