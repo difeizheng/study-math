@@ -420,6 +420,12 @@ analysis_mode = st.sidebar.radio(
 
 st.sidebar.markdown("---")
 
+# 调试模式开关
+if st.sidebar.checkbox("🔧 调试模式", value=False, key="debug_mode"):
+    st.session_state.debug_mode = True
+else:
+    st.session_state.debug_mode = False
+
 # PWA 移动端安装说明
 with st.sidebar.expander("📱 手机访问指南"):
     st.markdown("""
@@ -1635,8 +1641,9 @@ if analysis_mode == "📈 成绩趋势分析":
     st.caption(f"📋 当前使用 {len(active_ranges)} 个分数段：{' | '.join([r['name'] for r in active_ranges])}")
 
     # 调试：显示配置详情
-    st.caption(f"📋 分数段详情：{active_ranges}")
-    st.caption(f"📋 计算结果：{score_dist}")
+    if st.session_state.get('debug_mode', False):
+        st.caption(f"📋 分数段详情：{active_ranges}")
+        st.caption(f"📋 计算结果：{score_dist}")
 
     if score_dist:
         col1, col2 = st.columns(2)
@@ -2852,7 +2859,8 @@ elif analysis_mode == "🔬 宏观分析":
 
             # 获取知识点掌握度
             mastery_data = deep_analyzer.analyze_knowledge_mastery(selected_student_id)
-            mastery_for_rec = {code: score for code, score in mastery_data.items()}
+            # 从嵌套字典中提取 avg_score 作为掌握度分数
+            mastery_for_rec = {code: info.get('avg_score', 50) for code, info in mastery_data.items()}
 
             # 子标签页
             rec_tab1, rec_tab2, rec_tab3 = st.tabs(["📚 练习题推荐", "🗺️ 学习路径", "🔁 相似题推荐"])
@@ -3470,11 +3478,11 @@ elif analysis_mode == "🔬 宏观分析":
             st.subheader("📈 成绩变化趋势")
 
             # 按考试日期排序
-            sorted_scores = sorted(exam_scores, key=lambda x: x.exam_date or '')
+            sorted_scores = sorted(exam_scores, key=lambda x: getattr(x, 'exam_date', '') or '')
 
             if sorted_scores:
-                exam_names = [s.exam_name for s in sorted_scores]
-                exam_scores_list = [float(s['score']) for s in sorted_scores]
+                exam_names = [getattr(s, 'exam_name', '未知考试') for s in sorted_scores]
+                exam_scores_list = [float(getattr(s, 'score', 0)) for s in sorted_scores]
 
                 fig = go.Figure(data=go.Scatter(
                     x=list(range(1, len(exam_scores_list) + 1)),
@@ -3517,9 +3525,9 @@ elif analysis_mode == "🔬 宏观分析":
             ])
 
             # 准备数据
-            sorted_scores = sorted(exam_scores, key=lambda x: x.exam_date or '')
-            scores_list = [float(s['score']) for s in sorted_scores]
-            exam_names = [s.exam_name for s in sorted_scores]
+            sorted_scores = sorted(exam_scores, key=lambda x: getattr(x, 'exam_date', '') or '')
+            scores_list = [float(getattr(s, 'score', 0)) for s in sorted_scores]
+            exam_names = [getattr(s, 'exam_name', '未知考试') for s in sorted_scores]
 
             with pred_tab1:
                 st.markdown("#### 成绩趋势预测")
@@ -3670,15 +3678,15 @@ elif analysis_mode == "🔬 宏观分析":
         else:
             # 初始化分析器
             exam_quality_analyzer = ExamQualityAnalyzer()
-            question_analyzer = QuestionScoreAnalyzer(deep_analyzer.knowledge_points)
+            question_analyzer = QuestionScoreAnalyzer()
 
             # 按考试名称分组
             exam_groups = {}
             for ec in exam_scores:
-                exam_name = ec.exam_name
+                exam_name = ec['exam_name']
                 if exam_name not in exam_groups:
                     exam_groups[exam_name] = []
-                exam_groups[exam_name].append(float(ec.score))
+                exam_groups[exam_name].append(float(ec['score']))
 
             # 子标签页
             exam_tab1, exam_tab2, exam_tab3 = st.tabs([
@@ -3695,27 +3703,30 @@ elif analysis_mode == "🔬 宏观分析":
                     analysis = exam_quality_analyzer.analyze_exam_quality(scores, exam_name)
                     exam_analyses.append(analysis)
 
-                # 显示雷达图
-                fig_radar = exam_quality_analyzer.create_exam_quality_chart(exam_analyses)
-                st.plotly_chart(fig_radar, use_container_width=True)
+                if not exam_analyses:
+                    st.info("暂无考试数据，无法进行分析")
+                else:
+                    # 显示雷达图
+                    fig_radar = exam_quality_analyzer.create_exam_quality_chart(exam_analyses)
+                    st.plotly_chart(fig_radar, use_container_width=True)
 
-                # 显示难度分布
-                fig_difficulty = exam_quality_analyzer.create_difficulty_distribution_chart(exam_analyses)
-                st.plotly_chart(fig_difficulty, use_container_width=True)
+                    # 显示难度分布
+                    fig_difficulty = exam_quality_analyzer.create_difficulty_distribution_chart(exam_analyses)
+                    st.plotly_chart(fig_difficulty, use_container_width=True)
 
-                # 显示详细数据
-                st.markdown("#### 试卷质量数据表")
-                for analysis in exam_analyses:
-                    with st.expander(f"{analysis.exam_name} (难度：{analysis.difficulty:.3f}, 区分度：{analysis.discrimination:.3f})"):
-                        st.markdown(f"""
-                        - **参加考试人数**: {analysis.total_students}
-                        - **平均分**: {analysis.avg_score:.1f}
-                        - **难度系数**: {analysis.difficulty:.3f} {'(容易)' if analysis.difficulty < 0.3 else '(中等)' if analysis.difficulty < 0.5 else '(困难)'}
-                        - **区分度**: {analysis.discrimination:.3f} {'(好)' if analysis.discrimination > 0.3 else '(一般)' if analysis.discrimination > 0.15 else '(较差)'}
-                        - **信度**: {analysis.reliability:.3f}
-                        - **标准差**: {analysis.std_deviation:.2f}
-                        - **分数范围**: {analysis.score_range[0]} - {analysis.score_range[1]}
-                        """)
+                    # 显示详细数据
+                    st.markdown("#### 试卷质量数据表")
+                    for analysis in exam_analyses:
+                        with st.expander(f"{analysis.exam_name} (难度：{analysis.difficulty:.3f}, 区分度：{analysis.discrimination:.3f})"):
+                            st.markdown(f"""
+                            - **参加考试人数**: {analysis.total_students}
+                            - **平均分**: {analysis.avg_score:.1f}
+                            - **难度系数**: {analysis.difficulty:.3f} {'(容易)' if analysis.difficulty < 0.3 else '(中等)' if analysis.difficulty < 0.5 else '(困难)'}
+                            - **区分度**: {analysis.discrimination:.3f} {'(好)' if analysis.discrimination > 0.3 else '(一般)' if analysis.discrimination > 0.15 else '(较差)'}
+                            - **信度**: {analysis.reliability:.3f}
+                            - **标准差**: {analysis.std_deviation:.2f}
+                            - **分数范围**: {analysis.score_range[0]} - {analysis.score_range[1]}
+                            """)
 
             with exam_tab2:
                 st.markdown("#### 题目得分率分析")
@@ -4807,14 +4818,15 @@ elif analysis_mode == "📝 学习习惯分析":
 elif analysis_mode == "🏫 班级学情看板":
     st.header("🏫 班级学情看板")
 
-    # 直接在页面顶部显示调试信息
-    import re
-    test_str1 = '1(2) 班上学期'
-    test_str2 = '10032-1(2) 班上学期数学考试分数'
-    pattern = r'(\d+\(\d+\).*?学期)'
-    r1 = re.search(pattern, test_str1)
-    r2 = re.search(pattern, test_str2)
-    st.write(f"**📋 正则测试:** '{test_str1}' -> '{r1.group(1) if r1 else None}' | '{test_str2}' -> '{r2.group(1) if r2 else None}'")
+    # 调试模式：显示正则测试
+    if st.session_state.get('debug_mode', False):
+        import re
+        test_str1 = '1(2) 班上学期'
+        test_str2 = '10032-1(2) 班上学期数学考试分数'
+        pattern = r'(\d+\(\d+\).*?学期)'
+        r1 = re.search(pattern, test_str1)
+        r2 = re.search(pattern, test_str2)
+        st.write(f"**📋 正则测试:** '{test_str1}' -> '{r1.group(1) if r1 else None}' | '{test_str2}' -> '{r2.group(1) if r2 else None}'")
 
     st.markdown("教师视角的班级整体学习情况分析")
 
@@ -4826,26 +4838,28 @@ elif analysis_mode == "🏫 班级学情看板":
     )
 
     if selected_semester:
-        # 调试：显示学期数据和录入成绩
-        st.caption(f"📋 调试：selected_semester={selected_semester}")
-        st.caption(f"📋 调试：analyzer.semester_data keys={list(analyzer.semester_data.keys())}")
-        st.caption(f"📋 调试：analyzer.students_df shape={analyzer.students_df.shape if analyzer.students_df is not None else None}")
+        # 调试信息
+        if st.session_state.get('debug_mode', False):
+            st.caption(f"📋 调试：selected_semester={selected_semester}")
+            st.caption(f"📋 调试：analyzer.semester_data keys={list(analyzer.semester_data.keys())}")
+            st.caption(f"📋 调试：analyzer.students_df shape={analyzer.students_df.shape if analyzer.students_df is not None else None}")
 
-        # 测试标准化函数
-        import re
-        norm_pattern = r'(\d+\(\d+\).*?学期)'
-        norm_selected = re.search(norm_pattern, selected_semester)
-        norm_excel = re.search(norm_pattern, '10032-1(2) 班上学期数学考试分数')
-        norm_selected_result = norm_selected.group(1).replace(' ', '') if norm_selected else None
-        norm_excel_result = norm_excel.group(1).replace(' ', '') if norm_excel else None
+            # 测试标准化函数
+            import re
+            norm_pattern = r'(\d+\(\d+\).*?学期)'
+            norm_selected = re.search(norm_pattern, selected_semester)
+            norm_excel = re.search(norm_pattern, '10032-1(2) 班上学期数学考试分数')
+            norm_selected_result = norm_selected.group(1).replace(' ', '') if norm_selected else None
+            norm_excel_result = norm_excel.group(1).replace(' ', '') if norm_excel else None
 
-        st.caption(f"📋 调试：norm_selected={norm_selected_result}, norm_excel={norm_excel_result}, match={norm_selected_result == norm_excel_result}")
+            st.caption(f"📋 调试：norm_selected={norm_selected_result}, norm_excel={norm_excel_result}, match={norm_selected_result == norm_excel_result}")
 
         # 获取班级分析
         class_analysis = class_dashboard.analyze_class_overall(selected_semester)
 
         # 调试：显示分析结果
-        st.caption(f"📋 调试：class_analysis={class_analysis}")
+        if st.session_state.get('debug_mode', False):
+            st.caption(f"📋 调试：class_analysis={class_analysis}")
 
         if class_analysis:
             # 统计卡片

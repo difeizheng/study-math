@@ -231,7 +231,7 @@ class ClassComparator:
                 theta=cats,
                 name=comp.class_name,
                 fill='toself',
-                fillopacity=0.3
+                opacity=0.3
             ))
 
         fig.update_layout(

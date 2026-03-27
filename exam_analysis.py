@@ -150,7 +150,7 @@ class ExamQualityAnalyzer:
                 theta=cats,
                 name=analysis.exam_name,
                 fill='toself',
-                fillopacity=0.3
+                opacity=0.3
             ))
 
         fig.update_layout(
